@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+
 
 public class Lokalitet {
 
@@ -7,9 +9,9 @@ public class Lokalitet {
 	private string lokalitetsnavn;
 	private double breddegrad;
 	private double lengdegrad;
-	private Enhet[] enheter;
+	private List<Enhet> enheter;
 
-	public Lokalitet(int lokalitetsnummer, string lokalitetsnavn, double breddegrad, double lengdegrad, Enhet[] enheter){
+	public Lokalitet(int lokalitetsnummer, string lokalitetsnavn, double breddegrad, double lengdegrad, List<Enhet> enheter){
 		this.lokalitetsnummer = lokalitetsnummer;
 		this.lokalitetsnavn = lokalitetsnavn;
 		this.breddegrad = breddegrad;
@@ -33,12 +35,12 @@ public class Lokalitet {
 		return lengdegrad;
 	}
 
-	public Enhet[] getEnheter(){
+	public List<Enhet> getEnheter(){
 		return enheter;
 	}
 
 	public Enhet getEnhetById(string id){
-		for(int i=0; i<enheter.Length; i++){
+		for(int i=0; i<enheter.Count; i++){
 			if(enheter[i].getEnhetsId().Equals(id)){
 				return enheter[i];
 			}
