@@ -16,19 +16,16 @@ public class Manager : MonoBehaviour {
 
 	public InputField searchField;
 
-	public Camera camera;
+	public Camera _camera;
 
 	bool animating;
 
 	// Use this for initialization
 	void Start () {
-
 		lokaliteter = new ArrayList ();
 
 		lokaliteter.Add (new Lokalitet (12394, "Ørnøya", 63.759167, 8.449133, null));
 		lokaliteter.Add (new Lokalitet (31959, "Rataren", 63.782383, 8.526367, null));
-
-
 
 		for (int i = 0; i < lokaliteter.Count; i++) {
 			Lokalitet l = lokaliteter[i] as Lokalitet;
@@ -40,8 +37,6 @@ public class Manager : MonoBehaviour {
 
 			onlineMaps.AddMarker(marker);
 		}
-
-
 	}
 	
 	// Update is called once per frame
@@ -51,7 +46,6 @@ public class Manager : MonoBehaviour {
 
 	private bool startAnimation() {
 		// Prøv å start animasjon av data
-
 		animating = true;
 
 		return true;
@@ -59,7 +53,6 @@ public class Manager : MonoBehaviour {
 
 	private bool stopAnimation() {
 		// Stop animasjon av data
-
 		animating = false;
 
 		return true;
@@ -107,18 +100,28 @@ public class Manager : MonoBehaviour {
 		}
 	}
 
-	public void searchEnd() {
-		string query = searchField.text.Substring (0, searchField.caretPosition);
-		Lokalitet l = null;
-		for (int i = 0; i < lokaliteter.Count; i++) {
-			if (((Lokalitet)lokaliteter[i]).getLokalitetsnavn().ToUpper().StartsWith(query.ToUpper())) {
-				l = (Lokalitet)lokaliteter[i];
-				break;
-			}
-		}
 
-		if (l != null) {
-			onlineMaps.SetPosition(l.getLengdegrad(), l.getBreddegrad());
+	public void searchEnd() {
+		if (Input.GetKey (KeyCode.Return)) {
+			search();
+		}
+	}
+
+	public void search() {
+		string query = searchField.text;
+
+		if (!query.Equals ("")) {
+			Lokalitet l = null;
+			for (int i = 0; i < lokaliteter.Count; i++) {
+				if (((Lokalitet)lokaliteter [i]).getLokalitetsnavn ().ToUpper ().StartsWith (query.ToUpper ())) {
+					l = (Lokalitet)lokaliteter [i];
+					break;
+				}
+			}
+		
+			if (l != null) {
+				onlineMaps.SetPosition (l.getLengdegrad (), l.getBreddegrad ());
+			}
 		}
 	}
 }
