@@ -14,6 +14,8 @@ public class Manager : MonoBehaviour {
 	public Button playPauseButton;
 	public Slider slider;
 
+	public InputField searchField;
+
 	public Camera camera;
 
 	bool animating;
@@ -21,21 +23,6 @@ public class Manager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-
-
-		Vector3 p1 = camera.ViewportToWorldPoint(new Vector3(0, 0, 1000));
-		Vector3 p2 = camera.ViewportToWorldPoint(new Vector3(1, 1, 1000));
-
-		Vector2 size = new Vector2 (p2.x - p1.x, p2.y - p1.y);
-
-
-		Debug.Log (size);
-
-		//onlineMaps.tilesetSize = size;
-		//onlineMaps.width = (int)size.y;
-		//onlineMaps.height = (int)size.x;
-
-	
 		lokaliteter = new ArrayList ();
 
 		lokaliteter.Add (new Lokalitet (12394, "Ørnøya", 63.759167, 8.449133, null));
@@ -48,11 +35,9 @@ public class Manager : MonoBehaviour {
 
 			OnlineMapsMarker marker = new OnlineMapsMarker();
 
-			
 			marker.position = new Vector2((float)l.getLengdegrad(), (float)l.getBreddegrad());
 			marker.label = l.getLokalitetsnavn();
 
-			marker.customData = l;
 			onlineMaps.AddMarker(marker);
 		}
 
@@ -79,14 +64,7 @@ public class Manager : MonoBehaviour {
 
 		return true;
 	}
-
-	void OnGUI(){
-
-	//	Debug.Log ("OnGui");
-
-	}
-
-
+	
 
 	public void startPauseAnimation() {
 		Text t = playPauseButton.GetComponentInChildren<Text> ();
@@ -105,4 +83,42 @@ public class Manager : MonoBehaviour {
 
 
 
+	public void searchValueChanged() {
+
+		if (Input.GetKey (KeyCode.Backspace) || searchField.text.Equals ("")) {
+			return;
+		}
+
+		string query = searchField.text.Substring (0, searchField.caretPosition);
+
+		Lokalitet l = null;
+		for (int i = 0; i < lokaliteter.Count; i++) {
+			if (((Lokalitet)lokaliteter[i]).getLokalitetsnavn().ToUpper().StartsWith(query.ToUpper())) {
+				l = (Lokalitet)lokaliteter[i];
+				break;
+			}
+		}
+
+		if (l != null) {
+			searchField.text = l.getLokalitetsnavn();
+			searchField.caretPosition = query.Length;
+			searchField.selectionAnchorPosition = searchField.caretPosition;
+			searchField.selectionFocusPosition = searchField.text.Length;
+		}
+	}
+
+	public void searchEnd() {
+		string query = searchField.text.Substring (0, searchField.caretPosition);
+		Lokalitet l = null;
+		for (int i = 0; i < lokaliteter.Count; i++) {
+			if (((Lokalitet)lokaliteter[i]).getLokalitetsnavn().ToUpper().StartsWith(query.ToUpper())) {
+				l = (Lokalitet)lokaliteter[i];
+				break;
+			}
+		}
+
+		if (l != null) {
+			onlineMaps.SetPosition(l.getLengdegrad(), l.getBreddegrad());
+		}
+	}
 }
