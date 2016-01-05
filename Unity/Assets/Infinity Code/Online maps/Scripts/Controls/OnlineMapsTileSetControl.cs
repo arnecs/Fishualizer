@@ -67,7 +67,7 @@ public class OnlineMapsTileSetControl : OnlineMapsControlBase3D
     /// <summary>
     /// Bing Maps API key
     /// </summary>
-	public string bingAPI = "AnyMxpun-p5A_HwWCl_lSXhC4TqgntUpc--THcK4HtUzNBE7gN5S1Ff9nYNQdMoI";
+    public string bingAPI = "";
 
     /// <summary>
     /// Type of checking 2D markers on visibility.
@@ -140,7 +140,7 @@ public class OnlineMapsTileSetControl : OnlineMapsControlBase3D
     /// <summary>
     /// Specifies that you want to build a map with the elevetions.
     /// </summary>
-    public bool useElevation = true;
+    public bool useElevation = false;
 
     private bool _useElevation;
 

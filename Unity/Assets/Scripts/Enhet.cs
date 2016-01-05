@@ -1,41 +1,26 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
 
 public class Enhet {
 
 	private string enhetsId;
-	private string dato;
-	private List<Data> datas;
+	private Data[] datas;
 
-	public Enhet(string enhetsId, string dato){
+	public Enhet(string enhetsId, Data[] datas){
 		this.enhetsId = enhetsId;
-		this.dato = dato;
+		this.datas = datas;
 	}
 
 	public string getEnhetsId(){
 		return enhetsId;
 	}
 
-	public string getDato(){
-		return dato;
-	}
-
-	public bool setData(string key, string value){
-		if (key != null && value != null) {
-			Data d = new Data (key, value);
-			datas.Add (d);
-			return true;
-		}
-		return false;
-	}
-
-	public List<Data> getAllData(){
+	public Data[] getAllData(){
 		return datas;
 	}
 
 	public Data getDataByKey(string key){
-		for(int i=0; i<datas.Count; i++){
+		for(int i=0; i<datas.Length; i++){
 			if(datas[i].getDataType().Equals(key)){
 				return datas[i];
 			}
