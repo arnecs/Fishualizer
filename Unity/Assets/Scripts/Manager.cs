@@ -22,7 +22,7 @@ public class Manager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		lokaliteter = new ArrayList ();
+		/*lokaliteter = new ArrayList ();
 
 		lokaliteter.Add (new Lokalitet (12394, "Ørnøya", 63.759167, 8.449133, null));
 		lokaliteter.Add (new Lokalitet (31959, "Rataren", 63.782383, 8.526367, null));
@@ -36,7 +36,7 @@ public class Manager : MonoBehaviour {
 			marker.label = l.getLokalitetsnavn();
 
 			onlineMaps.AddMarker(marker);
-		}
+		}*/
 	}
 	
 	// Update is called once per frame

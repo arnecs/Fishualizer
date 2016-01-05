@@ -1,31 +1,30 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Enhet {
 
 	private string enhetsId;
-	private Data[] datas;
+	private List<Måling> målinger = new List<Måling>();
 
-	public Enhet(string enhetsId, Data[] datas){
+	public Enhet(string enhetsId, List<Måling> målinger){
 		this.enhetsId = enhetsId;
-		this.datas = datas;
+		this.målinger = målinger;
+	}
+
+	public Enhet(string enhetsId){
+		this.enhetsId = enhetsId;
 	}
 
 	public string getEnhetsId(){
 		return enhetsId;
 	}
 
-	public Data[] getAllData(){
-		return datas;
+	public void leggTilMåling(Måling måling){
+		målinger.Add (måling);
 	}
 
-	public Data getDataByKey(string key){
-		for(int i=0; i<datas.Length; i++){
-			if(datas[i].getDataType().Equals(key)){
-				return datas[i];
-			}
-		}
-		return null;
+	public List<Måling> getMålinger(){
+		return målinger;
 	}
-	
 }
