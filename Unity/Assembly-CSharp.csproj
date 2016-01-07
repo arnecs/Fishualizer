@@ -168,6 +168,7 @@
      <Compile Include="Assets\Scripts\FileReader.cs" />
      <Compile Include="Assets\Scripts\Lokalitet.cs" />
      <Compile Include="Assets\Scripts\Manager.cs" />
+     <Compile Include="Assets\Scripts\Målinger.cs" />
      <None Include="Assets\Resources\Lusetellinger.txt" />
      <None Include="Assets\Infinity Code\Online maps\Shaders\TilesetShader.shader" />
      <None Include="Assets\Infinity Code\Online maps\Shaders\TilesetCutoutShader.shader" />

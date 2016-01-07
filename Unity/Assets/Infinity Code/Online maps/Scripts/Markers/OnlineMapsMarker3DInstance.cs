@@ -113,7 +113,9 @@ public class OnlineMapsMarker3DInstance : OnlineMapsMarkerInstanceBase
 
     private void UpdateDefaultMarkerEvens()
     {
-        if (!(marker as OnlineMapsMarker3D).allowDefaultMarkerEvents) return;
+
+		return;
+		if (!(marker as OnlineMapsMarker3D).allowDefaultMarkerEvents) return;
 
         int touchCount = 0;
 

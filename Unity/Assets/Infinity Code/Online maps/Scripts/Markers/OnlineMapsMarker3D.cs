@@ -121,7 +121,7 @@ public class OnlineMapsMarker3D : OnlineMapsMarkerBase
     {
         prefab = _prefab = instance;
         this.instance = instance;
-        instance.AddComponent<OnlineMapsMarker3DInstance>().marker = this;
+        //instance.AddComponent<OnlineMapsMarker3DInstance>().marker = this;
 
         OnlineMaps api = OnlineMaps.instance;
 
@@ -140,7 +140,7 @@ public class OnlineMapsMarker3D : OnlineMapsMarkerBase
     /// </param>
     public void Init(Transform parent)
     {
-        if (instance != null) Object.DestroyImmediate(instance);
+        //if (instance != null) Object.DestroyImmediate(instance);
 
         if (prefab == null)
         {

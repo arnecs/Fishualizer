@@ -16,8 +16,11 @@ public class Manager : MonoBehaviour {
 
 	public InputField searchField;
 
-	public Camera _camera;
+	public Camera _camera; 
 
+	OnlineMapsMarker3D marker;
+
+	
 	bool animating;
 
 	// Use this for initialization
@@ -30,18 +33,43 @@ public class Manager : MonoBehaviour {
 		for (int i = 0; i < lokaliteter.Count; i++) {
 			Lokalitet l = lokaliteter[i] as Lokalitet;
 
-			OnlineMapsMarker marker = new OnlineMapsMarker();
+			//OnlineMapsMarker marker = new OnlineMapsMarker();
 
-			marker.position = new Vector2((float)l.getLengdegrad(), (float)l.getBreddegrad());
+
+
+
+			GameObject sphere = (GameObject)Resources.Load ("markerPrefab", typeof(GameObject));
+
+			Debug.Log (sphere);
+
+			marker = new OnlineMapsMarker3D (sphere);
+
+			Vector2 position = new Vector2((float)l.getLengdegrad(), (float)l.getBreddegrad());
+		
+			marker.position = position;
 			marker.label = l.getLokalitetsnavn();
 
-			onlineMaps.AddMarker(marker);
+			marker.scale = 20;
+
+			OnlineMapsControlBase3D control = onlineMaps.GetComponent<OnlineMapsControlBase3D> ();
+				
+			control.AddMarker3D (marker);
+
+			//	onlineMaps.AddMarker(marker);
+
 		}
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		//Debug.Log("Update");
+
+
+
+
+		//OnlineMapsControlBase3D.instance.markers3D[0] .scale += 0.02f;
+		//OnlineMapsControlBase3D.instance.markers3D[1] .scale += 0.05f;
+
 	}
 
 	private bool startAnimation() {

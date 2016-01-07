@@ -165,7 +165,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 500
+  near clip plane: 100
   far clip plane: 1500
   field of view: 45
   orthographic: 1
@@ -1027,7 +1027,8 @@ MonoBehaviour:
   playPauseButton: {fileID: 2126400715}
   slider: {fileID: 1786329481}
   searchField: {fileID: 591966461}
-  camera: {fileID: 491272877}
+  _camera: {fileID: 0}
+  markerPrefab: {fileID: 135722, guid: 7b4f7c5878c9c4940991a39de2184507, type: 2}
 --- !u!1 &1034794246
 GameObject:
   m_ObjectHideFlags: 0
@@ -1325,7 +1326,7 @@ MonoBehaviour:
   allowDefaultMarkerEvents: 0
   allowCameraControl: 1
   cameraDistance: 512
-  cameraRotation: {x: 0, y: 0}
+  cameraRotation: {x: -15, y: 0}
   cameraSpeed: {x: 0, y: 0}
   marker2DMode: 0
   marker2DSize: 100
