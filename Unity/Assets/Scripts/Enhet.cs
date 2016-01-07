@@ -27,4 +27,8 @@ public class Enhet {
 	public List<Måling> getMålinger(){
 		return målinger;
 	}
+
+	public void sorterMålinger() {
+		målinger.Sort ();
+	}
 }

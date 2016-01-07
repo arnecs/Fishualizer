@@ -1,25 +1,39 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 
-public class Måling {
+public class Måling : IComparable {
 
-	string dato;
-	List<Data> datas = new List<Data>();
+	private Dictionary<String, Double> data;
+	private DateTime date;
 
-	public Måling(string dato, List<Data> datas){
-		this.dato = dato;
-		this.datas = datas;
+	public Måling(DateTime date){
+		this.date = date;
+		data = new Dictionary<String, Double> ();
 	}
-
-
 	
-	public Data getDataByKey(string key){
-		for(int i=0; i<datas.Count; i++){
-			if(datas[i].getDataType().Equals(key)){
-				return datas[i];
-			}
-		}
-		return null;
+	public void setDate(DateTime date) {
+		this.date = date;
 	}
+
+	public DateTime getDate() {
+		return date; 
+	}
+
+	public Double getValueForKey(String key) {
+		double v;
+		if (data.TryGetValue (key, out v)) {
+			return v;
+		}
+		return -1;
+	}
+
+	public int CompareTo(Object obj) {
+		Måling o = obj as Måling;
+		if (o != null) {
+			return date.CompareTo (o.getDate ());
+		}
+		return -1;
+
+	}
+
 }
