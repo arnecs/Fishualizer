@@ -22,7 +22,7 @@ public class CSVReader
 		
 		var header = Regex.Split(lines[1], SPLIT_RE);
 		for(var i=2; i < lines.Length-1; i++) {
-			
+			//Debug.Log("Linjenummer: " + i);
 			var values = Regex.Split(lines[i], SPLIT_RE);
 			if(values.Length == 0 ||values[0] == "") continue;
 			
