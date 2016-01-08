@@ -1,14 +1,15 @@
 using UnityEngine;
 using System.Collections;
-
+using System;
 using UnityEngine.UI;
 
 using InfinityCode;
+using AssemblyCSharp;
 
 
 public class Manager : MonoBehaviour {
 
-	ArrayList lokaliteter;
+	public static ArrayList lokaliteter;
 
 	public OnlineMaps onlineMaps;
 	public Button playPauseButton;
@@ -17,7 +18,6 @@ public class Manager : MonoBehaviour {
 	public InputField searchField;
 
 	public Camera _camera; 
-
 	OnlineMapsMarker3D marker;
 
 	
@@ -26,24 +26,37 @@ public class Manager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		lokaliteter = new ArrayList ();
+		Populate();
+		//Brukes ikke før vi evt. vil skalere ALLE markers samtidig. Ligger også funksjonalitet
+		// i LokalitetsBehaviour.cs
+//		OnlineMaps api = OnlineMaps.instance;
+//		api.OnChangeZoom += OnChangeZoom;
+//		OnChangeZoom ();
+	}
 
-		lokaliteter.Add (new Lokalitet (12394, "Ørnøya", 63.759167, 8.449133, null));
-		lokaliteter.Add (new Lokalitet (31959, "Rataren", 63.782383, 8.526367, null));
+//	private void OnChangeZoom(){
+//		Debug.Log (onlineMaps._zoom);
+//		foreach (OnlineMapsMarker3D m in OnlineMapsControlBase3D.instance.markers3D) {
+//			//m.scale = (onlineMaps._zoom * 2);
+//		}
+//	}
+
+	void Populate() {
+		
+		lokaliteter = new ArrayList ();
+
+		lokaliteter.Add (new Lokalitet ("12394", "Ørnøya", 63.759167, 8.449133, null));
+		lokaliteter.Add (new Lokalitet ("31959", "Rataren", 63.782383, 8.526367, null));
+		lokaliteter.Add (new Lokalitet ("23233", "Rats", 63.73, 8.6, null));
 
 		for (int i = 0; i < lokaliteter.Count; i++) {
 			Lokalitet l = lokaliteter[i] as Lokalitet;
 
-			//OnlineMapsMarker marker = new OnlineMapsMarker();
+			GameObject cylinder = (GameObject)Resources.Load ("markerPrefab", typeof(GameObject));
 
 
 
-
-			GameObject sphere = (GameObject)Resources.Load ("markerPrefab", typeof(GameObject));
-
-			Debug.Log (sphere);
-
-			marker = new OnlineMapsMarker3D (sphere);
-
+			marker = new OnlineMapsMarker3D (cylinder);
 			Vector2 position = l.getCoordinates ();
 		
 			marker.position = position;
@@ -51,11 +64,13 @@ public class Manager : MonoBehaviour {
 
 			marker.scale = 20;
 
-			OnlineMapsControlBase3D control = onlineMaps.GetComponent<OnlineMapsControlBase3D> ();
-				
-			control.AddMarker3D (marker);
+			marker.position = position;
+			marker.label = l.getLokalitetsnavn();
+			marker.scale = onlineMaps._zoom * 2;
 
-			//	onlineMaps.AddMarker(marker);
+			OnlineMapsControlBase3D control = onlineMaps.GetComponent<OnlineMapsControlBase3D> ();
+
+			control.AddMarker3D (marker);
 
 		}
 	}
@@ -64,12 +79,13 @@ public class Manager : MonoBehaviour {
 	void Update () {
 		//Debug.Log("Update");
 
-
+		//Debug.Log (onlineMaps._zoom);
 
 
 		//OnlineMapsControlBase3D.instance.markers3D[0] .scale += 0.02f;
 		//OnlineMapsControlBase3D.instance.markers3D[1] .scale += 0.05f;
 
+	
 	}
 
 	private bool startAnimation() {
@@ -141,15 +157,35 @@ public class Manager : MonoBehaviour {
 		if (!query.Equals ("")) {
 			Lokalitet l = null;
 			for (int i = 0; i < lokaliteter.Count; i++) {
-				if (((Lokalitet)lokaliteter [i]).getLokalitetsnavn ().ToUpper ().StartsWith (query.ToUpper ())) {
+				if (((Lokalitet)lokaliteter [i]).getLokalitetsnavn().ToUpper().StartsWith(query.ToUpper())) {
 					l = (Lokalitet)lokaliteter [i];
 					break;
 				}
 			}
-		
-			if (l != null) {
-				onlineMaps.SetPosition (l.getLengdegrad (), l.getBreddegrad ());
+		}
+	}
+	public DateTime firstDate(){
+		DateTime earliestDateSoFar;
+		earliestDateSoFar = new DateTime (0, 0, 0);
+		if (lokaliteter != null) {
+			foreach (Lokalitet l in lokaliteter) {
+				foreach (Enhet e in l.getEnheter ()) {
+					foreach (Måling m in e.getMålinger()) {
+						//Stuff
+					}
+				}
 			}
 		}
+
+	}
+
+	public DateTime lastDate(){
+	}
+
+	public int totalDates(){
+		if (lastDate () != null && firstDate () != null) {
+			return (lastDate () - firstDate ()).TotalDays;
+		}
+		return 0;
 	}
 }

@@ -165,9 +165,13 @@
      <Compile Include="Assets\Scripts\CSVreader.cs" />
      <Compile Include="Assets\Scripts\Enhet.cs" />
      <Compile Include="Assets\Scripts\FileReader.cs" />
+     <Compile Include="Assets\Scripts\GUI\TimeSlider.cs" />
+     <Compile Include="Assets\Scripts\GUI\TimeSliderCurrentDateText.cs" />
      <Compile Include="Assets\Scripts\Lokalitet.cs" />
+     <Compile Include="Assets\Scripts\LokalitetBehaviour.cs" />
      <Compile Include="Assets\Scripts\Manager.cs" />
      <Compile Include="Assets\Scripts\Måling.cs" />
+     <Compile Include="Assets\Scripts\Målinger.cs" />
      <None Include="Assets\Resources\Lusetellinger.txt" />
      <None Include="Assets\Infinity Code\Online maps\Shaders\TilesetShader.shader" />
      <None Include="Assets\Infinity Code\Online maps\Shaders\TilesetCutoutShader.shader" />
