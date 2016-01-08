@@ -166,6 +166,8 @@
      <Compile Include="Assets\Scripts\Data.cs" />
      <Compile Include="Assets\Scripts\Enhet.cs" />
      <Compile Include="Assets\Scripts\FileReader.cs" />
+     <Compile Include="Assets\Scripts\GUI\TimeSlider.cs" />
+     <Compile Include="Assets\Scripts\GUI\TimeSliderCurrentDateText.cs" />
      <Compile Include="Assets\Scripts\Lokalitet.cs" />
      <Compile Include="Assets\Scripts\LokalitetBehaviour.cs" />
      <Compile Include="Assets\Scripts\Manager.cs" />

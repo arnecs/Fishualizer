@@ -475,7 +475,7 @@ public class OnlineMapsControlBase3D: OnlineMapsControlBase
 
     private void UpdateCameraPosition()
     {
-        if (cameraRotation.x > 80) cameraRotation.x = 80f;
+        if (cameraRotation.x > 50) cameraRotation.x = 50f;
         else if (cameraRotation.x < 0) cameraRotation.x = 0;
 
         float rx = 90 - cameraRotation.x;

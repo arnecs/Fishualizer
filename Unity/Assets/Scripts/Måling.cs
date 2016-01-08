@@ -12,8 +12,6 @@ public class Måling {
 		this.datas = datas;
 	}
 
-
-	
 	public Data getDataByKey(string key){
 		for(int i=0; i<datas.Count; i++){
 			if(datas[i].getDataType().Equals(key)){

@@ -4,6 +4,7 @@ using System;
 using UnityEngine.UI;
 
 using InfinityCode;
+using AssemblyCSharp;
 
 
 public class Manager : MonoBehaviour {
@@ -17,7 +18,6 @@ public class Manager : MonoBehaviour {
 	public InputField searchField;
 
 	public Camera _camera; 
-
 	OnlineMapsMarker3D marker;
 
 	
@@ -25,24 +25,25 @@ public class Manager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+
+
 		Populate();
-		OnlineMaps api = OnlineMaps.instance;
-		api.OnChangeZoom += OnChangeZoom;
-		OnChangeZoom ();
+		//Brukes ikke før vi evt. vil skalere ALLE markers samtidig. Ligger også funksjonalitet
+		// i LokalitetsBehaviour.cs
+//		OnlineMaps api = OnlineMaps.instance;
+//		api.OnChangeZoom += OnChangeZoom;
+//		OnChangeZoom ();
 	}
 
-	private void OnChangeZoom(){
-		Debug.Log (onlineMaps._zoom);
-		foreach (OnlineMapsMarker3D m in OnlineMapsControlBase3D.instance.markers3D) {
-			//m.scale = (onlineMaps._zoom * 2);
-
-
-		}
-
-			
-	}
+//	private void OnChangeZoom(){
+//		Debug.Log (onlineMaps._zoom);
+//		foreach (OnlineMapsMarker3D m in OnlineMapsControlBase3D.instance.markers3D) {
+//			//m.scale = (onlineMaps._zoom * 2);
+//		}
+//	}
 
 	void Populate() {
+		
 		lokaliteter = new ArrayList ();
 
 		lokaliteter.Add (new Lokalitet ("12394", "Ørnøya", 63.759167, 8.449133, null));
@@ -54,7 +55,7 @@ public class Manager : MonoBehaviour {
 
 			GameObject cylinder = (GameObject)Resources.Load ("markerPrefab", typeof(GameObject));
 
-			Debug.Log (cylinder);
+
 
 			marker = new OnlineMapsMarker3D (cylinder);
 
@@ -81,6 +82,7 @@ public class Manager : MonoBehaviour {
 		//OnlineMapsControlBase3D.instance.markers3D[0] .scale += 0.02f;
 		//OnlineMapsControlBase3D.instance.markers3D[1] .scale += 0.05f;
 
+	
 	}
 
 	private bool startAnimation() {
@@ -162,5 +164,29 @@ public class Manager : MonoBehaviour {
 				onlineMaps.SetPositionAndZoom((float)l.getLengdegrad(), (float)l.getBreddegrad(), 11);
 			}
 		}
+	}
+	public DateTime firstDate(){
+		DateTime earliestDateSoFar;
+		earliestDateSoFar = new DateTime (0, 0, 0);
+		if (lokaliteter != null) {
+			foreach (Lokalitet l in lokaliteter) {
+				foreach (Enhet e in l.getEnheter ()) {
+					foreach (Måling m in e.getMålinger()) {
+						//Stuff
+					}
+				}
+			}
+		}
+
+	}
+
+	public DateTime lastDate(){
+	}
+
+	public int totalDates(){
+		if (lastDate () != null && firstDate () != null) {
+			return (lastDate () - firstDate ()).TotalDays;
+		}
+		return 0;
 	}
 }
