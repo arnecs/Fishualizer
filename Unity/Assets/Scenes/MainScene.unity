@@ -994,6 +994,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 938784519}
   - 114: {fileID: 938784520}
+  - 114: {fileID: 938784521}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -1029,6 +1030,17 @@ MonoBehaviour:
   slider: {fileID: 1786329481}
   searchField: {fileID: 591966461}
   _camera: {fileID: 0}
+--- !u!114 &938784521
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 938784518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fefa6ca94f46d44f5b5f2ce032084168, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1034794246
 GameObject:
   m_ObjectHideFlags: 0
@@ -2210,6 +2222,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 011f1e013b5517743b7bcdf0e8fd1b36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timeSlider: {fileID: 0}
+  currentDateText: {fileID: 0}
 --- !u!1 &1975580693
 GameObject:
   m_ObjectHideFlags: 0
