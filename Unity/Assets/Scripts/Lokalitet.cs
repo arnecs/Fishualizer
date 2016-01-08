@@ -64,4 +64,11 @@ public class Lokalitet {
 		}
 		return null;
 	}
+
+	public string ToString() {
+		return "Lokalitetsnavn: " + lokalitetsnavn + ", Enheter.Count: " + enheter.Count;
+
+
+	}
+
 }

@@ -2,8 +2,6 @@
 // den 08/01-16 kl. 15:00
 
 
-
-
 using UnityEngine;
 using System.Collections;
 using System; 
@@ -19,7 +17,17 @@ public class EXCELREADER : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		readXLS(Application.dataPath + "/Resources/BasicXls.xls");
+
+
+		var list = readXLS(Application.dataPath + "/Resources/06.01.2016-Lusetellinger-2.xls");
+
+
+		foreach (Lokalitet l in list) {
+			Debug.Log (l.ToString ());
+		}
+
+
+
 	}
 
 	// Update is called once per frame
@@ -31,7 +39,7 @@ public class EXCELREADER : MonoBehaviour {
 	{
 
 		Dictionary<string, Lokalitet> lokDict = new Dictionary<string, Lokalitet> ();
-		Dictionary<string, int> headers = new Dictionary<string, int> ();
+		List<string> headers = new List<string> ();
 
 
 
@@ -41,50 +49,91 @@ public class EXCELREADER : MonoBehaviour {
 			//1. Reading from a binary Excel file ('97-2003 format; *.xls)
 			IExcelDataReader excelReader = ExcelReaderFactory.CreateBinaryReader(stream);
 
+
+			int lokNavnIndex = -1, datoIndex = -1, enhetIndex = -1;
+
+
 			excelReader.Read();
 			if (excelReader.Read()) {
 				for (int i = 0; i < excelReader.FieldCount; i++) {
-					headers.Add(excelReader.GetString(i), i);
 
+					string h = excelReader.GetString(i);
+
+					//Debug.Log(h);
+
+					if (h != null) {
+						headers.Add(h);
+						if (h.Equals("Lokalitet")) {
+							lokNavnIndex = i;
+						} else if (h.Equals("Enhet")){
+							enhetIndex = i;
+						} else if (h.Equals("Utg?ende Siste dato for lusetelling")) {
+							datoIndex = i;
+						}
+					}
 				}
+			}
+
+			if (lokNavnIndex == -1 || enhetIndex == -1 || datoIndex == -1) {
+			Debug.Log ("Lokalitet, Enhet eller dato er ikke med");
+				return new List<Lokalitet>();
 			}
 			
 
 			while (excelReader.Read())
 			{
-				int lokIdIndeks = -1;
+
 				Lokalitet lok = null;
 				string lokNavn;
 
 				// Finn riktig lokalitet
-				if (headers.TryGetValue("Lokalitet", out lokIdIndeks)) {
-					lokNavn = excelReader.GetString(lokIdIndeks);
+				lokNavn = excelReader.GetString(lokNavnIndex);
 
-					if (!lokDict.TryGetValue(lokNavn, out lok)) {
+				if (!lokDict.TryGetValue(lokNavn, out lok)) {
 
-						lok = new Lokalitet();
-						lok.setLokalitetsNavn(lokNavn);
+					lok = new Lokalitet();
+					lok.setLokalitetsNavn(lokNavn);
 
-					}
+					lokDict.Add(lokNavn, lok);
+
 				}
 
+
 				Enhet enhet;
-				int enhetIndeks;
 				string enhetId;
 
 				// Finn riktig enhet
-				if (headers.TryGetValue("Enhet", out enhetIndeks)) {
-					enhetId = excelReader.GetString(enhetIndeks);
 
-					enhet = lok.getEnhetById(enhetId);
+				enhetId = excelReader.GetString(enhetIndex);
 
-					if (enhet == null) {
-						enhet = lok.leggTilEnhet(enhetId);
-					}
+				enhet = lok.getEnhetById(enhetId);
+
+				if (enhet == null) {
+					enhet = lok.leggTilEnhet(enhetId);
 				}
-					
+
+
+
+
+				DateTime dato;
+				dato = excelReader.GetDateTime(datoIndex);
+				Måling m = new Måling(dato);
+
+
 				for (int i = 0; i < excelReader.FieldCount; i++) {
+					try {
+						double data = excelReader.GetDouble(i);
+
+
+						m.AddData(headers[i], data);
+
+
 					
+
+
+					} catch (Exception e) {
+						//Debug.Log (e);
+					}
 
 				}
 			}
@@ -92,9 +141,9 @@ public class EXCELREADER : MonoBehaviour {
 			//6. Free resources (IExcelDataReader is IDisposable)
 			excelReader.Close();
 			} catch (Exception e) {
-				
+			Debug.Log (e);
 			}
 
-		return null;
+		return new List<Lokalitet>(lokDict.Values);
 		}
 }
