@@ -25,7 +25,7 @@ public class Manager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		/*lokaliteter = new ArrayList ();
+		lokaliteter = new ArrayList ();
 
 		lokaliteter.Add (new Lokalitet (12394, "Ørnøya", 63.759167, 8.449133, null));
 		lokaliteter.Add (new Lokalitet (31959, "Rataren", 63.782383, 8.526367, null));
@@ -44,12 +44,11 @@ public class Manager : MonoBehaviour {
 
 			marker = new OnlineMapsMarker3D (sphere);
 
-			Vector2 position = new Vector2((float)l.getLengdegrad(), (float)l.getBreddegrad());
+			Vector2 position = l.getCoordinates ();
 		
 			marker.position = position;
 			marker.label = l.getLokalitetsnavn();
 
-<<<<<<< HEAD
 			marker.scale = 20;
 
 			OnlineMapsControlBase3D control = onlineMaps.GetComponent<OnlineMapsControlBase3D> ();
@@ -59,10 +58,6 @@ public class Manager : MonoBehaviour {
 			//	onlineMaps.AddMarker(marker);
 
 		}
-=======
-			onlineMaps.AddMarker(marker);
-		}*/
->>>>>>> e1c0922f769e855da88a0418fcde2bb55943c48a
 	}
 	
 	// Update is called once per frame
