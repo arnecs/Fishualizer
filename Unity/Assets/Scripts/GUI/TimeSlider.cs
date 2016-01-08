@@ -2,7 +2,6 @@
 using UnityEngine.UI;
 using System.Collections;
 using UnityEditor;
-using AssemblyCSharp;
 using System;
 
 public class TimeSlider : MonoBehaviour {
@@ -10,15 +9,13 @@ public class TimeSlider : MonoBehaviour {
 	public Måling måling;
 	// Use this for initialization
 	void Start () {
-		måling = new Måling ();
+		//måling = new Måling ();
 		//målinger.regDate ();
-		Debug.Log (måling.getCount ());
 
 
 		GameObject temp = GameObject.Find ("TimeSlider");
 		if (temp != null) {
 			timeSlider = temp.GetComponent<Slider> ();
-			timeSlider.maxValue = måling.getCount ();
 		}
 
 
