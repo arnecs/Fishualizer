@@ -62,10 +62,10 @@ public class Lokalitet
 		return new List<Enhet> (enheter.Values);
 	}
 
-	public void leggTilEnhet (string id)
-	{
+	public Enhet leggTilEnhet(string id){
 		Enhet e = new Enhet (id);
 		enheter.Add (id, e);
+		return e;
 	}
 
 	public Enhet getEnhetById (string id)
@@ -106,4 +106,11 @@ public class Lokalitet
 		}
 		return latestDateSoFar;
 	}
+
+	public string ToString() {
+		return "Lokalitetsnavn: " + lokalitetsnavn + ", Enheter.Count: " + enheter.Count;
+
+
+	}
+
 }

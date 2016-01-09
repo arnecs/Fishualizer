@@ -45,6 +45,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\FileBrowser\Script\FileBrowser.cs" />
+     <Compile Include="Assets\FileBrowser\Script\testFileBrowser.cs" />
      <Compile Include="Assets\Infinity Code\Online maps\Examples (API usage)\CacheTilesExample.cs" />
      <Compile Include="Assets\Infinity Code\Online maps\Examples (API usage)\CalcAreaExample.cs" />
      <Compile Include="Assets\Infinity Code\Online maps\Examples (API usage)\ChangeMapTextureExample.cs" />
@@ -163,6 +165,7 @@
      <Compile Include="Assets\Infinity Code\Online maps\Scripts\XML\OnlineMapsXMLListEnum.cs" />
      <Compile Include="Assets\Infinity Code\Online maps\Scripts\XML\OnlineMapsXMLNamespaceManager.cs" />
      <Compile Include="Assets\Scripts\CSVreader.cs" />
+     <Compile Include="Assets\Scripts\EXCELREADER.cs" />
      <Compile Include="Assets\Scripts\Enhet.cs" />
      <Compile Include="Assets\Scripts\FileReader.cs" />
      <Compile Include="Assets\Scripts\Lokalitet.cs" />
@@ -170,6 +173,7 @@
      <Compile Include="Assets\Scripts\Manager.cs" />
      <Compile Include="Assets\Scripts\Måling.cs" />
      <Compile Include="Assets\Scripts\Målinger.cs" />
+     <None Include="Assets\FileBrowser\readme.txt" />
      <None Include="Assets\Resources\Lusetellinger.txt" />
      <None Include="Assets\Infinity Code\Online maps\Shaders\TilesetShader.shader" />
      <None Include="Assets\Infinity Code\Online maps\Shaders\TilesetCutoutShader.shader" />
@@ -179,6 +183,18 @@
  </Reference>
  <Reference Include="UnityEngine.Networking">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
+ </Reference>
+ <Reference Include="Excel">
+ <HintPath>C:/Fishualizer/Unity/Assets/ExcelReader/net20/Excel.dll</HintPath>
+ </Reference>
+ <Reference Include="System.Data">
+ <HintPath>C:/Fishualizer/Unity/Assets/DLL/System.Data.dll</HintPath>
+ </Reference>
+ <Reference Include="System.EnterpriseServices">
+ <HintPath>C:/Fishualizer/Unity/Assets/DLL/System.EnterpriseServices.dll</HintPath>
+ </Reference>
+ <Reference Include="ICSharpCode.SharpZipLib">
+ <HintPath>C:/Fishualizer/Unity/Assets/ExcelReader/net20/ICSharpCode.SharpZipLib.dll</HintPath>
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

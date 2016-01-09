@@ -27,6 +27,11 @@ public class Måling : IComparable {
 		return -1;
 	}
 
+	public void AddData(string key, double value) {
+		data.Add (key, value);
+	}
+
+
 	public int CompareTo(Object obj) {
 		Måling o = obj as Måling;
 		if (o != null) {
