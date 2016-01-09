@@ -411,7 +411,7 @@ public class Manager : MonoBehaviour
 					//Eksempel:
 					//marker.scale = (float)e.getSenesteMålingGittDato (currentDate).getValueForKey ("Totalt antall lus funnet, Fastsittende lakselus i perioden");
 					//Legg til funksjonalitet slik at hver marker endrer utseende gitt getValueForKey(key) på en måling.
-					l.getMarker ().scale = (float)e.getSenesteMålingGittDato (currentDate).getValueForKey ("Totalt antall lus funnet, Fastsittende lakselus i perioden");
+					l.getMarker ().scale = (float)e.getSenesteMålingGittDato (currentDate).getValueForKey (datatyper[valgtDatatype]);
 				} catch (Exception ex){
 					//Debug.Log (ex); //Ikke enable, skaper massiv lag!
 				}
