@@ -34,6 +34,7 @@ public class Manager : MonoBehaviour
 
 	public Camera _camera;
 
+	int defaultMarkerScale;
 
 	// Data selection
 	bool showDataSelection;
@@ -68,6 +69,7 @@ public class Manager : MonoBehaviour
 		animationSpeedSliderText = GameObject.Find("AnimationSpeedSliderText").GetComponent<Text>();
 		currentDate = firstDate ();
 		timeSlider =  GameObject.Find ("TimeSlider").GetComponent<Slider> ();
+		defaultMarkerScale = 10;
 
 		Populate ();
 		currentDate = firstDate ();
@@ -200,17 +202,17 @@ public class Manager : MonoBehaviour
 
 
 			//GameObject cylinder = (GameObject)Resources.Load ("markerPrefab", typeof(GameObject));
-			GameObject cylinder = Instantiate(Resources.Load("markerPrefab", typeof(GameObject))) as GameObject;
-			cylinder.name = l.getLokalitetsnavn();
+			GameObject mapObject = Instantiate(Resources.Load("markerPrefab", typeof(GameObject))) as GameObject;
+			mapObject.name = l.getLokalitetsnavn();
 
 
-			marker = new OnlineMapsMarker3D (cylinder);
+			marker = new OnlineMapsMarker3D (mapObject);
 			Vector2 position = l.getCoordinates ();
 		
 
 			marker.position = position;
 			marker.label = l.getLokalitetsnavn ();
-			marker.scale = onlineMaps._zoom * 2;
+			marker.scale = defaultMarkerScale;
 
 			marker.range.max = 12;
 			marker.range.min = 1;
@@ -227,31 +229,27 @@ public class Manager : MonoBehaviour
 				Enhet e = enheter[j] as Enhet;
 				
 				//GameObject cylinderChild = (GameObject)Resources.Load ("markerEnhetPrefab", typeof(GameObject));
-				GameObject cylinderChild = Instantiate(Resources.Load("markerEnhetPrefab", typeof(GameObject))) as GameObject;
-				cylinderChild.name = enheter[j].getEnhetsId();
+				GameObject mapObjectChild = Instantiate(Resources.Load("markerEnhetPrefab", typeof(GameObject))) as GameObject;
+				mapObjectChild.name = enheter[j].getEnhetsId();
 
 
 				var angle = j * Mathf.PI * 2 / enheter.Count;
 				
-				marker = new OnlineMapsMarker3D (cylinderChild);
+				marker = new OnlineMapsMarker3D (mapObjectChild);
 				position = l.getCoordinates ();
 				
 				marker.position = new Vector2(position.x + Mathf.Cos(angle)*radius, position.y + Mathf.Sin(angle)*radius*0.5f);
 				marker.label = l.getLokalitetsnavn ();
-				
-				marker.scale = 10;
-				
-				marker.label = l.getLokalitetsnavn ();
-				marker.scale = onlineMaps._zoom * 2;
+				marker.scale = defaultMarkerScale;
 				marker.range.max = 20;
 				marker.range.min = 13;
 				
 				control = onlineMaps.GetComponent<OnlineMapsControlBase3D> ();
 
 				control.AddMarker3D (marker);
-				Destroy(cylinderChild);
+				Destroy(mapObjectChild);
 			}
-			Destroy(cylinder);
+			Destroy(mapObject);
 		}
 
 
@@ -437,7 +435,7 @@ public class Manager : MonoBehaviour
 
 	public void oppdaterMarkers(){
 
-		float r = onlineMaps.zoom * 2f;
+		float r = (float)defaultMarkerScale;
 
 		foreach (Lokalitet l in lokaliteter) {
 
@@ -448,9 +446,6 @@ public class Manager : MonoBehaviour
 
 			foreach (Enhet e in l.getEnheter ()) {
 				try {
-					//Her skal egentlig funksjonalitet for skalering ligge, dette er bare testing så langt.
-					//l.getMarker ().scale = 16;
-					//l.getMarker ().scale = (float)e.getSenesteMålingGittDato (currentDate).getValueForKey (datatyper[valgtDatatype]);
 					d += (float)e.getSenesteMålingGittDato (currentDate).getValueForKey (datatyper[valgtDatatype]);
 					
 
@@ -458,7 +453,7 @@ public class Manager : MonoBehaviour
 					//Debug.Log (ex); //Ikke enable, skaper massiv lag!
 				}
 			}
-				
+			l.getMarker ().instance.transform.localScale = new Vector3 ((float)defaultMarkerScale, d, (float)defaultMarkerScale);
 			l.getMarker ().instance.transform.localScale = new Vector3 (r, d, r);
 		}
 	}
