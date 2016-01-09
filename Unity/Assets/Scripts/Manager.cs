@@ -1,24 +1,36 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using System;
 using UnityEngine.UI;
 
 using InfinityCode;
 using AssemblyCSharp;
+using UnityEditor;
+using System.Security.Cryptography.X509Certificates;
 
 
 public class Manager : MonoBehaviour
 {
 
-	public static ArrayList lokaliteter;
+	public ArrayList lokaliteter;
 
 	public OnlineMaps onlineMaps;
+
+	public List<DateTime> dates;
+	public static DateTime currentDate;
+
 	public Button playPauseButton;
 	public Slider slider;
-
 	public InputField searchField;
+	public Slider timeSlider;
+	public Text timeSliderCurrentDateText;
+
 
 	public Camera _camera;
+
+
+
 	OnlineMapsMarker3D marker;
 
 	
@@ -28,7 +40,28 @@ public class Manager : MonoBehaviour
 	void Start ()
 	{
 		lokaliteter = new ArrayList ();
+
+		dates = new List<DateTime> ();
+		currentDate = firstDate ();
+		GameObject temp = GameObject.Find ("TimeSlider");
+		if (temp != null) {
+			timeSlider = temp.GetComponent<Slider> ();
+		}
+
 		Populate ();
+		((Lokalitet)lokaliteter [0]).leggTilEnhet ("kake");
+		((Lokalitet)lokaliteter [0]).getEnhetById("kake").leggTilMåling(new Måling(new DateTime(2015, 12, 24)));
+		((Lokalitet)lokaliteter [0]).getEnhetById("kake").leggTilMåling(new Måling(new DateTime(2015, 12, 23)));
+		((Lokalitet)lokaliteter [0]).getEnhetById("kake").leggTilMåling(new Måling(new DateTime(2015, 11, 23)));
+		((Lokalitet)lokaliteter [0]).getEnhetById("kake").leggTilMåling(new Måling(new DateTime(2015, 12, 15)));
+		populateDates ();
+		currentDate = firstDate ();
+//		Debug.Log("Earliest date: " + firstDate ().ToString ("yyyy-MM-dd"));
+//		Debug.Log("Latest date: " + lastDate ().ToString ("yyyy-MM-dd"));
+//		Debug.Log ("Total amount of dates: " + totalDates ());
+		setTimeSliderMaxValue ();
+		setTimeSliderCurrentDateText ();
+
 		//Brukes ikke før vi evt. vil skalere ALLE markers samtidig. Ligger også funksjonalitet
 		// i LokalitetsBehaviour.cs
 //		OnlineMaps api = OnlineMaps.instance;
@@ -76,10 +109,12 @@ public class Manager : MonoBehaviour
 
 		}
 	}
-	
+
 	// Update is called once per frame
 	void Update ()
 	{
+
+		//Debug.Log (currentDate);
 		//Debug.Log("Update");
 
 		//Debug.Log (onlineMaps._zoom);
@@ -173,18 +208,16 @@ public class Manager : MonoBehaviour
 			}
 		}
 	}
-
+		
 	public DateTime firstDate ()
 	{
 		DateTime earliestDateSoFar;
-		earliestDateSoFar = new DateTime (0, 0, 0);
-		if (lokaliteter != null) {
-			foreach (Lokalitet l in lokaliteter) {
-				foreach (Enhet e in l.getEnheter ()) {
-					foreach (Måling m in e.getMålinger()) {
-						//compare dates
-					}
-				}
+		DateTime temp;
+		earliestDateSoFar = new DateTime (9000, 1, 1);
+		foreach (Lokalitet l in lokaliteter) {
+			temp = l.firstDate ();
+			if (earliestDateSoFar.CompareTo (temp) > 0) {
+				earliestDateSoFar = temp;
 			}
 		}
 		return earliestDateSoFar;
@@ -194,15 +227,55 @@ public class Manager : MonoBehaviour
 	public DateTime lastDate ()
 	{
 		DateTime latestDateSoFar;
-		latestDateSoFar = new DateTime (0, 0, 0);
+		DateTime temp;
+		latestDateSoFar = new DateTime (1000, 1, 1);
+		foreach (Lokalitet l in lokaliteter) {
+			temp = l.lastDate ();
+			if (latestDateSoFar.CompareTo (temp) < 0) {
+				latestDateSoFar = temp;
+			}
+		}
 		return latestDateSoFar;
 	}
 
-	public int totalDates ()
-	{
-		if (lastDate () != null && firstDate () != null) {
-			return (int)(lastDate () - firstDate ()).TotalDays;
+
+	public int totalDates(){
+
+		DateTime firstD = new DateTime();
+		DateTime lastD = new DateTime();
+		firstD = firstDate ();
+		lastD = lastDate ();
+
+
+		if (!firstD.Equals(new DateTime(9000,1,1)) && !lastD.Equals(new DateTime(1000,1,1))){
+			return (int)(lastD - firstD).TotalDays;
 		}
 		return 0;
+	}
+
+	public void setTimeSliderMaxValue(){
+		timeSlider.maxValue = totalDates ();
+	}
+
+	public void setTimeSliderCurrentDateText (){
+		GameObject temp = GameObject.Find ("CurrentDateText");
+		if (temp != null) {
+			timeSliderCurrentDateText = temp.GetComponent<Text>();
+			timeSliderCurrentDateText.text = currentDate.ToString ("yyyy-MM-dd");//change to currentDate() when it's implemented
+		}
+	}
+
+	public void populateDates(){
+		DateTime temp = firstDate ();
+		int numberOfDates = totalDates ();
+		for (int i = 0; i <= numberOfDates; i++) {
+			dates.Add (temp.AddDays ((double)i));
+			//Debug.Log (dates [i].ToString ("yyyy-MM-dd"));
+		}
+	}
+	public void onDateChanged(){
+		currentDate = (firstDate ().AddDays (timeSlider.value));
+		setTimeSliderCurrentDateText ();
+		//Debug.Log (currentDate.ToString ("yyyy-MM-dd"));
 	}
 }
