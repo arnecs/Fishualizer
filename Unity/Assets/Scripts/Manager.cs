@@ -199,8 +199,9 @@ public class Manager : MonoBehaviour
 			Lokalitet l = lokaliteter [i] as Lokalitet;
 
 
-			GameObject cylinder = (GameObject)Resources.Load ("markerPrefab", typeof(GameObject));
-			
+			//GameObject cylinder = (GameObject)Resources.Load ("markerPrefab", typeof(GameObject));
+			GameObject cylinder = Instantiate(Resources.Load("markerPrefab", typeof(GameObject))) as GameObject;
+			cylinder.name = l.getLokalitetsnavn();
 
 
 			marker = new OnlineMapsMarker3D (cylinder);
@@ -210,6 +211,10 @@ public class Manager : MonoBehaviour
 			marker.position = position;
 			marker.label = l.getLokalitetsnavn ();
 			marker.scale = onlineMaps._zoom * 2;
+
+			marker.range.max = 12;
+			marker.range.min = 1;
+			
 			OnlineMapsControlBase3D control = onlineMaps.GetComponent<OnlineMapsControlBase3D> ();
 			l.setMarker (marker);
 			control.AddMarker3D (marker);
@@ -221,8 +226,10 @@ public class Manager : MonoBehaviour
 			for(int j=0; j<l.getEnheter().Count; j++){
 				Enhet e = enheter[j] as Enhet;
 				
-				GameObject cylinderChild = (GameObject)Resources.Load ("markerEnhetPrefab", typeof(GameObject));
-				
+				//GameObject cylinderChild = (GameObject)Resources.Load ("markerEnhetPrefab", typeof(GameObject));
+				GameObject cylinderChild = Instantiate(Resources.Load("markerEnhetPrefab", typeof(GameObject))) as GameObject;
+				cylinderChild.name = enheter[j].getEnhetsId();
+
 				var angle = j * Mathf.PI * 2 / enheter.Count;
 				
 				marker = new OnlineMapsMarker3D (cylinderChild);
@@ -236,12 +243,14 @@ public class Manager : MonoBehaviour
 				marker.label = l.getLokalitetsnavn ();
 				marker.scale = onlineMaps._zoom * 2;
 				marker.range.max = 20;
-				marker.range.min = 10;
+				marker.range.min = 13;
 				
 				control = onlineMaps.GetComponent<OnlineMapsControlBase3D> ();
 
 				control.AddMarker3D (marker);
+				Destroy(cylinderChild);
 			}
+			Destroy(cylinder);
 		}
 
 

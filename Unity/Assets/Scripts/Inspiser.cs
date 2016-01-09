@@ -8,7 +8,7 @@ public class Inspiser : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-
+		l = (Lokalitet)gameObject.GetComponent<OnlineMapsMarker3DInstance>().marker.customData;
 	}
 	
 	// Update is called once per frame
