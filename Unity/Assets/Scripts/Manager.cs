@@ -224,11 +224,17 @@ public class Manager : MonoBehaviour
 	public void searchValueChanged ()
 	{
 
+
 		if (Input.GetKey (KeyCode.Backspace) || searchField.text.Equals ("")) {
 			return;
 		}
 
 		string query = searchField.text.Substring (0, searchField.caretPosition);
+
+
+
+		Debug.Log ("Search: " + query);
+
 
 		Lokalitet l = null;
 		for (int i = 0; i < lokaliteter.Count; i++) {
@@ -265,6 +271,10 @@ public class Manager : MonoBehaviour
 					l = (Lokalitet)lokaliteter [i];
 					break;
 				}
+			}
+
+			if (l != null) {
+				onlineMaps.SetPosition (l.getCoordinates ().x, l.getCoordinates ().y);
 			}
 		}
 	}

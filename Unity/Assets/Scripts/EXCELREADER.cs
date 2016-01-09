@@ -28,7 +28,7 @@ public class EXCELREADER {
 			antMålinger += l.AntMålinger ();
 		}
 
-		Debug.Log ("Antall Målinger: " + antMålinger);
+	//	Debug.Log ("Antall Målinger: " + antMålinger);
 
 	}
 
