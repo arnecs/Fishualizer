@@ -31,6 +31,8 @@ public class Inspiser : MonoBehaviour {
 			//Debug.Log (l.getEnheter().Count);
 			toggleTooltip ();
 		}
+
+
 	}
 
 	void OnGUI(){
