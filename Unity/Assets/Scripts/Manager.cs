@@ -229,6 +229,7 @@ public class Manager : MonoBehaviour
 				GameObject cylinderChild = Instantiate(Resources.Load("markerEnhetPrefab", typeof(GameObject))) as GameObject;
 				cylinderChild.name = enheter[j].getEnhetsId();
 
+
 				var angle = j * Mathf.PI * 2 / enheter.Count;
 				
 				marker = new OnlineMapsMarker3D (cylinderChild);

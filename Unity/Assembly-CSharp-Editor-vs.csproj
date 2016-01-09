@@ -92,6 +92,12 @@
  <Reference Include="System.EnterpriseServices">
  <HintPath>/Users/jorgen/Copy/3D/Fishualizer/Unity/Assets/DLL/System.EnterpriseServices.dll</HintPath>
  </Reference>
+ <Reference Include="Excel">
+ <HintPath>/Users/jorgen/Copy/3D/Fishualizer/Unity/Assets/ExcelReader/net20/Excel.dll</HintPath>
+ </Reference>
+ <Reference Include="ICSharpCode.SharpZipLib">
+ <HintPath>/Users/jorgen/Copy/3D/Fishualizer/Unity/Assets/ExcelReader/net20/ICSharpCode.SharpZipLib.dll</HintPath>
+ </Reference>
  <Reference Include="UnityEditor.Graphs">
  <HintPath>/Applications/Unity/Unity.app/Contents/Frameworks/Managed/UnityEditor.Graphs.dll</HintPath>
  </Reference>
@@ -121,12 +127,6 @@
  </Reference>
  <Reference Include="UnityEditor.OSXStandalone.Extensions">
  <HintPath>/Applications/Unity/Unity.app/Contents/PlaybackEngines/MacStandaloneSupport/UnityEditor.OSXStandalone.Extensions.dll</HintPath>
- </Reference>
- <Reference Include="Excel">
- <HintPath>/Users/jorgen/Copy/3D/Fishualizer/Unity/Assets/ExcelReader/net20/Excel.dll</HintPath>
- </Reference>
- <Reference Include="ICSharpCode.SharpZipLib">
- <HintPath>/Users/jorgen/Copy/3D/Fishualizer/Unity/Assets/ExcelReader/net20/ICSharpCode.SharpZipLib.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.iOS.Extensions.Xcode">
  <HintPath>/Applications/Unity/Unity.app/Contents/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
