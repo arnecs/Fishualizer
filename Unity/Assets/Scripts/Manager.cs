@@ -429,9 +429,8 @@ public class Manager : MonoBehaviour
 			foreach (Enhet e in l.getEnheter ()) {
 				try {
 					//Her skal egentlig funksjonalitet for skalering ligge, dette er bare testing så langt.
-					l.getMarker ().scale = 16;
-					l.getMarker ().scale = (float)e.getSenesteMålingGittDato (currentDate).getValueForKey (datatyper[valgtDatatype]);
-
+					//l.getMarker ().scale = 16;
+					//l.getMarker ().scale = (float)e.getSenesteMålingGittDato (currentDate).getValueForKey (datatyper[valgtDatatype]);
 				} catch (Exception ex){
 					//Debug.Log (ex); //Ikke enable, skaper massiv lag!
 				}
