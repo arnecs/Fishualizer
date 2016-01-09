@@ -62,7 +62,7 @@ public class Manager : MonoBehaviour
 	void Start ()
 	{
 		lokaliteter = new List<Lokalitet> ();
-		animationSpeed = 0.1f;
+		animationSpeed = 1.0f;
 		dates = new List<DateTime> ();
 		animationSpeedSlider = GameObject.Find ("AnimationSpeedSlider").GetComponent<Slider> ();
 		animationSpeedSliderText = GameObject.Find("AnimationSpeedSliderText").GetComponent<Text>();
@@ -70,7 +70,6 @@ public class Manager : MonoBehaviour
 		timeSlider =  GameObject.Find ("TimeSlider").GetComponent<Slider> ();
 
 		Populate ();
-		populateDates ();
 		currentDate = firstDate ();
 //		Debug.Log("Earliest date: " + firstDate ().ToString ("yyyy-MM-dd"));
 //		Debug.Log("Latest date: " + lastDate ().ToString ("yyyy-MM-dd"));
@@ -93,6 +92,7 @@ public class Manager : MonoBehaviour
 		fb.driveTexture = drive;
 		fb.showSearch = true;
 		fb.searchRecursively = true;
+		//Debug.Log (lokaliteter [0].getMarker ().transform.gameObject.);
 	}
 
 	void OnGUI(){
@@ -156,6 +156,7 @@ public class Manager : MonoBehaviour
 
 				if (GUILayout.Button (datatyper [i], rowStyle, GUILayout.Height (18))) {
 					valgtDatatype = i;
+					dataTypeChanged ();
 				}
 
 
@@ -178,6 +179,9 @@ public class Manager : MonoBehaviour
 	//		}
 	//	}
 
+	public void dataTypeChanged(){
+		oppdaterMarkers ();
+	}
 	void Populate ()
 	{
 		/*
@@ -224,7 +228,7 @@ public class Manager : MonoBehaviour
 	{
 		// Prøv å start animasjon av data
 		animating = true;
-		InvokeRepeating ("incrementDay", animationSpeed, animationSpeed);
+		InvokeRepeating ("incrementDay", 1/animationSpeed, 1/animationSpeed);
 
 		return true;
 	}
@@ -257,10 +261,10 @@ public class Manager : MonoBehaviour
 
 	public void onAnimationSpeedChange(){
 		animationSpeed = animationSpeedSlider.value;
-		animationSpeedSliderText.text = animationSpeed.ToString ();
+		animationSpeedSliderText.text = String.Format ("{0:0.0}", animationSpeed);
 		if (animating) {
 			CancelInvoke ("incrementDay");
-			InvokeRepeating ("incrementDay", animationSpeed, animationSpeed);
+			InvokeRepeating ("incrementDay", 1/animationSpeed, 1/animationSpeed);
 		}
 	}
 
@@ -392,12 +396,18 @@ public class Manager : MonoBehaviour
 		}
 	}
 
-	public void populateDates(){
-		DateTime temp = firstDate ();
-		int numberOfDates = totalDates ();
-		for (int i = 0; i <= numberOfDates; i++) {
-			dates.Add (temp.AddDays ((double)i));
-			//Debug.Log (dates [i].ToString ("yyyy-MM-dd"));
+	public void oppdaterMarkers(){
+		foreach (Lokalitet l in lokaliteter) {
+			foreach (Enhet e in l.getEnheter ()) {
+				try {
+					//Her skal egentlig funksjonalitet for skalering ligge, dette er bare testing så langt.
+					l.getMarker ().scale = 16;
+					l.getMarker ().scale = (float)e.getSenesteMålingGittDato (currentDate).getValueForKey (datatyper[valgtDatatype]);
+
+				} catch (Exception ex){
+					//Debug.Log (ex); //Ikke enable, skaper massiv lag!
+				}
+			}
 		}
 	}
 
@@ -405,17 +415,9 @@ public class Manager : MonoBehaviour
 		currentDate = (firstDate ().AddDays (timeSlider.value));
 		setTimeSliderCurrentDateText ();
 		Måling målingen;
-		foreach (Lokalitet l in lokaliteter) {
-			foreach (Enhet e in l.getEnheter ()) {
-				try {
-					//Eksempel:
-					//marker.scale = (float)e.getSenesteMålingGittDato (currentDate).getValueForKey ("Totalt antall lus funnet, Fastsittende lakselus i perioden");
-					//Legg til funksjonalitet slik at hver marker endrer utseende gitt getValueForKey(key) på en måling.
-					l.getMarker ().scale = (float)e.getSenesteMålingGittDato (currentDate).getValueForKey (datatyper[valgtDatatype]);
-				} catch (Exception ex){
-					//Debug.Log (ex); //Ikke enable, skaper massiv lag!
-				}
-			}
+		oppdaterMarkers ();
+		if (timeSlider.value == timeSlider.maxValue) {
+			startPauseAnimation ();
 		}
 	}
 
