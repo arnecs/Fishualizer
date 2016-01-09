@@ -30,6 +30,13 @@ public class Manager : MonoBehaviour
 	public Camera _camera;
 
 
+	// Data selection
+	bool showDataSelection;
+	private GUIStyle rowStyle;
+
+	public static List<string> datatyper;
+	int valgtDatatype;
+
 
 	OnlineMapsMarker3D marker;
 
@@ -112,6 +119,52 @@ public class Manager : MonoBehaviour
 				}
 			}
 		}
+
+		if (showDataSelection) {
+			if (rowStyle == null) {
+				
+				rowStyle = new GUIStyle (GUI.skin.button);
+				rowStyle.alignment = TextAnchor.MiddleLeft;
+				rowStyle.fontSize = 12;
+				RectOffset margin = rowStyle.margin;
+
+
+				rowStyle.margin = new RectOffset (-margin.left, -margin.right, 1, 1);
+			}
+
+
+			//GUI.BeginScrollView (new Rect (0, 30, 500, Screen.height - 60), new Vector2 (0f, 0f), new Rect (0, 0, 30, datatyper.Count * 26 + 4));
+			GUILayout.BeginArea (new Rect (0, 30, 500, datatyper.Count * 19 + 4), GUI.skin.box);
+
+
+
+
+			var color = rowStyle.normal.textColor;
+			var hoverColor = rowStyle.hover.textColor;
+			for (int i = 0; i < datatyper.Count; i++) {
+				if (valgtDatatype == i) { 
+					rowStyle.normal.textColor = new Color (0.2f, 0.8f, 0.4f);
+					rowStyle.hover.textColor = new Color (0.2f, 0.8f, 0.4f);
+				} else {
+					rowStyle.normal.textColor = color;
+					rowStyle.hover.textColor = hoverColor;
+				}
+
+				if (GUILayout.Button (datatyper [i], rowStyle, GUILayout.Height (18))) {
+					valgtDatatype = i;
+				}
+
+
+			}
+			rowStyle.normal.textColor = color;
+			rowStyle.hover.textColor = hoverColor;
+
+			GUILayout.EndArea();
+
+				//GUI.EndScrollView();
+
+		}
+
 	}
 
 	//	private void OnChangeZoom(){
@@ -157,7 +210,11 @@ public class Manager : MonoBehaviour
 
 			control.AddMarker3D (marker);
 
+
+
 		}
+
+
 	}
 
 	// Update is called once per frame
@@ -233,7 +290,7 @@ public class Manager : MonoBehaviour
 
 
 
-		Debug.Log ("Search: " + query);
+	
 
 
 		Lokalitet l = null;
@@ -347,5 +404,17 @@ public class Manager : MonoBehaviour
 		currentDate = (firstDate ().AddDays (timeSlider.value));
 		setTimeSliderCurrentDateText ();
 		//Debug.Log (currentDate.ToString ("yyyy-MM-dd"));
+	}
+
+	public void toggleDataSelection() {
+		OnlineMapsControlBase3D control = onlineMaps.GetComponent<OnlineMapsControlBase3D> ();
+		if (!showDataSelection) {
+			control.allowZoom = false;
+			showDataSelection = true;
+		} else {
+			control.allowZoom = true;
+			showDataSelection = false;
+		}
+
 	}
 }
