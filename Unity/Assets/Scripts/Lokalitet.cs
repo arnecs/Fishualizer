@@ -113,4 +113,13 @@ public class Lokalitet
 
 	}
 
+
+	public int AntMålinger() {
+		int ant = 0;
+
+		foreach (Enhet e in new List<Enhet>(enheter.Values)) {
+			ant += e.getMålinger ().Count;
+		}
+		return ant;
+	}
 }

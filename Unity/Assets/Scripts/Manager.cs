@@ -13,7 +13,7 @@ using System.Security.Cryptography.X509Certificates;
 public class Manager : MonoBehaviour
 {
 
-	public ArrayList lokaliteter;
+	public static List<Lokalitet> lokaliteter;
 
 	public OnlineMaps onlineMaps;
 
@@ -39,7 +39,7 @@ public class Manager : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-		lokaliteter = new ArrayList ();
+		lokaliteter = new List<Lokalitet> ();
 
 		dates = new List<DateTime> ();
 		currentDate = firstDate ();
@@ -49,11 +49,6 @@ public class Manager : MonoBehaviour
 		}
 
 		Populate ();
-		((Lokalitet)lokaliteter [0]).leggTilEnhet ("kake");
-		((Lokalitet)lokaliteter [0]).getEnhetById("kake").leggTilMåling(new Måling(new DateTime(2015, 12, 24)));
-		((Lokalitet)lokaliteter [0]).getEnhetById("kake").leggTilMåling(new Måling(new DateTime(2015, 12, 23)));
-		((Lokalitet)lokaliteter [0]).getEnhetById("kake").leggTilMåling(new Måling(new DateTime(2015, 11, 23)));
-		((Lokalitet)lokaliteter [0]).getEnhetById("kake").leggTilMåling(new Måling(new DateTime(2015, 12, 15)));
 		populateDates ();
 		currentDate = firstDate ();
 //		Debug.Log("Earliest date: " + firstDate ().ToString ("yyyy-MM-dd"));
@@ -78,11 +73,16 @@ public class Manager : MonoBehaviour
 
 	void Populate ()
 	{
-		
+		/*
 		lokaliteter = new ArrayList ();
 
 		lokaliteter.Add (new Lokalitet ("12394", "Ørnøya", new Vector2(63.759167f, 8.449133f)));
 		lokaliteter.Add (new Lokalitet ("31959", "Rataren", new Vector2(63.782383f, 8.526367f)));
+		*/
+		var excelReader = new EXCELREADER ();
+
+		lokaliteter = excelReader.readGenerellInfo (Application.dataPath + "/Resources/06.01.2016-Generell-Info.xls");
+		lokaliteter = excelReader.readData (Application.dataPath + "/Resources/06.01.2016-Lusetellinger-1712.xls", lokaliteter);
 
 		for (int i = 0; i < lokaliteter.Count; i++) {
 			Lokalitet l = lokaliteter [i] as Lokalitet;
