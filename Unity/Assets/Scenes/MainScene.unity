@@ -1721,7 +1721,7 @@ MonoBehaviour:
   needGC: 0
   needRedraw: 1
   notInteractUnderGUI: 0
-  provider: 3
+  provider: 0
   redrawOnPlay: 1
   renderInThread: 1
   resourcesPath: OnlineMapsTiles/{zoom}/{x}/{y}
@@ -2609,7 +2609,7 @@ Light:
   m_Lightmapping: 2
   m_BounceIntensity: 1
   m_ShadowRadius: 0
-  m_ShadowAngle: 0
+  m_ShadowAngle: 60.8
   m_AreaSize: {x: 1, y: 1}
 --- !u!4 &1733032851
 Transform:
