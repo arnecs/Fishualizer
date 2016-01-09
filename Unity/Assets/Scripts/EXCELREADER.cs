@@ -18,7 +18,6 @@ public class EXCELREADER {
 	// Use this for initialization
 	void Start () {
 
-
 		var list = readGenerellInfo(Application.dataPath + "/Resources/06.01.2016-Generell-Info.xls");
 
 
@@ -173,7 +172,7 @@ public class EXCELREADER {
 							lokNavnIndex = i;
 						} else if (h.Equals("Enhet")){
 							enhetIndex = i;
-						} else if (h.Equals("Utg?ende Siste dato for lusetelling")) {
+						} else if (h.Equals("Utg?ende Siste dato for lusetelling") || h.Equals ("Utgående Siste dato for lusetelling")) {
 							datoIndex = i;
 						} else if (h.Equals("Antall lusetellinger i perioden")) {
 							antLusTellIndex = i;
@@ -244,12 +243,12 @@ public class EXCELREADER {
 
 						m.AddData(headers[i], data);
 
-						Debug.Log("Måling lagt til: " + headers[i] + ", " + data);
+						//.Log("Måling lagt til: " + headers[i] + ", " + data);
 					
 
 
 					} catch (Exception e) {
-						Debug.Log ("Måling ikke lagt til: " + e);
+						//Debug.Log ("Måling ikke lagt til: " + e);
 					}
 
 				}
