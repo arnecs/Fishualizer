@@ -9,13 +9,15 @@ public class Lokalitet
 	private string lokalitetsId;
 	private string lokalitetsnavn;
 
+	private OnlineMapsMarker3D marker;
+
 	private Vector2 coordinates;
 
 	private Dictionary<string, Enhet> enheter = new Dictionary<string, Enhet> ();
 
 	public Lokalitet ()
 	{
-	
+		
 	}
 
 	public Lokalitet (string lokalitetsId, string lokalitetsnavn, Vector2 coord)
@@ -23,6 +25,7 @@ public class Lokalitet
 		this.lokalitetsId = lokalitetsId;
 		this.lokalitetsnavn = lokalitetsnavn;
 		this.coordinates = coord;
+
 	}
 
 
@@ -78,6 +81,13 @@ public class Lokalitet
 
 	}
 
+	public void setMarker(OnlineMapsMarker3D marker){
+		this.marker = marker;
+	}
+
+	public OnlineMapsMarker3D getMarker(){
+		return marker;
+	}
 	public DateTime firstDate ()
 	{
 		DateTime earliestDateSoFar;
