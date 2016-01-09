@@ -2,6 +2,9 @@ using UnityEngine;
 using System.Collections;
 using System.IO;
 
+//Hentet fra https://www.assetstore.unity3d.com/en/#!/content/18308
+// den 12.12.2015
+
 public class testFileBrowser : MonoBehaviour {
 	//skins and textures
 	public GUISkin[] skins;
@@ -20,8 +23,9 @@ public class testFileBrowser : MonoBehaviour {
 		fb.directoryTexture = folder;
 		fb.backTexture = back;
 		fb.driveTexture = drive;
-		//show the search bar
+
 		fb.showSearch = true;
+
 		//search recursively (setting recursive search may cause a long delay)
 		fb.searchRecursively = true;
 	}
@@ -29,50 +33,20 @@ public class testFileBrowser : MonoBehaviour {
 	void OnGUI(){
 		GUILayout.BeginHorizontal();
 		GUILayout.BeginVertical();
-		GUILayout.Label("Layout Type");
-		fb.setLayout(GUILayout.SelectionGrid(fb.layoutType,layoutTypes,1));
 		GUILayout.Space(10);
-		//select from available gui skins
-		GUILayout.Label("GUISkin");
-		foreach(GUISkin s in skins){
-			if(GUILayout.Button(s.name)){
-				fb.guiSkin = s;
-			}
-		}
-		GUILayout.Space(10);
-		fb.showSearch = GUILayout.Toggle(fb.showSearch,"Show Search Bar");
-		fb.searchRecursively = GUILayout.Toggle(fb.searchRecursively,"Search Sub Folders");
-		GUILayout.EndVertical();
-		GUILayout.Space(10);
-		GUILayout.Label("Selected File: "+output);
+		//GUILayout.Label("Selected File: "+output);
 		GUILayout.EndHorizontal();
 		//draw and display output
 		if(fb.draw()){ //true is returned when a file has been selected
 			//the output file is a member if the FileInfo class, if cancel was selected the value is null
 			output = (fb.outputFile==null)?"cancel hit":fb.outputFile.ToString();
 			//TextAsset t = UnityEditor.AssetDatabase.LoadAssetAtPath<TextAsset>(fb.outputFile.ToString());
-			string s = Read(fb.outputFile.ToString());
+			string filePath = fb.outputFile.ToString();
 
-			if(s != null){
-				/* Midlertidig kommentert ut mens alternativet XlsReader prøves ut
-				FileReader f = new FileReader();
-				f.Parser(s);
-				*/
-
+			//Hvis fila eksisterer og er i .xls-format
+			if(File.Exists(filePath) && filePath.Trim().EndsWith(".xls")){
 				//Her skal vi kalle på Excel-metoden til arne. Vi sender med fb.outputFile.ToString() som argument.
 			}
 		}
-	}
-
-	public string Read(string filePath)
-	{
-		if (!File.Exists (filePath)) {
-			return null;
-		}
-
-		string readText = File.ReadAllText(filePath);
-		Debug.Log (readText);
-		
-		return readText;
 	}
 }

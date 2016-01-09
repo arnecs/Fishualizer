@@ -6,6 +6,8 @@ using System.IO;
 using System.Threading;
 #endif
 
+//FileBrowseren og tilhørende komponenter er hentet fra https://www.assetstore.unity3d.com/en/#!/content/18308
+//den 12.12.2015
 
 public class FileBrowser{
 //public 
