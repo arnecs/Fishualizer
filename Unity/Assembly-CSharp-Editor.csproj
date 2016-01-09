@@ -65,6 +65,7 @@
      <Compile Include="Assets\Infinity Code\Online maps\Scripts\Editor\Plugins\OnlineMapsBuildingsEditor.cs" />
      <Compile Include="Assets\Infinity Code\Online maps\Scripts\Editor\Plugins\OnlineMapsLocationServiceEditor.cs" />
      <Compile Include="Assets\Infinity Code\Online maps\Scripts\Editor\Plugins\OnlineMapsRWTConnectorEditor.cs" />
+     <None Include="Assets\FileBrowser\readme.txt" />
      <None Include="Assets\Resources\Lusetellinger.txt" />
      <None Include="Assets\Infinity Code\Online maps\Shaders\TilesetShader.shader" />
      <None Include="Assets\Infinity Code\Online maps\Shaders\TilesetCutoutShader.shader" />
@@ -100,10 +101,10 @@
  <HintPath>/Users/arnecs/Developer/Fishualizer/Unity/Assets/DLL/System.EnterpriseServices.dll</HintPath>
  </Reference>
  <Reference Include="Excel">
- <HintPath>/Users/arnecs/Developer/Fishualizer/Unity/Assets/ExcelDataReader/net20/Excel.dll</HintPath>
+ <HintPath>/Users/arnecs/Developer/Fishualizer/Unity/Assets/ExcelReader/net20/Excel.dll</HintPath>
  </Reference>
  <Reference Include="ICSharpCode.SharpZipLib">
- <HintPath>/Users/arnecs/Developer/Fishualizer/Unity/Assets/ExcelDataReader/net20/ICSharpCode.SharpZipLib.dll</HintPath>
+ <HintPath>/Users/arnecs/Developer/Fishualizer/Unity/Assets/ExcelReader/net20/ICSharpCode.SharpZipLib.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.Graphs">
  <HintPath>/Applications/Unity/Unity.app/Contents/Frameworks/Managed/UnityEditor.Graphs.dll</HintPath>

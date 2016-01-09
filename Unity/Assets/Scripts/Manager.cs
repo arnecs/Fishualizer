@@ -1,5 +1,5 @@
 using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 using System;
 using UnityEngine.UI;
 
@@ -10,7 +10,7 @@ using AssemblyCSharp;
 public class Manager : MonoBehaviour
 {
 
-	public static ArrayList lokaliteter;
+	public static List<Lokalitet> lokaliteter;
 
 	public OnlineMaps onlineMaps;
 	public Button playPauseButton;
@@ -27,7 +27,7 @@ public class Manager : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-		lokaliteter = new ArrayList ();
+		//lokaliteter = new L ();
 		Populate ();
 		//Brukes ikke før vi evt. vil skalere ALLE markers samtidig. Ligger også funksjonalitet
 		// i LokalitetsBehaviour.cs
@@ -45,11 +45,16 @@ public class Manager : MonoBehaviour
 
 	void Populate ()
 	{
-		
+		/*
 		lokaliteter = new ArrayList ();
 
 		lokaliteter.Add (new Lokalitet ("12394", "Ørnøya", new Vector2(63.759167f, 8.449133f)));
 		lokaliteter.Add (new Lokalitet ("31959", "Rataren", new Vector2(63.782383f, 8.526367f)));
+		*/
+		var excelReader = new EXCELREADER ();
+
+		lokaliteter = excelReader.readGenerellInfo (Application.dataPath + "/Resources/06.01.2016-Generell-Info.xls");
+		lokaliteter = excelReader.readData (Application.dataPath + "/Resources/06.01.2016-Lusetellinger-1712.xls", lokaliteter);
 
 		for (int i = 0; i < lokaliteter.Count; i++) {
 			Lokalitet l = lokaliteter [i] as Lokalitet;
