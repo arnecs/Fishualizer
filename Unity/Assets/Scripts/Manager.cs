@@ -1,25 +1,36 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using System;
 using System.IO;
 using UnityEngine.UI;
 
 using InfinityCode;
-using AssemblyCSharp;
+using UnityEditor;
+using System.Security.Cryptography.X509Certificates;
 
 
 public class Manager : MonoBehaviour
 {
 
-	public static ArrayList lokaliteter;
+	public static List<Lokalitet> lokaliteter;
 
 	public OnlineMaps onlineMaps;
+
+	public List<DateTime> dates;
+	public static DateTime currentDate;
+
 	public Button playPauseButton;
 	public Slider slider;
-
 	public InputField searchField;
+	public Slider timeSlider;
+	public Text timeSliderCurrentDateText;
+
 
 	public Camera _camera;
+
+
+
 	OnlineMapsMarker3D marker;
 
 	
@@ -38,8 +49,24 @@ public class Manager : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-		lokaliteter = new ArrayList ();
+		lokaliteter = new List<Lokalitet> ();
+
+		dates = new List<DateTime> ();
+		currentDate = firstDate ();
+		GameObject temp = GameObject.Find ("TimeSlider");
+		if (temp != null) {
+			timeSlider = temp.GetComponent<Slider> ();
+		}
+
 		Populate ();
+		populateDates ();
+		currentDate = firstDate ();
+//		Debug.Log("Earliest date: " + firstDate ().ToString ("yyyy-MM-dd"));
+//		Debug.Log("Latest date: " + lastDate ().ToString ("yyyy-MM-dd"));
+//		Debug.Log ("Total amount of dates: " + totalDates ());
+		setTimeSliderMaxValue ();
+		setTimeSliderCurrentDateText ();
+
 		//Brukes ikke før vi evt. vil skalere ALLE markers samtidig. Ligger også funksjonalitet
 		// i LokalitetsBehaviour.cs
 //		OnlineMaps api = OnlineMaps.instance;
@@ -96,11 +123,16 @@ public class Manager : MonoBehaviour
 
 	void Populate ()
 	{
-		
+		/*
 		lokaliteter = new ArrayList ();
 
 		lokaliteter.Add (new Lokalitet ("12394", "Ørnøya", new Vector2(63.759167f, 8.449133f)));
 		lokaliteter.Add (new Lokalitet ("31959", "Rataren", new Vector2(63.782383f, 8.526367f)));
+		*/
+		var excelReader = new EXCELREADER ();
+
+		lokaliteter = excelReader.readGenerellInfo (Application.dataPath + "/Resources/06.01.2016-Generell-Info.xls");
+		lokaliteter = excelReader.readData (Application.dataPath + "/Resources/06.01.2016-Lusetellinger-1712.xls", lokaliteter);
 
 		for (int i = 0; i < lokaliteter.Count; i++) {
 			Lokalitet l = lokaliteter [i] as Lokalitet;
@@ -127,10 +159,12 @@ public class Manager : MonoBehaviour
 
 		}
 	}
-	
+
 	// Update is called once per frame
 	void Update ()
 	{
+
+		//Debug.Log (currentDate);
 		//Debug.Log("Update");
 
 		//Debug.Log (onlineMaps._zoom);
@@ -234,18 +268,16 @@ public class Manager : MonoBehaviour
 			}
 		}
 	}
-
+		
 	public DateTime firstDate ()
 	{
 		DateTime earliestDateSoFar;
-		earliestDateSoFar = new DateTime (0, 0, 0);
-		if (lokaliteter != null) {
-			foreach (Lokalitet l in lokaliteter) {
-				foreach (Enhet e in l.getEnheter ()) {
-					foreach (Måling m in e.getMålinger()) {
-						//compare dates
-					}
-				}
+		DateTime temp;
+		earliestDateSoFar = new DateTime (9000, 1, 1);
+		foreach (Lokalitet l in lokaliteter) {
+			temp = l.firstDate ();
+			if (earliestDateSoFar.CompareTo (temp) > 0) {
+				earliestDateSoFar = temp;
 			}
 		}
 		return earliestDateSoFar;
@@ -255,15 +287,55 @@ public class Manager : MonoBehaviour
 	public DateTime lastDate ()
 	{
 		DateTime latestDateSoFar;
-		latestDateSoFar = new DateTime (0, 0, 0);
+		DateTime temp;
+		latestDateSoFar = new DateTime (1000, 1, 1);
+		foreach (Lokalitet l in lokaliteter) {
+			temp = l.lastDate ();
+			if (latestDateSoFar.CompareTo (temp) < 0) {
+				latestDateSoFar = temp;
+			}
+		}
 		return latestDateSoFar;
 	}
 
-	public int totalDates ()
-	{
-		if (lastDate () != null && firstDate () != null) {
-			return (int)(lastDate () - firstDate ()).TotalDays;
+
+	public int totalDates(){
+
+		DateTime firstD = new DateTime();
+		DateTime lastD = new DateTime();
+		firstD = firstDate ();
+		lastD = lastDate ();
+
+
+		if (!firstD.Equals(new DateTime(9000,1,1)) && !lastD.Equals(new DateTime(1000,1,1))){
+			return (int)(lastD - firstD).TotalDays;
 		}
 		return 0;
+	}
+
+	public void setTimeSliderMaxValue(){
+		timeSlider.maxValue = totalDates ();
+	}
+
+	public void setTimeSliderCurrentDateText (){
+		GameObject temp = GameObject.Find ("CurrentDateText");
+		if (temp != null) {
+			timeSliderCurrentDateText = temp.GetComponent<Text>();
+			timeSliderCurrentDateText.text = currentDate.ToString ("yyyy-MM-dd");//change to currentDate() when it's implemented
+		}
+	}
+
+	public void populateDates(){
+		DateTime temp = firstDate ();
+		int numberOfDates = totalDates ();
+		for (int i = 0; i <= numberOfDates; i++) {
+			dates.Add (temp.AddDays ((double)i));
+			//Debug.Log (dates [i].ToString ("yyyy-MM-dd"));
+		}
+	}
+	public void onDateChanged(){
+		currentDate = (firstDate ().AddDays (timeSlider.value));
+		setTimeSliderCurrentDateText ();
+		//Debug.Log (currentDate.ToString ("yyyy-MM-dd"));
 	}
 }
