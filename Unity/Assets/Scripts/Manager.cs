@@ -200,7 +200,7 @@ public class Manager : MonoBehaviour
 
 
 			GameObject cylinder = (GameObject)Resources.Load ("markerPrefab", typeof(GameObject));
-
+			
 
 			marker = new OnlineMapsMarker3D (cylinder);
 			Vector2 position = l.getCoordinates ();

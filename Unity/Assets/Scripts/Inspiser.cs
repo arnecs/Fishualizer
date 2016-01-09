@@ -8,7 +8,7 @@ public class Inspiser : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		l = (Lokalitet)this.gameObject.GetComponent<OnlineMapsMarker3DInstance>().marker.customData;
+
 	}
 	
 	// Update is called once per frame
@@ -27,7 +27,8 @@ public class Inspiser : MonoBehaviour {
 	void OnMouseOver(){
 		if (Input.GetMouseButtonDown (0)) {
 			// Whatever you want it to do.
-			Debug.Log (l.getEnheter().Count);
+			//l = (Lokalitet)gameObject.GetComponent<OnlineMapsMarker3DInstance>().marker.customData;
+			//Debug.Log (l.getEnheter().Count);
 			toggleIsActive ();
 		}
 	}
