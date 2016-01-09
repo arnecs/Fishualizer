@@ -94,6 +94,18 @@
  <Reference Include="UnityEditor.TreeEditor">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/TreeEditor/Editor/UnityEditor.TreeEditor.dll</HintPath>
  </Reference>
+ <Reference Include="System.Data">
+ <HintPath>C:/Fishualizer/Unity/Assets/DLL/System.Data.dll</HintPath>
+ </Reference>
+ <Reference Include="System.EnterpriseServices">
+ <HintPath>C:/Fishualizer/Unity/Assets/DLL/System.EnterpriseServices.dll</HintPath>
+ </Reference>
+ <Reference Include="Excel">
+ <HintPath>C:/Fishualizer/Unity/Assets/ExcelReader/net20/Excel.dll</HintPath>
+ </Reference>
+ <Reference Include="ICSharpCode.SharpZipLib">
+ <HintPath>C:/Fishualizer/Unity/Assets/ExcelReader/net20/ICSharpCode.SharpZipLib.dll</HintPath>
+ </Reference>
  <Reference Include="UnityEditor.Graphs">
  <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEditor.Graphs.dll</HintPath>
  </Reference>
@@ -102,18 +114,6 @@
  </Reference>
  <Reference Include="UnityEditor.WindowsStandalone.Extensions">
  <HintPath>C:/Program Files/Unity/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
- </Reference>
- <Reference Include="Excel">
- <HintPath>C:/Fishualizer/Unity/Assets/ExcelReader/net20/Excel.dll</HintPath>
- </Reference>
- <Reference Include="System.Data">
- <HintPath>C:/Fishualizer/Unity/Assets/DLL/System.Data.dll</HintPath>
- </Reference>
- <Reference Include="System.EnterpriseServices">
- <HintPath>C:/Fishualizer/Unity/Assets/DLL/System.EnterpriseServices.dll</HintPath>
- </Reference>
- <Reference Include="ICSharpCode.SharpZipLib">
- <HintPath>C:/Fishualizer/Unity/Assets/ExcelReader/net20/ICSharpCode.SharpZipLib.dll</HintPath>
  </Reference>
   </ItemGroup>
   <ItemGroup>

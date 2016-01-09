@@ -5,7 +5,6 @@ using System;
 using UnityEngine.UI;
 
 using InfinityCode;
-using AssemblyCSharp;
 using UnityEditor;
 using System.Security.Cryptography.X509Certificates;
 

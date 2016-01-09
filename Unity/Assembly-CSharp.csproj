@@ -108,7 +108,6 @@
     <Compile Include="Assets\Scripts\Enhet.cs" />
     <Compile Include="Assets\Scripts\FileReader.cs" />
     <Compile Include="Assets\Scripts\Lokalitet.cs" />
-    <Compile Include="Assets\Scripts\LokalitetBehaviour.cs" />
     <Compile Include="Assets\Scripts\Manager.cs" />
     <Compile Include="Assets\Scripts\Måling.cs" />
     <None Include="Assets\FileBrowser\readme.txt" />
@@ -122,14 +121,14 @@
     <Reference Include="UnityEngine.Networking">
       <HintPath>C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\Networking\UnityEngine.Networking.dll</HintPath>
     </Reference>
-    <Reference Include="Excel">
-      <HintPath>C:\Fishualizer\Unity\Assets\ExcelReader\net20\Excel.dll</HintPath>
-    </Reference>
     <Reference Include="System.Data">
       <HintPath>C:\Fishualizer\Unity\Assets\DLL\System.Data.dll</HintPath>
     </Reference>
     <Reference Include="System.EnterpriseServices">
       <HintPath>C:\Fishualizer\Unity\Assets\DLL\System.EnterpriseServices.dll</HintPath>
+    </Reference>
+    <Reference Include="Excel">
+      <HintPath>C:\Fishualizer\Unity\Assets\ExcelReader\net20\Excel.dll</HintPath>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>C:\Fishualizer\Unity\Assets\ExcelReader\net20\ICSharpCode.SharpZipLib.dll</HintPath>

@@ -2225,6 +2225,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeSlider: {fileID: 0}
   currentDateText: {fileID: 0}
+>>>>>>> 36187705cc566c57eb57a3716e3bd654a9ba8bb1
 --- !u!1 &1975580693
 GameObject:
   m_ObjectHideFlags: 0
