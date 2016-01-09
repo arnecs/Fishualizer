@@ -202,6 +202,7 @@ public class Manager : MonoBehaviour
 			GameObject cylinder = (GameObject)Resources.Load ("markerPrefab", typeof(GameObject));
 			
 
+
 			marker = new OnlineMapsMarker3D (cylinder);
 			Vector2 position = l.getCoordinates ();
 		
@@ -425,16 +426,30 @@ public class Manager : MonoBehaviour
 	}
 
 	public void oppdaterMarkers(){
+
+		float r = onlineMaps.zoom * 2f;
+
 		foreach (Lokalitet l in lokaliteter) {
+
+
+
+			float d = 10f;
+
+
 			foreach (Enhet e in l.getEnheter ()) {
 				try {
 					//Her skal egentlig funksjonalitet for skalering ligge, dette er bare testing så langt.
 					//l.getMarker ().scale = 16;
 					//l.getMarker ().scale = (float)e.getSenesteMålingGittDato (currentDate).getValueForKey (datatyper[valgtDatatype]);
+					d += (float)e.getSenesteMålingGittDato (currentDate).getValueForKey (datatyper[valgtDatatype]);
+					
+
 				} catch (Exception ex){
 					//Debug.Log (ex); //Ikke enable, skaper massiv lag!
 				}
 			}
+				
+			l.getMarker ().instance.transform.localScale = new Vector3 (r, d, r);
 		}
 	}
 
