@@ -139,6 +139,8 @@ public class EXCELREADER {
 
 		Dictionary<string, Lokalitet> lokDict = new Dictionary<string, Lokalitet> ();
 		List<string> headers = new List<string> ();
+		Manager.datatyper = new List<string> ();
+
 
 		if (lokaliteter != null) {
 			foreach (var l in lokaliteter) {
@@ -176,6 +178,8 @@ public class EXCELREADER {
 							datoIndex = i;
 						} else if (h.Equals("Antall lusetellinger i perioden")) {
 							antLusTellIndex = i;
+						} else {
+							Manager.datatyper.Add(h);
 						}
 					}
 				}
