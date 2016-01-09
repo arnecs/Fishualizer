@@ -66,6 +66,7 @@
      <Compile Include="Assets\Infinity Code\Online maps\Scripts\Editor\Plugins\OnlineMapsBuildingsEditor.cs" />
      <Compile Include="Assets\Infinity Code\Online maps\Scripts\Editor\Plugins\OnlineMapsLocationServiceEditor.cs" />
      <Compile Include="Assets\Infinity Code\Online maps\Scripts\Editor\Plugins\OnlineMapsRWTConnectorEditor.cs" />
+     <None Include="Assets\FileBrowser\readme.txt" />
      <None Include="Assets\Resources\Lusetellinger.txt" />
      <None Include="Assets\Infinity Code\Online maps\Shaders\TilesetShader.shader" />
      <None Include="Assets\Infinity Code\Online maps\Shaders\TilesetCutoutShader.shader" />
@@ -84,6 +85,12 @@
  </Reference>
  <Reference Include="UnityEditor.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/Editor/UnityEditor.UI.dll</HintPath>
+ </Reference>
+ <Reference Include="System.Data">
+ <HintPath>/Users/jorgen/Copy/3D/Fishualizer/Unity/Assets/DLL/System.Data.dll</HintPath>
+ </Reference>
+ <Reference Include="System.EnterpriseServices">
+ <HintPath>/Users/jorgen/Copy/3D/Fishualizer/Unity/Assets/DLL/System.EnterpriseServices.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.Graphs">
  <HintPath>/Applications/Unity/Unity.app/Contents/Frameworks/Managed/UnityEditor.Graphs.dll</HintPath>
@@ -115,9 +122,19 @@
  <Reference Include="UnityEditor.OSXStandalone.Extensions">
  <HintPath>/Applications/Unity/Unity.app/Contents/PlaybackEngines/MacStandaloneSupport/UnityEditor.OSXStandalone.Extensions.dll</HintPath>
  </Reference>
+ <Reference Include="Excel">
+ <HintPath>/Users/jorgen/Copy/3D/Fishualizer/Unity/Assets/ExcelReader/net20/Excel.dll</HintPath>
+ </Reference>
+ <Reference Include="ICSharpCode.SharpZipLib">
+ <HintPath>/Users/jorgen/Copy/3D/Fishualizer/Unity/Assets/ExcelReader/net20/ICSharpCode.SharpZipLib.dll</HintPath>
+ </Reference>
  <Reference Include="UnityEditor.iOS.Extensions.Xcode">
  <HintPath>/Applications/Unity/Unity.app/Contents/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
  </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Assembly-CSharp-vs.csproj">
+      <Project>{CD8C9303-404B-FB8D-6B9B-21988D5CAC0A}</Project>      <Name>Assembly-CSharp-vs</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

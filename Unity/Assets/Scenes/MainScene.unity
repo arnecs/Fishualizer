@@ -956,7 +956,6 @@ MonoBehaviour:
   timeSlider: {fileID: 0}
   timeSliderCurrentDateText: {fileID: 0}
   _camera: {fileID: 0}
-<<<<<<< HEAD
   skins:
   - {fileID: 11400000, guid: 3f13bb8951709ef4daea5f555585ba2c, type: 2}
   file: {fileID: 2800000, guid: 2b2223e008029e9428c28e26d2768a00, type: 3}
@@ -1089,8 +1088,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 963320242}
-=======
->>>>>>> 7a63c3d3ff387fe451ec36e212d78d8abdab852e
 --- !u!1 &1034794246
 GameObject:
   m_ObjectHideFlags: 0
@@ -2051,12 +2048,11 @@ RectTransform:
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
-<<<<<<< HEAD
   m_Pivot: {x: .5, y: .5}
 --- !u!114 &1786329483
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_PrefabParentO<<<<bject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1786329479}
   m_Enabled: 1
@@ -2065,9 +2061,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeSlider: {fileID: 0}
-=======
   m_Pivot: {x: 0.5, y: 0.5}
->>>>>>> 7a63c3d3ff387fe451ec36e212d78d8abdab852e
 --- !u!222 &1786329485
 CanvasRenderer:
   m_ObjectHideFlags: 0

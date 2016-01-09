@@ -46,6 +46,8 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\FileBrowser\Script\FileBrowser.cs" />
+     <Compile Include="Assets\FileBrowser\Script\testFileBrowser.cs" />
      <Compile Include="Assets\Infinity Code\Online maps\Examples (API usage)\CacheTilesExample.cs" />
      <Compile Include="Assets\Infinity Code\Online maps\Examples (API usage)\CalcAreaExample.cs" />
      <Compile Include="Assets\Infinity Code\Online maps\Examples (API usage)\ChangeMapTextureExample.cs" />
@@ -163,13 +165,14 @@
      <Compile Include="Assets\Infinity Code\Online maps\Scripts\XML\OnlineMapsXMLList.cs" />
      <Compile Include="Assets\Infinity Code\Online maps\Scripts\XML\OnlineMapsXMLListEnum.cs" />
      <Compile Include="Assets\Infinity Code\Online maps\Scripts\XML\OnlineMapsXMLNamespaceManager.cs" />
-     <Compile Include="Assets\Scripts\CSVreader.cs" />
-     <Compile Include="Assets\Scripts\Data.cs" />
+     <Compile Include="Assets\Scripts\EXCELREADER.cs" />
      <Compile Include="Assets\Scripts\Enhet.cs" />
      <Compile Include="Assets\Scripts\FileReader.cs" />
      <Compile Include="Assets\Scripts\Lokalitet.cs" />
+     <Compile Include="Assets\Scripts\LokalitetBehaviour.cs" />
      <Compile Include="Assets\Scripts\Manager.cs" />
      <Compile Include="Assets\Scripts\Måling.cs" />
+     <None Include="Assets\FileBrowser\readme.txt" />
      <None Include="Assets\Resources\Lusetellinger.txt" />
      <None Include="Assets\Infinity Code\Online maps\Shaders\TilesetShader.shader" />
      <None Include="Assets\Infinity Code\Online maps\Shaders\TilesetCutoutShader.shader" />
@@ -182,6 +185,18 @@
  </Reference>
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
+ </Reference>
+ <Reference Include="System.Data">
+ <HintPath>/Users/jorgen/Copy/3D/Fishualizer/Unity/Assets/DLL/System.Data.dll</HintPath>
+ </Reference>
+ <Reference Include="System.EnterpriseServices">
+ <HintPath>/Users/jorgen/Copy/3D/Fishualizer/Unity/Assets/DLL/System.EnterpriseServices.dll</HintPath>
+ </Reference>
+ <Reference Include="Excel">
+ <HintPath>/Users/jorgen/Copy/3D/Fishualizer/Unity/Assets/ExcelReader/net20/Excel.dll</HintPath>
+ </Reference>
+ <Reference Include="ICSharpCode.SharpZipLib">
+ <HintPath>/Users/jorgen/Copy/3D/Fishualizer/Unity/Assets/ExcelReader/net20/ICSharpCode.SharpZipLib.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.iOS.Extensions.Xcode">
  <HintPath>/Applications/Unity/Unity.app/Contents/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
