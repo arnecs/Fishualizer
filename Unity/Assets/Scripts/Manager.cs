@@ -210,7 +210,34 @@ public class Manager : MonoBehaviour
 
 			control.AddMarker3D (marker);
 
+			List<Enhet> enheter = l.getEnheter();
 
+			float radius = 0.02f;
+
+			for(int j=0; j<l.getEnheter().Count; j++){
+				Enhet e = enheter[j] as Enhet;
+				
+				GameObject cylinderChild = (GameObject)Resources.Load ("markerEnhetPrefab", typeof(GameObject));
+				
+				var angle = j * Mathf.PI * 2 / enheter.Count;
+				
+				marker = new OnlineMapsMarker3D (cylinderChild);
+				position = l.getCoordinates ();
+				
+				marker.position = new Vector2(position.x + Mathf.Cos(angle)*radius, position.y + Mathf.Sin(angle)*radius*0.5f);
+				marker.label = l.getLokalitetsnavn ();
+				
+				marker.scale = 10;
+				
+				marker.label = l.getLokalitetsnavn ();
+				marker.scale = onlineMaps._zoom * 2;
+				marker.range.max = 20;
+				marker.range.min = 10;
+				
+				control = onlineMaps.GetComponent<OnlineMapsControlBase3D> ();
+
+				control.AddMarker3D (marker);
+			}
 
 		}
 
