@@ -209,7 +209,6 @@ public class Manager : MonoBehaviour
 			l.setMarker (marker);
 			control.AddMarker3D (marker);
 
-<<<<<<< HEAD
 			List<Enhet> enheter = l.getEnheter();
 
 			float radius = 0.02f;
@@ -238,9 +237,6 @@ public class Manager : MonoBehaviour
 
 				control.AddMarker3D (marker);
 			}
-
-=======
->>>>>>> 466a86c0e498ee30e7def30e10b2fddf204f4757
 		}
 
 
