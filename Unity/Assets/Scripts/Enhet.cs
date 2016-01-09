@@ -35,6 +35,21 @@ public class Enhet
 		return målinger;
 	}
 
+	public Måling getSenesteMålingGittDato(DateTime dato){
+		sorterMålinger ();
+		if (målinger.Count > 0) {
+			for (int i = målinger.Count - 1; i >= 0; i--) {
+				if (dato.CompareTo (målinger [i].getDate ()) >= 0) {
+//					Debug.Log("målinger["+i+"]"); 
+//					Debug.Log (målinger [i].getDate () + " .CompareTo " +  (dato));
+//					Debug.Log (målinger [i].getDate ().CompareTo (dato));
+					return målinger [i];
+				}
+			}
+		}
+		return null;
+	}
+
 	public void sorterMålinger ()
 	{
 		målinger.Sort ();

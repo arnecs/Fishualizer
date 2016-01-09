@@ -19,13 +19,18 @@ public class Manager : MonoBehaviour
 
 	public List<DateTime> dates;
 	public static DateTime currentDate;
+	public static DateTime firstRegisteredDate;
 
 	public Button playPauseButton;
 	public Slider slider;
 	public InputField searchField;
+
 	public Slider timeSlider;
 	public Text timeSliderCurrentDateText;
+	public float animationSpeed;
 
+	public Slider animationSpeedSlider;
+	public Text animationSpeedSliderText;
 
 	public Camera _camera;
 
@@ -57,13 +62,12 @@ public class Manager : MonoBehaviour
 	void Start ()
 	{
 		lokaliteter = new List<Lokalitet> ();
-
+		animationSpeed = 0.1f;
 		dates = new List<DateTime> ();
+		animationSpeedSlider = GameObject.Find ("AnimationSpeedSlider").GetComponent<Slider> ();
+		animationSpeedSliderText = GameObject.Find("AnimationSpeedSliderText").GetComponent<Text>();
 		currentDate = firstDate ();
-		GameObject temp = GameObject.Find ("TimeSlider");
-		if (temp != null) {
-			timeSlider = temp.GetComponent<Slider> ();
-		}
+		timeSlider =  GameObject.Find ("TimeSlider").GetComponent<Slider> ();
 
 		Populate ();
 		populateDates ();
@@ -190,26 +194,22 @@ public class Manager : MonoBehaviour
 		for (int i = 0; i < lokaliteter.Count; i++) {
 			Lokalitet l = lokaliteter [i] as Lokalitet;
 
-			GameObject cylinder = (GameObject)Resources.Load ("markerPrefab", typeof(GameObject));
 
+			GameObject cylinder = (GameObject)Resources.Load ("markerPrefab", typeof(GameObject));
 
 
 			marker = new OnlineMapsMarker3D (cylinder);
 			Vector2 position = l.getCoordinates ();
 		
-			marker.position = position;
-			marker.label = l.getLokalitetsnavn ();
-
-			marker.scale = 20;
 
 			marker.position = position;
 			marker.label = l.getLokalitetsnavn ();
 			marker.scale = onlineMaps._zoom * 2;
-
 			OnlineMapsControlBase3D control = onlineMaps.GetComponent<OnlineMapsControlBase3D> ();
-
+			l.setMarker (marker);
 			control.AddMarker3D (marker);
 
+<<<<<<< HEAD
 			List<Enhet> enheter = l.getEnheter();
 
 			float radius = 0.02f;
@@ -239,6 +239,8 @@ public class Manager : MonoBehaviour
 				control.AddMarker3D (marker);
 			}
 
+=======
+>>>>>>> 466a86c0e498ee30e7def30e10b2fddf204f4757
 		}
 
 
@@ -247,23 +249,14 @@ public class Manager : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-
-		//Debug.Log (currentDate);
-		//Debug.Log("Update");
-
-		//Debug.Log (onlineMaps._zoom);
-
-
-		//OnlineMapsControlBase3D.instance.markers3D[0] .scale += 0.02f;
-		//OnlineMapsControlBase3D.instance.markers3D[1] .scale += 0.05f;
-
-	
+			
 	}
 
 	private bool startAnimation ()
 	{
 		// Prøv å start animasjon av data
 		animating = true;
+		InvokeRepeating ("incrementDay", animationSpeed, animationSpeed);
 
 		return true;
 	}
@@ -272,10 +265,9 @@ public class Manager : MonoBehaviour
 	{
 		// Stop animasjon av data
 		animating = false;
-
+		CancelInvoke ("incrementDay");
 		return true;
 	}
-
 
 	public void startPauseAnimation ()
 	{
@@ -284,13 +276,28 @@ public class Manager : MonoBehaviour
 			if (stopAnimation ()) {
 				// Bytt bilde på playPauseButton?
 				t.text = "►";
+
 			}
 		} else {
 			if (startAnimation ()) {
 				// Bytt bilde på playPauseButton?
 				t.text = "❙❙";
+
 			}
 		}
+	}
+
+	public void onAnimationSpeedChange(){
+		animationSpeed = animationSpeedSlider.value;
+		animationSpeedSliderText.text = animationSpeed.ToString ();
+		if (animating) {
+			CancelInvoke ("incrementDay");
+			InvokeRepeating ("incrementDay", animationSpeed, animationSpeed);
+		}
+	}
+
+	public void incrementDay(){
+		timeSlider.value++;
 	}
 
 	public void toggleFileBrowser()
@@ -335,7 +342,6 @@ public class Manager : MonoBehaviour
 			searchField.selectionFocusPosition = searchField.text.Length;
 		}
 	}
-
 
 	public void searchEnd ()
 	{
@@ -392,7 +398,6 @@ public class Manager : MonoBehaviour
 		return latestDateSoFar;
 	}
 
-
 	public int totalDates(){
 
 		DateTime firstD = new DateTime();
@@ -427,10 +432,23 @@ public class Manager : MonoBehaviour
 			//Debug.Log (dates [i].ToString ("yyyy-MM-dd"));
 		}
 	}
+
 	public void onDateChanged(){
 		currentDate = (firstDate ().AddDays (timeSlider.value));
 		setTimeSliderCurrentDateText ();
-		//Debug.Log (currentDate.ToString ("yyyy-MM-dd"));
+		Måling målingen;
+		foreach (Lokalitet l in lokaliteter) {
+			foreach (Enhet e in l.getEnheter ()) {
+				try {
+					//Eksempel:
+					//marker.scale = (float)e.getSenesteMålingGittDato (currentDate).getValueForKey ("Totalt antall lus funnet, Fastsittende lakselus i perioden");
+					//Legg til funksjonalitet slik at hver marker endrer utseende gitt getValueForKey(key) på en måling.
+					l.getMarker ().scale = (float)e.getSenesteMålingGittDato (currentDate).getValueForKey (datatyper[valgtDatatype]);
+				} catch (Exception ex){
+					//Debug.Log (ex); //Ikke enable, skaper massiv lag!
+				}
+			}
+		}
 	}
 
 	public void toggleDataSelection() {
