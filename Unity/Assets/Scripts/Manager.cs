@@ -21,6 +21,7 @@ public class Manager : MonoBehaviour
 	public static DateTime currentDate;
 	public static DateTime firstRegisteredDate;
 
+	//GUI
 	public Button playPauseButton;
 	public Slider slider;
 	public InputField searchField;
@@ -31,22 +32,27 @@ public class Manager : MonoBehaviour
 
 	public Slider animationSpeedSlider;
 	public Text animationSpeedSliderText;
+	public Text animationSpeedSliderTextTooltip;
 
 	public Camera _camera;
 
 	int defaultMarkerScale;
+	float minimumMarkerHeight;
+
 
 	// Data selection
 	bool showDataSelection;
 	private GUIStyle rowStyle;
 
-	public static List<string> datatyper;
+	public static List<string> datatyper = new List<string>();
 	int valgtDatatype;
 
 
 	OnlineMapsMarker3D marker;
 
-	
+	public Text valgtDataText;
+
+
 	bool animating;
 	bool browsingFile;
 
@@ -63,19 +69,22 @@ public class Manager : MonoBehaviour
 	void Start ()
 	{
 		lokaliteter = new List<Lokalitet> ();
-		animationSpeed = 1.0f;
+
 		dates = new List<DateTime> ();
+
+		animationSpeed = 1.0f;
 		animationSpeedSlider = GameObject.Find ("AnimationSpeedSlider").GetComponent<Slider> ();
 		animationSpeedSliderText = GameObject.Find("AnimationSpeedSliderText").GetComponent<Text>();
+		animationSpeedSliderTextTooltip = GameObject.Find ("AnimationSpeedTooltipText").GetComponent<Text> ();
 		currentDate = firstDate ();
 		timeSlider =  GameObject.Find ("TimeSlider").GetComponent<Slider> ();
 		defaultMarkerScale = 10;
+		minimumMarkerHeight = 5.0f;
 
 		Populate ();
+
 		currentDate = firstDate ();
-//		Debug.Log("Earliest date: " + firstDate ().ToString ("yyyy-MM-dd"));
-//		Debug.Log("Latest date: " + lastDate ().ToString ("yyyy-MM-dd"));
-//		Debug.Log ("Total amount of dates: " + totalDates ());
+
 		setTimeSliderMaxValue ();
 		setTimeSliderCurrentDateText ();
 
@@ -85,16 +94,19 @@ public class Manager : MonoBehaviour
 //		api.OnChangeZoom += OnChangeZoom;
 //		OnChangeZoom ();
 
-
 		//FileReader
 		fb.guiSkin = skins[0]; //set the starting skin
 		fb.fileTexture = file; 
 		fb.directoryTexture = folder;
-		fb.backTexture = back;
 		fb.driveTexture = drive;
 		fb.showSearch = true;
 		fb.searchRecursively = true;
-		//Debug.Log (lokaliteter [0].getMarker ().transform.gameObject.);
+		//lokaliteter[0].getMarker ().instance.
+//		Material myMaterial = Resources.Load("Resources/mymat", typeof(Material)) as Material;
+//		if (myMaterial != null) {
+//			Debug.Log (myMaterial.color);// = new Color (255, 0, 0);
+//		}
+
 	}
 
 	void OnGUI(){
@@ -110,6 +122,8 @@ public class Manager : MonoBehaviour
 				//the output file is a member if the FileInfo class, if cancel was selected the value is null
 				output = (fb.outputFile==null)?"cancel hit":fb.outputFile.ToString();
 
+
+				Debug.Log (output);
 				if(output != "cancel hit"){
 					filePath = fb.outputFile.ToString();
 
@@ -118,12 +132,19 @@ public class Manager : MonoBehaviour
 						Debug.Log(filePath);
 						toggleFileBrowser();
 						//Her skal vi kalle på Excel-metoden til arne. Vi sender med fb.outputFile.ToString() som argument.
-
+						Populate();
 					}
 				}else{
 					toggleFileBrowser();
 				}
 			}
+		}
+
+
+		var dataSelectionRect = new Rect (0, 30, 500, datatyper.Count * 19 + 4);
+
+		if (showDataSelection && !dataSelectionRect.Contains(new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y)) && Input.GetMouseButton(0)) {
+			showDataSelection = false;
 		}
 
 		if (showDataSelection) {
@@ -140,9 +161,7 @@ public class Manager : MonoBehaviour
 
 
 			//GUI.BeginScrollView (new Rect (0, 30, 500, Screen.height - 60), new Vector2 (0f, 0f), new Rect (0, 0, 30, datatyper.Count * 26 + 4));
-			GUILayout.BeginArea (new Rect (0, 30, 500, datatyper.Count * 19 + 4), GUI.skin.box);
-
-
+			GUILayout.BeginArea (dataSelectionRect, GUI.skin.box);
 
 
 			var color = rowStyle.normal.textColor;
@@ -160,8 +179,6 @@ public class Manager : MonoBehaviour
 					valgtDatatype = i;
 					dataTypeChanged ();
 				}
-
-
 			}
 			rowStyle.normal.textColor = color;
 			rowStyle.hover.textColor = hoverColor;
@@ -170,6 +187,10 @@ public class Manager : MonoBehaviour
 
 				//GUI.EndScrollView();
 
+		}
+
+		if (animationSpeedSliderTextTooltip.text == "Dager per sekund") {
+			animationSpeedSliderTextTooltip.transform.position = new Vector3 (Input.mousePosition.x+60, Input.mousePosition.y+20, 0);
 		}
 
 	}
@@ -182,6 +203,7 @@ public class Manager : MonoBehaviour
 	//	}
 
 	public void dataTypeChanged(){
+		valgtDataText.text = datatyper [valgtDatatype];
 		oppdaterMarkers ();
 	}
 	void Populate ()
@@ -196,6 +218,13 @@ public class Manager : MonoBehaviour
 
 		lokaliteter = excelReader.readGenerellInfo (Application.dataPath + "/Resources/06.01.2016-Generell-Info.xls");
 		lokaliteter = excelReader.readData (Application.dataPath + "/Resources/06.01.2016-Lusetellinger-1712.xls", lokaliteter);
+
+		OnlineMapsControlBase3D control = onlineMaps.GetComponent<OnlineMapsControlBase3D> ();
+		control.RemoveAllMarker3D ();
+		control.allowDefaultMarkerEvents = true;
+		control.allowAddMarker3DByN = true;
+		control.enabled = true;
+
 
 		for (int i = 0; i < lokaliteter.Count; i++) {
 			Lokalitet l = lokaliteter [i] as Lokalitet;
@@ -217,7 +246,7 @@ public class Manager : MonoBehaviour
 			marker.range.max = 12;
 			marker.range.min = 1;
 			
-			OnlineMapsControlBase3D control = onlineMaps.GetComponent<OnlineMapsControlBase3D> ();
+			control = onlineMaps.GetComponent<OnlineMapsControlBase3D> ();
 
 			l.setMarker (marker);
 			control.AddMarker3D (marker);
@@ -240,10 +269,10 @@ public class Manager : MonoBehaviour
 				position = l.getCoordinates ();
 				
 				marker.position = new Vector2(position.x + Mathf.Cos(angle)*radius, position.y + Mathf.Sin(angle)*radius*0.5f);
-				marker.label = l.getLokalitetsnavn ();
+				marker.label = l.getLokalitetsnavn () + " " + e.getEnhetsId ();
 				marker.scale = defaultMarkerScale;
-				marker.range.max = 20;
-				marker.range.min = 13;
+			
+				e.setMarker (marker);
 				
 				control = onlineMaps.GetComponent<OnlineMapsControlBase3D> ();
 
@@ -253,6 +282,8 @@ public class Manager : MonoBehaviour
 			//Destroy(mapObject);
 		}
 
+		control.enabled = true;
+		dataTypeChanged ();
 
 	}
 
@@ -292,6 +323,9 @@ public class Manager : MonoBehaviour
 			if (startAnimation ()) {
 				// Bytt bilde på playPauseButton?
 				t.text = "❙❙";
+				if (timeSlider.value == timeSlider.maxValue) {
+					timeSlider.value = timeSlider.minValue;
+				}
 
 			}
 		}
@@ -436,29 +470,33 @@ public class Manager : MonoBehaviour
 
 	public void oppdaterMarkers(){
 
-		float r = (float)defaultMarkerScale;
+		//Setter default høyde på alle markers
 
 		foreach (Lokalitet l in lokaliteter) {
-
-
-
+			l.getMarker ().instance.transform.localScale = new Vector3 ((float)defaultMarkerScale, minimumMarkerHeight, (float)defaultMarkerScale);
 			float d = 10f;
-
-
 			foreach (Enhet e in l.getEnheter ()) {
+				e.getMarker ().instance.transform.localScale = new Vector3 ((float)defaultMarkerScale, minimumMarkerHeight, (float)defaultMarkerScale);
 				try {
 					d += (float)e.getSenesteMålingGittDato (currentDate).getValueForKey (datatyper[valgtDatatype]);
-					
 
 				} catch (Exception ex){
 					//Debug.Log (ex); //Ikke enable, skaper massiv lag!
 				}
+				skalerMarker (e.getMarker (), d);
 			}
-			l.getMarker ().instance.transform.localScale = new Vector3 ((float)defaultMarkerScale, d, (float)defaultMarkerScale);
-			l.getMarker ().instance.transform.localScale = new Vector3 (r, d, r);
+
+			skalerMarker (l.getMarker (), d);
 		}
 	}
+	public void skalerMarker(OnlineMapsMarker3D marker, float d){
+		if (d < minimumMarkerHeight) {
+			marker.instance.transform.localScale = new Vector3 ((float)defaultMarkerScale, minimumMarkerHeight, (float)defaultMarkerScale);
+		} else {
+			marker.instance.transform.localScale = new Vector3 ((float)defaultMarkerScale, d, (float)defaultMarkerScale);
+		}
 
+	}
 	public void onDateChanged(){
 		currentDate = (firstDate ().AddDays (timeSlider.value));
 		setTimeSliderCurrentDateText ();
