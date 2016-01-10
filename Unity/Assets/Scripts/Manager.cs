@@ -490,21 +490,8 @@ public class Manager : MonoBehaviour
 
 	public void oppdaterMarkers(){
 
-		//Lagrer alle verdier for en type måling i en liste
-		List<float> alleVerdierForValgtDatatype = new List<float> ();
-		float høydeSkalering = minimumMarkerHeight;
-		foreach (Lokalitet l in lokaliteter) {
-			foreach (Enhet e in l.getEnheter ()) {
-				try {
-					float tempVerdi = (float)e.getSenesteMålingGittDato (currentDate).getValueForKey (datatyper[valgtDatatype]);
-					alleVerdierForValgtDatatype.Add (tempVerdi);
-				} catch (Exception ex){
-				}
 
-			}
-		}
-		//Går igjennom listen og finner høyeste verdi, og regner ut høydeskalering basert på den
-		høydeSkalering = beregnHøydeSkalering (valgtDatatype, alleVerdierForValgtDatatype);
+
 
 
 		var dataType = datatyper [valgtDatatype].ToUpper();
@@ -518,6 +505,49 @@ public class Manager : MonoBehaviour
 		} else if (dataType.Contains("TOTAL")) {
 			beregning = MålingBeregning.Total;
 		}
+
+		// Beregner høydeskalering
+		float høydeSkalering = minimumMarkerHeight;
+		if (beregning == MålingBeregning.Total) {
+
+			//Lagrer alle verdier for en type måling i en liste
+			List<float> alleVerdierForValgtDatatype = new List<float> ();
+			foreach (Lokalitet l in lokaliteter) {
+				float tot = 0;
+				foreach (Enhet e in l.getEnheter ()) {
+					try {
+						float tempVerdi = (float)e.getSenesteMålingGittDato (currentDate).getValueForKey (datatyper[valgtDatatype]);
+						tot += tempVerdi;
+					} catch (Exception ex){
+					}
+
+				}
+				alleVerdierForValgtDatatype.Add (tot);
+			}
+			//Går igjennom listen og finner høyeste verdi, og regner ut høydeskalering basert på den
+			høydeSkalering = beregnHøydeSkalering (valgtDatatype, alleVerdierForValgtDatatype);
+
+
+		} else {
+
+			//Lagrer alle verdier for en type måling i en liste
+			List<float> alleVerdierForValgtDatatype = new List<float> ();
+
+			foreach (Lokalitet l in lokaliteter) {
+				foreach (Enhet e in l.getEnheter ()) {
+					try {
+						float tempVerdi = (float)e.getSenesteMålingGittDato (currentDate).getValueForKey (datatyper[valgtDatatype]);
+						alleVerdierForValgtDatatype.Add (tempVerdi);
+					} catch (Exception ex){
+					}
+
+				}
+			}
+			//Går igjennom listen og finner høyeste verdi, og regner ut høydeskalering basert på den
+			høydeSkalering = beregnHøydeSkalering (valgtDatatype, alleVerdierForValgtDatatype);
+		}
+
+
 
 		//Går igjennom alle markers og legger til skalering
 		foreach (Lokalitet l in lokaliteter) {
@@ -572,7 +602,7 @@ public class Manager : MonoBehaviour
 
 
 			l.getMarker ().instance.GetComponent<InspiserLokalitet> ().setValueText (d);
-			skalerMarker (l.getMarker (), d);
+			skalerMarker (l.getMarker (), d * høydeSkalering);
 		}
 
 
@@ -582,11 +612,15 @@ public class Manager : MonoBehaviour
 		//Vet ikke hvorfor datatype skal ha noe å si, men kan bli bruk for senere
 		float maxVerdiSåLangt = 0;
 		float høydeSkalering = 0;
-		foreach (float f in alleVerdierForValgtDattype) {
-			if (f > maxVerdiSåLangt) {
-				maxVerdiSåLangt = f;
+
+
+			foreach (float f in alleVerdierForValgtDattype) {
+				if (f > maxVerdiSåLangt) {
+					maxVerdiSåLangt = f;
+				}
 			}
-		}
+
+
 		if (maxVerdiSåLangt > 0) {
 			høydeSkalering = maxMarkerHeight / maxVerdiSåLangt;
 		} else {
