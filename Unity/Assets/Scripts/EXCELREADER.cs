@@ -178,7 +178,7 @@ public class EXCELREADER {
 							datoIndex = i;
 						} else if (h.Equals("Antall lusetellinger i perioden")) {
 							antLusTellIndex = i;
-						} else {
+						} else if (!h.ToUpper().Contains("DATO")) {
 							Manager.datatyper.Add(h);
 						}
 					}
@@ -243,11 +243,11 @@ public class EXCELREADER {
 				for (int i = 0; i < excelReader.FieldCount; i++) {
 					try {
 
-							if (headers[i].ToUpper().Contains("dato")) {
-						double data = excelReader.GetDouble(i);
+							if (!headers[i].ToUpper().Contains("DATO")) {
+								double data = excelReader.GetDouble(i);
 
 						
-						m.AddData(headers[i], data);
+								m.AddData(headers[i], data);
 
 						//.Log("Måling lagt til: " + headers[i] + ", " + data);
 					
