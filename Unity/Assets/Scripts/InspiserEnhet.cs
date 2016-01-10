@@ -2,11 +2,11 @@
 using System;
 using System.Collections;
 
-public class InspiserLokalitet : MonoBehaviour {
+public class InspiserEnhet : MonoBehaviour {
 	
 	bool showTooltip;
 	bool showText;
-	Lokalitet l;
+	Enhet e;
 	GUIStyle s;
 	string labelText;
 	public GUISkin mySkin;
@@ -14,8 +14,8 @@ public class InspiserLokalitet : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		Debug.Log ("Starter");
-		l = (Lokalitet)gameObject.GetComponent<OnlineMapsMarker3DInstance>().marker.customData;
-		labelText = l.getLokalitetsnavn ();
+		e = (Enhet)gameObject.GetComponent<OnlineMapsMarker3DInstance>().marker.customData;
+		labelText = e.getEnhetsId ();
 		showText = true;
 	}
 	
@@ -29,29 +29,29 @@ public class InspiserLokalitet : MonoBehaviour {
 			toggleTooltip ();
 		}
 	}
-
+	
 	void OnGUI(){
 		if (showText) {
 			GUI.skin = mySkin;
 			var point = Camera.main.WorldToScreenPoint (transform.position);
-
-
+		
+		
 			if (showTooltip) {
 				GUI.Box (new Rect (point.x + Screen.width / 20, Screen.height - point.y - Screen.height / 5, 100, 20), labelText);
 			}
-
+		
 			mySkin.label.normal.textColor = Color.black;
 			GUI.Label (new Rect (point.x - 51, Screen.height - point.y + Screen.height / 20, 100, 20), labelText);
 			GUI.Label (new Rect (point.x - 49, Screen.height - point.y + Screen.height / 20, 100, 20), labelText);
 			GUI.Label (new Rect (point.x - 50, Screen.height - point.y + 1 + Screen.height / 20, 100, 20), labelText);
 			GUI.Label (new Rect (point.x - 50, Screen.height - point.y - 1 + Screen.height / 20, 100, 20), labelText);
-
+		
 			mySkin.label.normal.textColor = Color.white;
 			GUI.Label (new Rect (point.x - 50, Screen.height - point.y + Screen.height / 20, 100, 20), labelText);
 		}
 	}
-
-
+	
+	
 	void toggleTooltip(){
 		if(showTooltip){
 			showTooltip = false;
@@ -59,7 +59,7 @@ public class InspiserLokalitet : MonoBehaviour {
 			showTooltip = true;
 		}
 	}
-
+	
 	public void setValueText(double d){
 		labelText = d.ToString("0.000");
 	}

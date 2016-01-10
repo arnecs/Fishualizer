@@ -269,6 +269,7 @@ public class Manager : MonoBehaviour
 				marker.range.min = 1;
 				marker.label = l.getLokalitetsnavn ();
 				marker.scale = defaultMarkerScale;
+				marker.customData = e;
 			
 				e.setMarker (marker);
 
@@ -508,19 +509,19 @@ public class Manager : MonoBehaviour
 				d = minimumMarkerHeight;
 				e.getMarker ().instance.transform.localScale = new Vector3 ((float)defaultMarkerScale, minimumMarkerHeight, (float)defaultMarkerScale);
 				try {
-					//legger til skalering i en variabel
-					//Debug.Log ((float)e.getSenesteMålingGittDato (currentDate).getValueForKey (datatyper[valgtDatatype]) + " * " + høydeSkalering + " = " +(float)e.getSenesteMålingGittDato (currentDate).getValueForKey (datatyper[valgtDatatype])*høydeSkalering);
-					enhetMåling = ((float)e.getSenesteMålingGittDato (currentDate).getValueForKey (datatyper[valgtDatatype]) * høydeSkalering);
+					float de = (float)e.getSenesteMålingGittDato (currentDate).getValueForKey (datatyper[valgtDatatype]);
+					enhetMåling = (float)(de * høydeSkalering);
 					d += enhetMåling;
-					//					Debug.Log(d);
+					e.getMarker().instance.GetComponent<InspiserEnhet>().setValueText(de);
+
 
 				} catch (Exception ex) {
 
 				}
 
 
-				skalerMarker (e.getMarker (), enhetMåling);
 
+				skalerMarker (e.getMarker (), enhetMåling);
 			}
 			//skalerer lokaliteter (gir egentlig ikke mening før data er samlet på lokalitet)
 			l.getMarker ().instance.GetComponent<InspiserLokalitet> ().setValueText (d / l.getEnheter ().Count);
