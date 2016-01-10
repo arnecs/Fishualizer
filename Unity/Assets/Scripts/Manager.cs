@@ -71,8 +71,8 @@ public class Manager : MonoBehaviour
 
 
 
-	bool visLokalitet = true;
-	bool visEnhet = true;
+	bool visLokalitet;
+	bool visEnhet;
 
 	public Button visLokalitetButton;
 	public Button visEnhetButton;
@@ -82,6 +82,7 @@ public class Manager : MonoBehaviour
 	{
 		lokaliteter = new List<Lokalitet> ();
 		ToggleVisLokaliteter ();
+		ToggleVisEnheter ();
 		animationSpeed = 1.0f;
 
 		//Brukes ikke før vi evt. vil skalere ALLE markers samtidig. Ligger også funksjonalitet
@@ -513,6 +514,10 @@ public class Manager : MonoBehaviour
 					d += enhetMåling;
 					//					Debug.Log(d);
 
+				} catch (Exception ex) {
+
+				}
+
 
 				skalerMarker (e.getMarker (), enhetMåling);
 
@@ -613,7 +618,6 @@ public class Manager : MonoBehaviour
 			visEnhetButton.colors = cb;
 		} else {
 			visEnhetButton.colors = ColorBlock.defaultColorBlock;
-
 		}
 			
 
@@ -621,9 +625,8 @@ public class Manager : MonoBehaviour
 			foreach (var e in l.getEnheter()) {
 				e.getMarker ().instance.GetComponent<MeshRenderer>().enabled = visEnhet;
 
+				e.getMarker ().instance.GetComponent<InspiserEnhet> ().SetShowText (visEnhet);
 			}
 		}
-
 	}
-
 }
