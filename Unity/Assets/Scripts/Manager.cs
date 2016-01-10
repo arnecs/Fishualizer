@@ -265,6 +265,7 @@ public class Manager : MonoBehaviour
 
 				marker.label = l.getLokalitetsnavn ();
 				marker.scale = defaultMarkerScale;
+				marker.customData = e;
 			
 				e.setMarker (marker);
 
@@ -492,11 +493,14 @@ public class Manager : MonoBehaviour
 			foreach (Enhet e in l.getEnheter ()) {
 				e.getMarker ().instance.transform.localScale = new Vector3 ((float)defaultMarkerScale, minimumMarkerHeight, (float)defaultMarkerScale);
 				try {
-					d += (float)e.getSenesteMålingGittDato (currentDate).getValueForKey (datatyper[valgtDatatype]);
+					float de = (float)e.getSenesteMålingGittDato (currentDate).getValueForKey (datatyper[valgtDatatype]);
+					d += de;
+					e.getMarker().instance.GetComponent<InspiserEnhet>().setValueText(de);
 
 				} catch (Exception ex){
 					//Debug.Log (ex); //Ikke enable, skaper massiv lag!
 				}
+
 				skalerMarker (e.getMarker (), d);
 			}
 
