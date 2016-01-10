@@ -9,6 +9,7 @@ using InfinityCode;
 using UnityEditor;
 
 
+
 public class Manager : MonoBehaviour
 {
 
@@ -76,6 +77,12 @@ public class Manager : MonoBehaviour
 
 	public Button visLokalitetButton;
 	public Button visEnhetButton;
+
+
+
+	enum MålingBeregning {
+		Snitt, Maks, Total
+	};
 
 	// Use this for initialization
 	void Start ()
@@ -497,20 +504,44 @@ public class Manager : MonoBehaviour
 		høydeSkalering = beregnHøydeSkalering (valgtDatatype, alleVerdierForValgtDatatype);
 
 
+		var dataType = datatyper [valgtDatatype].ToUpper();
+
+		MålingBeregning beregning = MålingBeregning.Total;
+
+		if (dataType.Contains("SNITT")) {
+			beregning = MålingBeregning.Snitt;
+		} else if (dataType.Contains("MAKS")) {
+			beregning = MålingBeregning.Maks;
+		} else if (dataType.Contains("TOTAL")) {
+			beregning = MålingBeregning.Total;
+		}
+
 		//Går igjennom alle markers og legger til skalering
 		foreach (Lokalitet l in lokaliteter) {
+
 			l.getMarker ().instance.transform.localScale = new Vector3 ((float)defaultMarkerScale, minimumMarkerHeight, (float)defaultMarkerScale);
-			float d = minimumMarkerHeight;
+			float d = 0;
 			foreach (Enhet e in l.getEnheter ()) {
 
 				float enhetMåling = -1;
 
-				d = minimumMarkerHeight;
+				//d = minimumMarkerHeight;
 				e.getMarker ().instance.transform.localScale = new Vector3 ((float)defaultMarkerScale, minimumMarkerHeight, (float)defaultMarkerScale);
 				try {
 					float de = (float)e.getSenesteMålingGittDato (currentDate).getValueForKey (datatyper[valgtDatatype]);
 					enhetMåling = (float)(de * høydeSkalering);
-					d += enhetMåling;
+
+					switch (beregning) {
+					case MålingBeregning.Snitt:
+					case MålingBeregning.Total:
+						d += de;
+						break;
+					case MålingBeregning.Maks:
+						d = de > d ? de : d;
+						break;
+					}
+
+
 					e.getMarker().instance.GetComponent<InspiserEnhet>().setValueText(de);
 
 
@@ -523,7 +554,21 @@ public class Manager : MonoBehaviour
 				skalerMarker (e.getMarker (), enhetMåling);
 			}
 			//skalerer lokaliteter (gir egentlig ikke mening før data er samlet på lokalitet)
-			l.getMarker ().instance.GetComponent<InspiserLokalitet> ().setValueText (d / l.getEnheter ().Count);
+
+			switch (beregning) {
+			case MålingBeregning.Snitt:
+				d /= l.getEnheter().Count;
+				break;
+			case MålingBeregning.Total:
+				
+				break;
+			case MålingBeregning.Maks:
+				break;
+			}
+
+
+
+			l.getMarker ().instance.GetComponent<InspiserLokalitet> ().setValueText (d);
 			skalerMarker (l.getMarker (), d);
 		}
 
