@@ -27,6 +27,16 @@ public class Måling : IComparable {
 		return -1;
 	}
 
+	public int getNumDataEntries(){
+		int n = 0;
+		foreach (KeyValuePair<String, Double> pair in data)
+		{
+			n++; 
+		}
+		
+		return n;
+	}
+
 	public void AddData(string key, double value) {
 		data.Add (key, value);
 	}
@@ -41,4 +51,15 @@ public class Måling : IComparable {
 
 	}
 
+	public string ToString()
+	{
+		string s = null;
+		foreach (KeyValuePair<String, Double> pair in data)
+		{
+			s += pair.Key + ": " + pair.Value + "\n"; 
+		}
+
+		return s;
+	}
+	
 }

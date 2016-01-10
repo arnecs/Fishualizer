@@ -246,7 +246,7 @@ public class Manager : MonoBehaviour
 
 			List<Enhet> enheter = l.getEnheter();
 
-			float radius = 0.02f;
+			float radius = 0.05f;
 
 			for(int j=0; j<l.getEnheter().Count; j++){
 				Enhet e = enheter[j] as Enhet;
