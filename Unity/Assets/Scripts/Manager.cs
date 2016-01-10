@@ -477,6 +477,7 @@ public class Manager : MonoBehaviour
 		foreach (Lokalitet l in lokaliteter) {
 			l.getMarker ().instance.transform.localScale = new Vector3 ((float)defaultMarkerScale, minimumMarkerHeight, (float)defaultMarkerScale);
 			float d = 10f;
+
 			foreach (Enhet e in l.getEnheter ()) {
 				e.getMarker ().instance.transform.localScale = new Vector3 ((float)defaultMarkerScale, minimumMarkerHeight, (float)defaultMarkerScale);
 				try {
@@ -488,6 +489,7 @@ public class Manager : MonoBehaviour
 				skalerMarker (e.getMarker (), d);
 			}
 
+			l.getMarker().instance.GetComponent<InspiserLokalitet>().setValueText(d/l.getEnheter().Count);
 			skalerMarker (l.getMarker (), d);
 		}
 	}
