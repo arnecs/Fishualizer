@@ -72,6 +72,7 @@ public class Manager : MonoBehaviour
 
 
 	bool visLokalitet = true;
+	bool visEnhet = true;
 
 	public Button visLokalitetButton;
 	public Button visEnhetButton;
@@ -80,7 +81,7 @@ public class Manager : MonoBehaviour
 	void Start ()
 	{
 		lokaliteter = new List<Lokalitet> ();
-		visLokaliteter ();
+		ToggleVisLokaliteter ();
 		animationSpeed = 1.0f;
 
 		//Brukes ikke før vi evt. vil skalere ALLE markers samtidig. Ligger også funksjonalitet
@@ -489,14 +490,17 @@ public class Manager : MonoBehaviour
 			l.getMarker ().instance.transform.localScale = new Vector3 ((float)defaultMarkerScale, minimumMarkerHeight, (float)defaultMarkerScale);
 			float d = 10f;
 			foreach (Enhet e in l.getEnheter ()) {
-				e.getMarker ().instance.transform.localScale = new Vector3 ((float)defaultMarkerScale, minimumMarkerHeight, (float)defaultMarkerScale);
-				try {
-					d += (float)e.getSenesteMålingGittDato (currentDate).getValueForKey (datatyper[valgtDatatype]);
+				float enhetMåling = -1;
 
+				//e.getMarker ().instance.transform.localScale = new Vector3 ((float)defaultMarkerScale, minimumMarkerHeight, (float)defaultMarkerScale);
+
+				try {
+					enhetMåling =  (float)e.getSenesteMålingGittDato (currentDate).getValueForKey (datatyper[valgtDatatype]);
+					d += enhetMåling;
 				} catch (Exception ex){
 					//Debug.Log (ex); //Ikke enable, skaper massiv lag!
 				}
-				skalerMarker (e.getMarker (), d);
+				skalerMarker (e.getMarker (), enhetMåling);
 			}
 
 			skalerMarker (l.getMarker (), d);
@@ -535,34 +539,52 @@ public class Manager : MonoBehaviour
 
 	/// Valg om lokaliter eller enheter skal vises
 
-	public void visLokaliteter() {
-		visLokalitet = true;
-		visEnhetButton.colors = ColorBlock.defaultColorBlock;
-
-		var cb = visLokalitetButton.colors;
-
-		var pressedColor = cb.pressedColor;
-		cb.normalColor = pressedColor;
-		cb.highlightedColor = pressedColor;
-
-		visLokalitetButton.colors = cb;
+	public void ToggleVisLokaliteter() {
+		visLokalitet = !visLokalitet;
 
 
+		if (visLokalitet) {
+			var cb = visLokalitetButton.colors;
+
+			var pressedColor = cb.pressedColor;
+			cb.normalColor = pressedColor;
+			cb.highlightedColor = pressedColor;
+
+			visLokalitetButton.colors = cb;
+		} else {
+			visLokalitetButton.colors = ColorBlock.defaultColorBlock;
+		}
+
+		foreach (var l in lokaliteter) {
+			l.getMarker ().instance.GetComponent<MeshRenderer>().enabled = visLokalitet;
+		}
 	}
 
-	public void visEnheter() {
-		visLokalitet = false;
-
-		visLokalitetButton.colors = ColorBlock.defaultColorBlock;
-
-		var cb = visEnhetButton.colors;
-
-		var pressedColor = cb.pressedColor;
-		cb.normalColor = pressedColor;
-		cb.highlightedColor = pressedColor;
-
-		visEnhetButton.colors = cb;
+	public void ToggleVisEnheter() {
 		
+		visEnhet = !visEnhet;
+
+		if (visEnhet) {
+			var cb = visEnhetButton.colors;
+
+			var pressedColor = cb.pressedColor;
+			cb.normalColor = pressedColor;
+			cb.highlightedColor = pressedColor;
+
+			visEnhetButton.colors = cb;
+		} else {
+			visEnhetButton.colors = ColorBlock.defaultColorBlock;
+
+		}
+			
+
+		foreach (var l in lokaliteter) {
+			foreach (var e in l.getEnheter()) {
+				e.getMarker ().instance.GetComponent<MeshRenderer>().enabled = visEnhet;
+
+			}
+		}
+
 	}
 
 }
