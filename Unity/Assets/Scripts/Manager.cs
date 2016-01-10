@@ -38,6 +38,7 @@ public class Manager : MonoBehaviour
 
 	int defaultMarkerScale = 10;
 	float minimumMarkerHeight = 5.0f;
+	float maxMarkerHeight = 400.0f;
 
 
 	// Data selection
@@ -90,6 +91,7 @@ public class Manager : MonoBehaviour
 //		if (myMaterial != null) {
 //			Debug.Log (myMaterial.color);// = new Color (255, 0, 0);
 //		}
+		Populate(Application.dataPath + "/Resources/06.01.2016-Lusetellinger-1712.xls");
 
 	}
 
@@ -221,8 +223,8 @@ public class Manager : MonoBehaviour
 			marker.scale = defaultMarkerScale;
 			marker.customData = l;
 
-			marker.range.max = 12;
-			marker.range.min = 1;
+			marker.range.max = 3;
+			marker.range.min = 2;
 			
 			control = onlineMaps.GetComponent<OnlineMapsControlBase3D> ();
 
@@ -249,7 +251,8 @@ public class Manager : MonoBehaviour
 				marker = control.AddMarker3D (new Vector2(position.x + Mathf.Cos(angle)*radius, position.y + Mathf.Sin(angle)*radius*0.5f), mapObjectChild);
 
 				
-
+				marker.range.max = 15;
+				marker.range.min = 1;
 				marker.label = l.getLokalitetsnavn ();
 				marker.scale = defaultMarkerScale;
 			
@@ -260,30 +263,23 @@ public class Manager : MonoBehaviour
 			}
 			//Destroy(mapObject);
 		}
-			
+		UpdateSliderDates ();
 		dataTypeChanged ();
 
-		UpdateSliderDates ();
+
 
 
 	}
 
 	void UpdateSliderDates() {
-		dates = new List<DateTime> ();
-
-
-
 		animationSpeedSlider = GameObject.Find ("AnimationSpeedSlider").GetComponent<Slider> ();
 		animationSpeedSliderText = GameObject.Find("AnimationSpeedSliderText").GetComponent<Text>();
 		animationSpeedSliderTextTooltip = GameObject.Find ("AnimationSpeedTooltipText").GetComponent<Text> ();
 		currentDate = firstDate ();
 		timeSlider =  GameObject.Find ("TimeSlider").GetComponent<Slider> ();
 
-		currentDate = firstDate ();
-
 		setTimeSliderMaxValue ();
 		setTimeSliderCurrentDateText ();
-
 	}
 
 	// Update is called once per frame
@@ -470,25 +466,70 @@ public class Manager : MonoBehaviour
 
 	public void oppdaterMarkers(){
 
-		//Setter default høyde på alle markers
+		//Lagrer alle verdier for en type måling i en liste
+		List<float> alleVerdierForValgtDatatype = new List<float> ();
+		float høydeSkalering = minimumMarkerHeight;
+		foreach (Lokalitet l in lokaliteter) {
+			foreach (Enhet e in l.getEnheter ()) {
+				try {
+					float tempVerdi = (float)e.getSenesteMålingGittDato (currentDate).getValueForKey (datatyper[valgtDatatype]);
+					alleVerdierForValgtDatatype.Add (tempVerdi);
+				} catch (Exception ex){
+				}
 
+			}
+		}
+		//Går igjennom listen og finner høyeste verdi, og regner ut høydeskalering basert på den
+		høydeSkalering = beregnHøydeSkalering (valgtDatatype, alleVerdierForValgtDatatype);
+
+
+		//Går igjennom alle markers og legger til skalering
 		foreach (Lokalitet l in lokaliteter) {
 			l.getMarker ().instance.transform.localScale = new Vector3 ((float)defaultMarkerScale, minimumMarkerHeight, (float)defaultMarkerScale);
-			float d = 10f;
+			float d = minimumMarkerHeight;
 			foreach (Enhet e in l.getEnheter ()) {
+				d = minimumMarkerHeight;
 				e.getMarker ().instance.transform.localScale = new Vector3 ((float)defaultMarkerScale, minimumMarkerHeight, (float)defaultMarkerScale);
 				try {
-					d += (float)e.getSenesteMålingGittDato (currentDate).getValueForKey (datatyper[valgtDatatype]);
+					//legger til skalering i en variabel
+					//Debug.Log ((float)e.getSenesteMålingGittDato (currentDate).getValueForKey (datatyper[valgtDatatype]) + " * " + høydeSkalering + " = " +(float)e.getSenesteMålingGittDato (currentDate).getValueForKey (datatyper[valgtDatatype])*høydeSkalering);
+					d = ((float)e.getSenesteMålingGittDato (currentDate).getValueForKey (datatyper[valgtDatatype]) * høydeSkalering);
+//					Debug.Log(d);
+
 
 				} catch (Exception ex){
 					//Debug.Log (ex); //Ikke enable, skaper massiv lag!
 				}
+
+				//skalerer enheter
 				skalerMarker (e.getMarker (), d);
 			}
-
+			//skalerer lokaliteter (gir egentlig ikke mening før data er samlet på lokalitet)
 			skalerMarker (l.getMarker (), d);
 		}
+
+
 	}
+
+	public float beregnHøydeSkalering(int valgtDatatype, List<float> alleVerdierForValgtDattype){
+		//Vet ikke hvorfor datatype skal ha noe å si, men kan bli bruk for senere
+		float maxVerdiSåLangt = 0;
+		float høydeSkalering = 0;
+		foreach (float f in alleVerdierForValgtDattype) {
+			if (f > maxVerdiSåLangt) {
+				maxVerdiSåLangt = f;
+			}
+		}
+		if (maxVerdiSåLangt > 0) {
+			høydeSkalering = maxMarkerHeight / maxVerdiSåLangt;
+		} else {
+			høydeSkalering = minimumMarkerHeight;
+		}
+//		Debug.Log ("Valgt datatype: " + valgtDatatype + "\nMaxVerdi: " + maxVerdiSåLangt + "\tHøydeskalering: " + høydeSkalering);
+		return høydeSkalering;
+
+	}
+
 	public void skalerMarker(OnlineMapsMarker3D marker, float d){
 		if (d < minimumMarkerHeight) {
 			marker.instance.transform.localScale = new Vector3 ((float)defaultMarkerScale, minimumMarkerHeight, (float)defaultMarkerScale);
@@ -497,6 +538,7 @@ public class Manager : MonoBehaviour
 		}
 
 	}
+
 	public void onDateChanged(){
 		currentDate = (firstDate ().AddDays (timeSlider.value));
 		setTimeSliderCurrentDateText ();
