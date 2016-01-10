@@ -36,9 +36,9 @@ public class Manager : MonoBehaviour
 
 	public Camera _camera;
 
-	int defaultMarkerScale = 10;
+	int defaultMarkerScale = 5;
 	float minimumMarkerHeight = 5.0f;
-	float maxMarkerHeight = 400.0f;
+	float maxMarkerHeight = 200.0f;
 
 
 	// Data selection
@@ -256,7 +256,7 @@ public class Manager : MonoBehaviour
 
 			List<Enhet> enheter = l.getEnheter();
 
-			float radius = 0.02f;
+			float radius = 0.1f;
 
 			for(int j=0; j<l.getEnheter().Count; j++){
 				Enhet e = enheter[j] as Enhet;
@@ -490,10 +490,6 @@ public class Manager : MonoBehaviour
 
 	public void oppdaterMarkers(){
 
-
-
-
-
 		var dataType = datatyper [valgtDatatype].ToUpper();
 
 		MålingBeregning beregning = MålingBeregning.Total;
@@ -633,8 +629,10 @@ public class Manager : MonoBehaviour
 
 	public void skalerMarker(OnlineMapsMarker3D marker, float d){
 		if (d < minimumMarkerHeight) {
+			marker.instance.GetComponent<Renderer> ().material.color = new Color (1f, 1f, 1f);
 			marker.instance.transform.localScale = new Vector3 ((float)defaultMarkerScale, minimumMarkerHeight, (float)defaultMarkerScale);
 		} else {
+			marker.instance.GetComponent<Renderer> ().material.color = new Color ((((d / maxMarkerHeight)/2f)+0.5f), (maxMarkerHeight - d) / maxMarkerHeight, 0f);
 			marker.instance.transform.localScale = new Vector3 ((float)defaultMarkerScale, d, (float)defaultMarkerScale);
 		}
 

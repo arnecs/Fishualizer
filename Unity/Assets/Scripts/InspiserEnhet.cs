@@ -41,13 +41,13 @@ public class InspiserEnhet : MonoBehaviour {
 			}
 		
 			mySkin.label.normal.textColor = Color.black;
-			GUI.Label (new Rect (point.x - 51, Screen.height - point.y + Screen.height / 20, 100, 20), labelText);
-			GUI.Label (new Rect (point.x - 49, Screen.height - point.y + Screen.height / 20, 100, 20), labelText);
-			GUI.Label (new Rect (point.x - 50, Screen.height - point.y + 1 + Screen.height / 20, 100, 20), labelText);
-			GUI.Label (new Rect (point.x - 50, Screen.height - point.y - 1 + Screen.height / 20, 100, 20), labelText);
+			GUI.Label (new Rect (point.x - 51, Screen.height - point.y + 10, 100, 20), labelText);
+			GUI.Label (new Rect (point.x - 49, Screen.height - point.y + 10, 100, 20), labelText);
+			GUI.Label (new Rect (point.x - 50, Screen.height - point.y + 1 + 10, 100, 20), labelText);
+			GUI.Label (new Rect (point.x - 50, Screen.height - point.y - 1 + 10, 100, 20), labelText);
 		
 			mySkin.label.normal.textColor = Color.white;
-			GUI.Label (new Rect (point.x - 50, Screen.height - point.y + Screen.height / 20, 100, 20), labelText);
+			GUI.Label (new Rect (point.x - 50, Screen.height - point.y + 10, 100, 20), labelText);
 		}
 	}
 	
