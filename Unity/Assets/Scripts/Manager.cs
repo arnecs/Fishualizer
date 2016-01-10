@@ -201,23 +201,24 @@ public class Manager : MonoBehaviour
 			Lokalitet l = lokaliteter [i] as Lokalitet;
 
 
-			//GameObject cylinder = (GameObject)Resources.Load ("markerPrefab", typeof(GameObject));
-			GameObject mapObject = Instantiate(Resources.Load("markerPrefab", typeof(GameObject))) as GameObject;
-			mapObject.name = l.getLokalitetsnavn();
+			GameObject mapObject = (GameObject)Resources.Load ("markerPrefab", typeof(GameObject));
+			//GameObject mapObject = Instantiate(Resources.Load("markerPrefab", typeof(GameObject))) as GameObject;
+			//mapObject.name = lokaliteter[i].getLokalitetsnavn();
 
 
 			marker = new OnlineMapsMarker3D (mapObject);
 			Vector2 position = l.getCoordinates ();
 		
-
 			marker.position = position;
 			marker.label = l.getLokalitetsnavn ();
 			marker.scale = defaultMarkerScale;
+			marker.customData = l;
 
 			marker.range.max = 12;
 			marker.range.min = 1;
 			
 			OnlineMapsControlBase3D control = onlineMaps.GetComponent<OnlineMapsControlBase3D> ();
+
 			l.setMarker (marker);
 			control.AddMarker3D (marker);
 
@@ -228,9 +229,9 @@ public class Manager : MonoBehaviour
 			for(int j=0; j<l.getEnheter().Count; j++){
 				Enhet e = enheter[j] as Enhet;
 				
-				//GameObject cylinderChild = (GameObject)Resources.Load ("markerEnhetPrefab", typeof(GameObject));
-				GameObject mapObjectChild = Instantiate(Resources.Load("markerEnhetPrefab", typeof(GameObject))) as GameObject;
-				mapObjectChild.name = enheter[j].getEnhetsId();
+				GameObject mapObjectChild = (GameObject)Resources.Load ("markerEnhetPrefab", typeof(GameObject));
+				//GameObject mapObjectChild = Instantiate(Resources.Load("markerEnhetPrefab", typeof(GameObject))) as GameObject;
+				//mapObjectChild.name = enheter[j].getEnhetsId();
 
 
 				var angle = j * Mathf.PI * 2 / enheter.Count;
@@ -247,9 +248,9 @@ public class Manager : MonoBehaviour
 				control = onlineMaps.GetComponent<OnlineMapsControlBase3D> ();
 
 				control.AddMarker3D (marker);
-				Destroy(mapObjectChild);
+				//Destroy(mapObjectChild);
 			}
-			Destroy(mapObject);
+			//Destroy(mapObject);
 		}
 
 
