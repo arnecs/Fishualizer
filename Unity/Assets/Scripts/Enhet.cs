@@ -8,6 +8,7 @@ public class Enhet
 
 	private string enhetsId;
 	private List<Måling> målinger = new List<Måling> ();
+	private OnlineMapsMarker3D marker;
 
 	public Enhet (string enhetsId, List<Måling> målinger)
 	{
@@ -53,6 +54,15 @@ public class Enhet
 	public void sorterMålinger ()
 	{
 		målinger.Sort ();
+	}
+
+
+	public void setMarker(OnlineMapsMarker3D marker){
+		this.marker = marker;
+	}
+
+	public OnlineMapsMarker3D getMarker(){
+		return marker;
 	}
 
 	public DateTime firstDate ()

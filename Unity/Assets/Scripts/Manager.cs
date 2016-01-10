@@ -37,6 +37,8 @@ public class Manager : MonoBehaviour
 	public Camera _camera;
 
 	int defaultMarkerScale;
+	float minimumMarkerHeight;
+
 
 	// Data selection
 	bool showDataSelection;
@@ -65,20 +67,22 @@ public class Manager : MonoBehaviour
 	void Start ()
 	{
 		lokaliteter = new List<Lokalitet> ();
-		animationSpeed = 1.0f;
+
 		dates = new List<DateTime> ();
+
+		animationSpeed = 1.0f;
 		animationSpeedSlider = GameObject.Find ("AnimationSpeedSlider").GetComponent<Slider> ();
 		animationSpeedSliderText = GameObject.Find("AnimationSpeedSliderText").GetComponent<Text>();
 		animationSpeedSliderTextTooltip = GameObject.Find ("AnimationSpeedTooltipText").GetComponent<Text> ();
 		currentDate = firstDate ();
 		timeSlider =  GameObject.Find ("TimeSlider").GetComponent<Slider> ();
 		defaultMarkerScale = 10;
+		minimumMarkerHeight = 5.0f;
 
 		Populate ();
+
 		currentDate = firstDate ();
-//		Debug.Log("Earliest date: " + firstDate ().ToString ("yyyy-MM-dd"));
-//		Debug.Log("Latest date: " + lastDate ().ToString ("yyyy-MM-dd"));
-//		Debug.Log ("Total amount of dates: " + totalDates ());
+
 		setTimeSliderMaxValue ();
 		setTimeSliderCurrentDateText ();
 
@@ -88,7 +92,6 @@ public class Manager : MonoBehaviour
 //		api.OnChangeZoom += OnChangeZoom;
 //		OnChangeZoom ();
 
-
 		//FileReader
 		fb.guiSkin = skins[0]; //set the starting skin
 		fb.fileTexture = file; 
@@ -97,7 +100,12 @@ public class Manager : MonoBehaviour
 		fb.driveTexture = drive;
 		fb.showSearch = true;
 		fb.searchRecursively = true;
-		//Debug.Log (lokaliteter [0].getMarker ().transform.gameObject.);
+		//lokaliteter[0].getMarker ().instance.
+//		Material myMaterial = Resources.Load("Resources/mymat", typeof(Material)) as Material;
+//		if (myMaterial != null) {
+//			Debug.Log (myMaterial.color);// = new Color (255, 0, 0);
+//		}
+
 	}
 
 	void OnGUI(){
@@ -243,10 +251,10 @@ public class Manager : MonoBehaviour
 				position = l.getCoordinates ();
 				
 				marker.position = new Vector2(position.x + Mathf.Cos(angle)*radius, position.y + Mathf.Sin(angle)*radius*0.5f);
-				marker.label = l.getLokalitetsnavn ();
+				marker.label = l.getLokalitetsnavn () + " " + e.getEnhetsId ();
 				marker.scale = defaultMarkerScale;
-				marker.range.max = 20;
-				marker.range.min = 13;
+			
+				e.setMarker (marker);
 				
 				control = onlineMaps.GetComponent<OnlineMapsControlBase3D> ();
 
@@ -295,6 +303,9 @@ public class Manager : MonoBehaviour
 			if (startAnimation ()) {
 				// Bytt bilde på playPauseButton?
 				t.text = "❙❙";
+				if (timeSlider.value == timeSlider.maxValue) {
+					timeSlider.value = timeSlider.minValue;
+				}
 
 			}
 		}
@@ -439,29 +450,33 @@ public class Manager : MonoBehaviour
 
 	public void oppdaterMarkers(){
 
-		float r = (float)defaultMarkerScale;
+		//Setter default høyde på alle markers
 
 		foreach (Lokalitet l in lokaliteter) {
-
-
-
+			l.getMarker ().instance.transform.localScale = new Vector3 ((float)defaultMarkerScale, minimumMarkerHeight, (float)defaultMarkerScale);
 			float d = 10f;
-
-
 			foreach (Enhet e in l.getEnheter ()) {
+				e.getMarker ().instance.transform.localScale = new Vector3 ((float)defaultMarkerScale, minimumMarkerHeight, (float)defaultMarkerScale);
 				try {
 					d += (float)e.getSenesteMålingGittDato (currentDate).getValueForKey (datatyper[valgtDatatype]);
-					
 
 				} catch (Exception ex){
 					//Debug.Log (ex); //Ikke enable, skaper massiv lag!
 				}
+				skalerMarker (e.getMarker (), d);
 			}
-			l.getMarker ().instance.transform.localScale = new Vector3 ((float)defaultMarkerScale, d, (float)defaultMarkerScale);
-			l.getMarker ().instance.transform.localScale = new Vector3 (r, d, r);
+
+			skalerMarker (l.getMarker (), d);
 		}
 	}
+	public void skalerMarker(OnlineMapsMarker3D marker, float d){
+		if (d < minimumMarkerHeight) {
+			marker.instance.transform.localScale = new Vector3 ((float)defaultMarkerScale, minimumMarkerHeight, (float)defaultMarkerScale);
+		} else {
+			marker.instance.transform.localScale = new Vector3 ((float)defaultMarkerScale, d, (float)defaultMarkerScale);
+		}
 
+	}
 	public void onDateChanged(){
 		currentDate = (firstDate ().AddDays (timeSlider.value));
 		setTimeSliderCurrentDateText ();
