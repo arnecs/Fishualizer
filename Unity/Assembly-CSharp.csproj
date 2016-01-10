@@ -168,6 +168,7 @@
      <Compile Include="Assets\Scripts\Enhet.cs" />
      <Compile Include="Assets\Scripts\FileReader.cs" />
      <Compile Include="Assets\Scripts\Inspiser.cs" />
+     <Compile Include="Assets\Scripts\InspiserEnhet.cs" />
      <Compile Include="Assets\Scripts\InspiserLokalitet.cs" />
      <Compile Include="Assets\Scripts\Lokalitet.cs" />
      <Compile Include="Assets\Scripts\LokalitetBehaviour.cs" />

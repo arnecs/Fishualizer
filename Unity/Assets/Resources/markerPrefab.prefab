@@ -11,6 +11,7 @@ GameObject:
   - 33: {fileID: 3375402}
   - 136: {fileID: 13614170}
   - 23: {fileID: 2339792}
+  - 114: {fileID: 11458432}
   m_Layer: 0
   m_Name: markerPrefab
   m_TagString: Untagged
@@ -63,6 +64,18 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 132074}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &11458432
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 132074}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46867d9f4f1c8437bb8506c137be5192, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mySkin: {fileID: 11400000, guid: 8a57761c59b2d4c42b313c4bc09ee901, type: 2}
 --- !u!136 &13614170
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -103,7 +116,11 @@ Prefab:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
-
+    - target: {fileID: 0}
+      propertyPath: mySkin
+      value: 
+      objectReference: {fileID: 11400000, guid: 8a57761c59b2d4c42b313c4bc09ee901,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 132074}

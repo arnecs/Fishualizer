@@ -237,8 +237,7 @@ public class Manager : MonoBehaviour
 			marker.scale = defaultMarkerScale;
 			marker.customData = l;
 
-			marker.range.max = 3;
-			marker.range.min = 2;
+
 			
 			control = onlineMaps.GetComponent<OnlineMapsControlBase3D> ();
 
@@ -602,6 +601,7 @@ public class Manager : MonoBehaviour
 
 		foreach (var l in lokaliteter) {
 			l.getMarker ().instance.GetComponent<MeshRenderer>().enabled = visLokalitet;
+			l.getMarker ().instance.GetComponent<InspiserLokalitet> ().ToggleText (visLokalitet);
 		}
 	}
 
@@ -626,7 +626,7 @@ public class Manager : MonoBehaviour
 			foreach (var e in l.getEnheter()) {
 				e.getMarker ().instance.GetComponent<MeshRenderer>().enabled = visEnhet;
 
-				e.getMarker ().instance.GetComponent<InspiserEnhet> ().SetShowText (visEnhet);
+				e.getMarker ().instance.GetComponent<InspiserEnhet> ().ToggleText (visEnhet);
 			}
 		}
 	}
