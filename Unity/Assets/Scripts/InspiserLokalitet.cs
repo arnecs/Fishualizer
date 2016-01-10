@@ -56,7 +56,7 @@ public class InspiserLokalitet : MonoBehaviour {
 		}
 	}
 
-	void setValueText(double d){
-		labelText = d.ToString();
+	public void setValueText(double d){
+		labelText = d.ToString("0.000");
 	}
 }
