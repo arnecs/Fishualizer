@@ -73,7 +73,7 @@ public class Manager : MonoBehaviour
 		timeSlider =  GameObject.Find ("TimeSlider").GetComponent<Slider> ();
 		defaultMarkerScale = 10;
 
-		Populate ();
+		//Populate ();
 		currentDate = firstDate ();
 //		Debug.Log("Earliest date: " + firstDate ().ToString ("yyyy-MM-dd"));
 //		Debug.Log("Latest date: " + lastDate ().ToString ("yyyy-MM-dd"));
@@ -221,8 +221,8 @@ public class Manager : MonoBehaviour
 			mapObject.name = l.getLokalitetsnavn();
 
 
-			marker = new OnlineMapsMarker3D (mapObject);
 			Vector2 position = l.getCoordinates ();
+			marker = control.AddMarker3D (position, mapObject);
 		
 
 			marker.position = position;
@@ -234,7 +234,7 @@ public class Manager : MonoBehaviour
 			
 
 			l.setMarker (marker);
-			control.AddMarker3D (marker);
+			//control.AddMarker3D (marker);
 
 			List<Enhet> enheter = l.getEnheter();
 
@@ -249,19 +249,20 @@ public class Manager : MonoBehaviour
 
 
 				var angle = j * Mathf.PI * 2 / enheter.Count;
-				
-				marker = new OnlineMapsMarker3D (mapObjectChild);
 				position = l.getCoordinates ();
+
+
+
+				marker = control.AddMarker3D (new Vector2(position.x + Mathf.Cos(angle)*radius, position.y + Mathf.Sin(angle)*radius*0.5f), mapObjectChild);
+
 				
-				marker.position = new Vector2(position.x + Mathf.Cos(angle)*radius, position.y + Mathf.Sin(angle)*radius*0.5f);
+
 				marker.label = l.getLokalitetsnavn ();
 				marker.scale = defaultMarkerScale;
 				marker.range.max = 20;
 				marker.range.min = 13;
 				
-				control = onlineMaps.GetComponent<OnlineMapsControlBase3D> ();
-
-				control.AddMarker3D (marker);
+			
 				Destroy(mapObjectChild);
 			}
 			Destroy(mapObject);
