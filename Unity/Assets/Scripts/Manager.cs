@@ -65,11 +65,22 @@ public class Manager : MonoBehaviour
 	FileBrowser fb = new FileBrowser();
 	string output = "no file";
 
+
+
+	// Valg lokalitet eller enhet
+
+
+
+	bool visLokalitet = true;
+
+	public Button visLokalitetButton;
+	public Button visEnhetButton;
+
 	// Use this for initialization
 	void Start ()
 	{
 		lokaliteter = new List<Lokalitet> ();
-
+		visLokaliteter ();
 		animationSpeed = 1.0f;
 
 		//Brukes ikke før vi evt. vil skalere ALLE markers samtidig. Ligger også funksjonalitet
@@ -522,4 +533,38 @@ public class Manager : MonoBehaviour
 		}
 
 	}
+
+
+	/// Valg om lokaliter eller enheter skal vises
+
+	public void visLokaliteter() {
+		visLokalitet = true;
+		visEnhetButton.colors = ColorBlock.defaultColorBlock;
+
+		var cb = visLokalitetButton.colors;
+
+		var pressedColor = cb.pressedColor;
+		cb.normalColor = pressedColor;
+		cb.highlightedColor = pressedColor;
+
+		visLokalitetButton.colors = cb;
+
+
+	}
+
+	public void visEnheter() {
+		visLokalitet = false;
+
+		visLokalitetButton.colors = ColorBlock.defaultColorBlock;
+
+		var cb = visEnhetButton.colors;
+
+		var pressedColor = cb.pressedColor;
+		cb.normalColor = pressedColor;
+		cb.highlightedColor = pressedColor;
+
+		visEnhetButton.colors = cb;
+		
+	}
+
 }
