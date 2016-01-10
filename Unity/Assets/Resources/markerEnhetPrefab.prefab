@@ -84,8 +84,13 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
+<<<<<<< HEAD
   m_Radius: .5
   m_Height: 2
+=======
+  m_Radius: 0.5
+  m_Height: 1
+>>>>>>> 47ed5b0a32dbfc1068df525fa85ff23272171546
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &100100000
@@ -121,9 +126,15 @@ Prefab:
       objectReference: {fileID: 11400000, guid: 8a57761c59b2d4c42b313c4bc09ee901,
         type: 2}
     - target: {fileID: 0}
+<<<<<<< HEAD
       propertyPath: xBtn
       value: 
       objectReference: {fileID: 10900, guid: 0000000000000000f000000000000000, type: 0}
+=======
+      propertyPath: m_Height
+      value: 1
+      objectReference: {fileID: 0}
+>>>>>>> 47ed5b0a32dbfc1068df525fa85ff23272171546
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 132074}

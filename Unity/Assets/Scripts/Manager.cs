@@ -6,7 +6,8 @@ using System.IO;
 using UnityEngine.UI;
 
 using InfinityCode;
-using UnityEditor;
+//using UnityEditor;
+
 
 
 public class Manager : MonoBehaviour
@@ -35,9 +36,9 @@ public class Manager : MonoBehaviour
 
 	public Camera _camera;
 
-	int defaultMarkerScale = 10;
+	int defaultMarkerScale = 5;
 	float minimumMarkerHeight = 5.0f;
-	float maxMarkerHeight = 400.0f;
+	float maxMarkerHeight = 200.0f;
 
 
 	// Data selection
@@ -76,6 +77,12 @@ public class Manager : MonoBehaviour
 
 	public Button visLokalitetButton;
 	public Button visEnhetButton;
+
+
+
+	enum MålingBeregning {
+		Snitt, Maks, Total
+	};
 
 	// Use this for initialization
 	void Start ()
@@ -143,9 +150,7 @@ public class Manager : MonoBehaviour
 
 		var dataSelectionRect = new Rect (0, 30, 500, datatyper.Count * 19 + 4);
 
-		if (showDataSelection && !dataSelectionRect.Contains(new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y)) && Input.GetMouseButton(0)) {
-			toggleDataSelection ();
-		} else if (showDataSelection) {
+		if (showDataSelection) {
 			if (rowStyle == null) {
 				
 				rowStyle = new GUIStyle (GUI.skin.button);
@@ -186,6 +191,11 @@ public class Manager : MonoBehaviour
 				//GUI.EndScrollView();
 
 		}
+
+		if (showDataSelection && Input.GetMouseButton(0) && !(dataSelectionRect.Contains(new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y)) || new Rect(150, 0,100,30).Contains(new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y)))) {
+			toggleDataSelection ();
+
+		} 
 
 		if (animationSpeedSliderTextTooltip != null && animationSpeedSliderTextTooltip.text == "Dager per sekund") {
 			animationSpeedSliderTextTooltip.transform.position = new Vector3 (Input.mousePosition.x+60, Input.mousePosition.y+20, 0);
@@ -246,7 +256,8 @@ public class Manager : MonoBehaviour
 
 			List<Enhet> enheter = l.getEnheter();
 
-			float radius = 0.05f;
+
+			float radius = 0.1f;
 
 			for(int j=0; j<l.getEnheter().Count; j++){
 				Enhet e = enheter[j] as Enhet;
@@ -480,37 +491,87 @@ public class Manager : MonoBehaviour
 
 	public void oppdaterMarkers(){
 
-		//Lagrer alle verdier for en type måling i en liste
-		List<float> alleVerdierForValgtDatatype = new List<float> ();
-		float høydeSkalering = minimumMarkerHeight;
-		foreach (Lokalitet l in lokaliteter) {
-			foreach (Enhet e in l.getEnheter ()) {
-				try {
-					float tempVerdi = (float)e.getSenesteMålingGittDato (currentDate).getValueForKey (datatyper[valgtDatatype]);
-					alleVerdierForValgtDatatype.Add (tempVerdi);
-				} catch (Exception ex){
-				}
+		var dataType = datatyper [valgtDatatype].ToUpper();
 
-			}
+		MålingBeregning beregning = MålingBeregning.Total;
+
+		if (dataType.Contains("SNITT")) {
+			beregning = MålingBeregning.Snitt;
+		} else if (dataType.Contains("MAKS")) {
+			beregning = MålingBeregning.Maks;
+		} else if (dataType.Contains("TOTAL")) {
+			beregning = MålingBeregning.Total;
 		}
-		//Går igjennom listen og finner høyeste verdi, og regner ut høydeskalering basert på den
-		høydeSkalering = beregnHøydeSkalering (valgtDatatype, alleVerdierForValgtDatatype);
+
+		// Beregner høydeskalering
+		float høydeSkalering = minimumMarkerHeight;
+		if (beregning == MålingBeregning.Total) {
+
+			//Lagrer alle verdier for en type måling i en liste
+			List<float> alleVerdierForValgtDatatype = new List<float> ();
+			foreach (Lokalitet l in lokaliteter) {
+				float tot = 0;
+				foreach (Enhet e in l.getEnheter ()) {
+					try {
+						float tempVerdi = (float)e.getSenesteMålingGittDato (currentDate).getValueForKey (datatyper[valgtDatatype]);
+						tot += tempVerdi;
+					} catch (Exception ex){
+					}
+
+				}
+				alleVerdierForValgtDatatype.Add (tot);
+			}
+			//Går igjennom listen og finner høyeste verdi, og regner ut høydeskalering basert på den
+			høydeSkalering = beregnHøydeSkalering (valgtDatatype, alleVerdierForValgtDatatype);
+
+
+		} else {
+
+			//Lagrer alle verdier for en type måling i en liste
+			List<float> alleVerdierForValgtDatatype = new List<float> ();
+
+			foreach (Lokalitet l in lokaliteter) {
+				foreach (Enhet e in l.getEnheter ()) {
+					try {
+						float tempVerdi = (float)e.getSenesteMålingGittDato (currentDate).getValueForKey (datatyper[valgtDatatype]);
+						alleVerdierForValgtDatatype.Add (tempVerdi);
+					} catch (Exception ex){
+					}
+
+				}
+			}
+			//Går igjennom listen og finner høyeste verdi, og regner ut høydeskalering basert på den
+			høydeSkalering = beregnHøydeSkalering (valgtDatatype, alleVerdierForValgtDatatype);
+		}
+
 
 
 		//Går igjennom alle markers og legger til skalering
 		foreach (Lokalitet l in lokaliteter) {
+
 			l.getMarker ().instance.transform.localScale = new Vector3 ((float)defaultMarkerScale, minimumMarkerHeight, (float)defaultMarkerScale);
-			float d = minimumMarkerHeight;
+			float d = 0;
 			foreach (Enhet e in l.getEnheter ()) {
 
 				float enhetMåling = -1;
 
-				d = minimumMarkerHeight;
+				//d = minimumMarkerHeight;
 				e.getMarker ().instance.transform.localScale = new Vector3 ((float)defaultMarkerScale, minimumMarkerHeight, (float)defaultMarkerScale);
 				try {
 					float de = (float)e.getSenesteMålingGittDato (currentDate).getValueForKey (datatyper[valgtDatatype]);
 					enhetMåling = (float)(de * høydeSkalering);
-					d += enhetMåling;
+
+					switch (beregning) {
+					case MålingBeregning.Snitt:
+					case MålingBeregning.Total:
+						d += de;
+						break;
+					case MålingBeregning.Maks:
+						d = de > d ? de : d;
+						break;
+					}
+
+
 					e.getMarker().instance.GetComponent<InspiserEnhet>().setValueText(de);
 
 
@@ -523,8 +584,22 @@ public class Manager : MonoBehaviour
 				skalerMarker (e.getMarker (), enhetMåling);
 			}
 			//skalerer lokaliteter (gir egentlig ikke mening før data er samlet på lokalitet)
-			l.getMarker ().instance.GetComponent<InspiserLokalitet> ().setValueText (d / l.getEnheter ().Count);
-			skalerMarker (l.getMarker (), d);
+
+			switch (beregning) {
+			case MålingBeregning.Snitt:
+				d /= l.getEnheter().Count;
+				break;
+			case MålingBeregning.Total:
+				
+				break;
+			case MålingBeregning.Maks:
+				break;
+			}
+
+
+
+			l.getMarker ().instance.GetComponent<InspiserLokalitet> ().setValueText (d);
+			skalerMarker (l.getMarker (), d * høydeSkalering);
 		}
 
 
@@ -534,11 +609,15 @@ public class Manager : MonoBehaviour
 		//Vet ikke hvorfor datatype skal ha noe å si, men kan bli bruk for senere
 		float maxVerdiSåLangt = 0;
 		float høydeSkalering = 0;
-		foreach (float f in alleVerdierForValgtDattype) {
-			if (f > maxVerdiSåLangt) {
-				maxVerdiSåLangt = f;
+
+
+			foreach (float f in alleVerdierForValgtDattype) {
+				if (f > maxVerdiSåLangt) {
+					maxVerdiSåLangt = f;
+				}
 			}
-		}
+
+
 		if (maxVerdiSåLangt > 0) {
 			høydeSkalering = maxMarkerHeight / maxVerdiSåLangt;
 		} else {
@@ -551,8 +630,10 @@ public class Manager : MonoBehaviour
 
 	public void skalerMarker(OnlineMapsMarker3D marker, float d){
 		if (d < minimumMarkerHeight) {
+			marker.instance.GetComponent<Renderer> ().material.color = new Color (1f, 1f, 1f);
 			marker.instance.transform.localScale = new Vector3 ((float)defaultMarkerScale, minimumMarkerHeight, (float)defaultMarkerScale);
 		} else {
+			marker.instance.GetComponent<Renderer> ().material.color = new Color ((((d / maxMarkerHeight)/2f)+0.5f), (maxMarkerHeight - d) / maxMarkerHeight, 0f);
 			marker.instance.transform.localScale = new Vector3 ((float)defaultMarkerScale, d, (float)defaultMarkerScale);
 		}
 
