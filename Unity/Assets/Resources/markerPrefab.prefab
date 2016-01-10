@@ -11,7 +11,7 @@ GameObject:
   - 33: {fileID: 3375402}
   - 136: {fileID: 13614170}
   - 23: {fileID: 2339792}
-  - 114: {fileID: 11484140}
+  - 114: {fileID: 11420808}
   m_Layer: 0
   m_Name: markerPrefab
   m_TagString: Untagged
@@ -62,7 +62,7 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 132074}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &11484140
+--- !u!114 &11420808
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -97,6 +97,10 @@ Prefab:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 23215d45c939f174ca598f9780b52c9a, type: 2}
+    - target: {fileID: 0}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 132074}
