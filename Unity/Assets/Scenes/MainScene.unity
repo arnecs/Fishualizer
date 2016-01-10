@@ -161,7 +161,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 938784520}
-        m_MethodName: visLokaliteter
+        m_MethodName: ToggleVisLokaliteter
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1772,7 +1772,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 938784520}
-        m_MethodName: visEnheter
+        m_MethodName: ToggleVisEnheter
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

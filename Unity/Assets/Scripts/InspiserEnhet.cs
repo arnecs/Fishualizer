@@ -5,6 +5,7 @@ using System.Collections;
 public class InspiserEnhet : MonoBehaviour {
 	
 	bool showTooltip;
+	bool showText;
 	Enhet e;
 	GUIStyle s;
 	string labelText;
@@ -15,6 +16,7 @@ public class InspiserEnhet : MonoBehaviour {
 		Debug.Log ("Starter");
 		e = (Enhet)gameObject.GetComponent<OnlineMapsMarker3DInstance>().marker.customData;
 		labelText = e.getEnhetsId ();
+		showText = true;
 	}
 	
 	// Update is called once per frame
@@ -29,22 +31,24 @@ public class InspiserEnhet : MonoBehaviour {
 	}
 	
 	void OnGUI(){
-		GUI.skin = mySkin;
-		var point = Camera.main.WorldToScreenPoint(transform.position);
+		if (showText) {
+			GUI.skin = mySkin;
+			var point = Camera.main.WorldToScreenPoint (transform.position);
 		
 		
-		if (showTooltip) {
-			GUI.Box (new Rect (point.x + Screen.width/20, Screen.height-point.y - Screen.height/5, 100, 20), labelText);
+			if (showTooltip) {
+				GUI.Box (new Rect (point.x + Screen.width / 20, Screen.height - point.y - Screen.height / 5, 100, 20), labelText);
+			}
+		
+			mySkin.label.normal.textColor = Color.black;
+			GUI.Label (new Rect (point.x - 51, Screen.height - point.y + Screen.height / 20, 100, 20), labelText);
+			GUI.Label (new Rect (point.x - 49, Screen.height - point.y + Screen.height / 20, 100, 20), labelText);
+			GUI.Label (new Rect (point.x - 50, Screen.height - point.y + 1 + Screen.height / 20, 100, 20), labelText);
+			GUI.Label (new Rect (point.x - 50, Screen.height - point.y - 1 + Screen.height / 20, 100, 20), labelText);
+		
+			mySkin.label.normal.textColor = Color.white;
+			GUI.Label (new Rect (point.x - 50, Screen.height - point.y + Screen.height / 20, 100, 20), labelText);
 		}
-		
-		mySkin.label.normal.textColor = Color.black;
-		GUI.Label (new Rect (point.x -51, Screen.height - point.y + Screen.height / 20, 100, 20), labelText);
-		GUI.Label (new Rect (point.x -49, Screen.height - point.y + Screen.height / 20, 100, 20), labelText);
-		GUI.Label (new Rect (point.x -50, Screen.height - point.y + 1 + Screen.height / 20, 100, 20), labelText);
-		GUI.Label (new Rect (point.x -50, Screen.height - point.y - 1 + Screen.height / 20, 100, 20), labelText);
-		
-		mySkin.label.normal.textColor = Color.white;
-		GUI.Label (new Rect (point.x -50, Screen.height - point.y + Screen.height / 20, 100, 20), labelText);
 	}
 	
 	
@@ -58,5 +62,14 @@ public class InspiserEnhet : MonoBehaviour {
 	
 	public void setValueText(double d){
 		labelText = d.ToString("0.000");
+	}
+
+	public void ToggleText(bool b){
+		showText = b;
+		if (showText) {
+			showText = false;
+		} else {
+			showText = true;
+		}
 	}
 }
