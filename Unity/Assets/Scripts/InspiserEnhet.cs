@@ -16,9 +16,19 @@ public class InspiserEnhet : MonoBehaviour {
 	public Texture2D guiLight;
 	Manager manager;
 	string info;
-	
+
+	// Move window
+	Vector2 point;
+	Vector2 lastMousePosition;
+	bool moving;
+
+
+	OnlineMaps api;
 	// Use this for initialization
 	void Start () {
+
+		api = GameObject.Find ("Tileset map").GetComponent<OnlineMaps>();
+
 		e = (Enhet)gameObject.GetComponent<OnlineMapsMarker3DInstance>().marker.customData;
 		m = (Måling)e.getSenesteMålingGittDato(Manager.currentDate);
 		labelText = e.getEnhetsId ();
@@ -37,19 +47,20 @@ public class InspiserEnhet : MonoBehaviour {
 	}
 	
 	void OnGUI(){
-		var point = Camera.main.WorldToScreenPoint (transform.position);
+		var pointText = Camera.main.WorldToScreenPoint (transform.position);
 		GUI.skin = mySkin;
 		GUI.depth = 0;
-		if (showText) {
+		if (showText && api.zoom > 12) {
 			mySkin.label.normal.textColor = Color.black;
-			GUI.Label (new Rect (point.x - 51, Screen.height - point.y + 10, 100, 20), labelText);
-			GUI.Label (new Rect (point.x - 49, Screen.height - point.y + 10, 100, 20), labelText);
-			GUI.Label (new Rect (point.x - 50, Screen.height - point.y + 1 + 10, 100, 20), labelText);
-			GUI.Label (new Rect (point.x - 50, Screen.height - point.y - 1 + 10, 100, 20), labelText);
+			GUI.Label (new Rect (pointText.x - 51, Screen.height - pointText.y + 10, 100, 20), labelText);
+			GUI.Label (new Rect (pointText.x - 49, Screen.height - pointText.y + 10, 100, 20), labelText);
+			GUI.Label (new Rect (pointText.x - 50, Screen.height - pointText.y + 1 + 10, 100, 20), labelText);
+			GUI.Label (new Rect (pointText.x - 50, Screen.height - pointText.y - 1 + 10, 100, 20), labelText);
 			
 			mySkin.label.normal.textColor = Color.white;
-			GUI.Label (new Rect (point.x - 50, Screen.height - point.y + 10, 100, 20), labelText);
+			GUI.Label (new Rect (pointText.x - 50, Screen.height - pointText.y + 10, 100, 20), labelText);
 		}
+
 
 		GUI.depth = 1;
 		if (showTooltip) {
@@ -58,7 +69,31 @@ public class InspiserEnhet : MonoBehaviour {
 			mySkin.box.alignment = TextAnchor.UpperCenter;
 			mySkin.box.normal.textColor = Color.white;
 			mySkin.box.normal.background = guiDark;
-			GUI.Box (new Rect (point.x + Screen.width / 20, Screen.height - point.y - Screen.height / 5, 380, 20), e.getEnhetsId());
+
+			var barRect = new Rect (point.x + Screen.width / 20, Screen.height - point.y - Screen.height / 5, 380, 20);
+
+			GUI.Box (barRect, e.getEnhetsId ());
+			var mp = Input.mousePosition;
+
+			if (barRect.Contains (new Vector2 (mp.x, Screen.height - mp.y)) && Input.GetMouseButton (0)) {
+				moving = true;	
+			}
+			if (moving && !Input.GetMouseButton (0)) {
+				moving = false;
+			}
+			if (moving) {
+			
+				if (lastMousePosition != Vector2.zero) {
+					var dmp = new Vector2 (mp.x - lastMousePosition.x, mp.y - lastMousePosition.y);
+
+					point = new Vector2(point.x + dmp.x, point.y  + dmp.y);
+				}
+				lastMousePosition = mp;
+			} else {
+					lastMousePosition = Vector2.zero;
+			}
+
+
 			if(GUI.Button(new Rect (point.x + Screen.width / 20 + 380, Screen.height - point.y - Screen.height / 5, 20, 20), xBtn)){
 				toggleTooltip();
 			}
@@ -77,6 +112,7 @@ public class InspiserEnhet : MonoBehaviour {
 	
 	
 	void toggleTooltip(){
+		point = Camera.main.WorldToScreenPoint (transform.position);
 		if(showTooltip){
 			showTooltip = false;
 		}else{
