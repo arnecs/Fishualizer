@@ -28,7 +28,7 @@ public class Manager : MonoBehaviour
 
 	public Slider timeSlider;
 	public Text timeSliderCurrentDateText;
-	public float animationSpeed;
+	public float animationSpeed = 1.0f;
 
 	public Slider animationSpeedSlider;
 	public Text animationSpeedSliderText;
@@ -36,8 +36,8 @@ public class Manager : MonoBehaviour
 
 	public Camera _camera;
 
-	int defaultMarkerScale;
-	float minimumMarkerHeight;
+	int defaultMarkerScale = 10;
+	float minimumMarkerHeight = 5.0f;
 
 
 	// Data selection
@@ -70,21 +70,7 @@ public class Manager : MonoBehaviour
 	{
 		lokaliteter = new List<Lokalitet> ();
 
-		dates = new List<DateTime> ();
-
 		animationSpeed = 1.0f;
-		animationSpeedSlider = GameObject.Find ("AnimationSpeedSlider").GetComponent<Slider> ();
-		animationSpeedSliderText = GameObject.Find("AnimationSpeedSliderText").GetComponent<Text>();
-		animationSpeedSliderTextTooltip = GameObject.Find ("AnimationSpeedTooltipText").GetComponent<Text> ();
-		currentDate = firstDate ();
-		timeSlider =  GameObject.Find ("TimeSlider").GetComponent<Slider> ();
-		defaultMarkerScale = 10;
-		minimumMarkerHeight = 5.0f;
-
-		currentDate = firstDate ();
-
-		setTimeSliderMaxValue ();
-		setTimeSliderCurrentDateText ();
 
 		//Brukes ikke før vi evt. vil skalere ALLE markers samtidig. Ligger også funksjonalitet
 		// i LokalitetsBehaviour.cs
@@ -130,7 +116,7 @@ public class Manager : MonoBehaviour
 						Debug.Log(filePath);
 						toggleFileBrowser();
 						//Her skal vi kalle på Excel-metoden til arne. Vi sender med fb.outputFile.ToString() som argument.
-						Populate();
+						Populate(filePath);
 					}
 				}else{
 					toggleFileBrowser();
@@ -187,7 +173,7 @@ public class Manager : MonoBehaviour
 
 		}
 
-		if (animationSpeedSliderTextTooltip.text == "Dager per sekund") {
+		if (animationSpeedSliderTextTooltip != null && animationSpeedSliderTextTooltip.text == "Dager per sekund") {
 			animationSpeedSliderTextTooltip.transform.position = new Vector3 (Input.mousePosition.x+60, Input.mousePosition.y+20, 0);
 		}
 
@@ -204,7 +190,7 @@ public class Manager : MonoBehaviour
 		valgtDataText.text = datatyper [valgtDatatype];
 		oppdaterMarkers ();
 	}
-	void Populate ()
+	void Populate (string filePath)
 	{
 		/*
 		lokaliteter = new ArrayList ();
@@ -215,14 +201,10 @@ public class Manager : MonoBehaviour
 		var excelReader = new EXCELREADER ();
 
 		lokaliteter = excelReader.readGenerellInfo (Application.dataPath + "/Resources/06.01.2016-Generell-Info.xls");
-		lokaliteter = excelReader.readData (Application.dataPath + "/Resources/06.01.2016-Lusetellinger-1712.xls", lokaliteter);
+		lokaliteter = excelReader.readData (filePath, lokaliteter);
 
 		OnlineMapsControlBase3D control = onlineMaps.GetComponent<OnlineMapsControlBase3D> ();
 		control.RemoveAllMarker3D ();
-		control.allowDefaultMarkerEvents = true;
-		control.allowAddMarker3DByN = true;
-		control.enabled = true;
-
 
 		for (int i = 0; i < lokaliteter.Count; i++) {
 			Lokalitet l = lokaliteter [i] as Lokalitet;
@@ -280,16 +262,36 @@ public class Manager : MonoBehaviour
 			}
 			//Destroy(mapObject);
 		}
-
-		control.enabled = true;
+			
 		dataTypeChanged ();
+
+		UpdateSliderDates ();
+
+
+	}
+
+	void UpdateSliderDates() {
+		dates = new List<DateTime> ();
+
+
+
+		animationSpeedSlider = GameObject.Find ("AnimationSpeedSlider").GetComponent<Slider> ();
+		animationSpeedSliderText = GameObject.Find("AnimationSpeedSliderText").GetComponent<Text>();
+		animationSpeedSliderTextTooltip = GameObject.Find ("AnimationSpeedTooltipText").GetComponent<Text> ();
+		currentDate = firstDate ();
+		timeSlider =  GameObject.Find ("TimeSlider").GetComponent<Slider> ();
+
+		currentDate = firstDate ();
+
+		setTimeSliderMaxValue ();
+		setTimeSliderCurrentDateText ();
 
 	}
 
 	// Update is called once per frame
 	void Update ()
 	{
-			
+
 	}
 
 	private bool startAnimation ()
@@ -306,6 +308,9 @@ public class Manager : MonoBehaviour
 		// Stop animasjon av data
 		animating = false;
 		CancelInvoke ("incrementDay");
+		if (timeSlider.value == timeSlider.maxValue) {
+			timeSlider.value = timeSlider.minValue;
+		}
 		return true;
 	}
 
