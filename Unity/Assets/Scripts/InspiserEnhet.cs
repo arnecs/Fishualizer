@@ -42,14 +42,13 @@ public class InspiserEnhet : MonoBehaviour {
 		GUI.depth = 0;
 		if (showText) {
 			mySkin.label.normal.textColor = Color.black;
-<<<<<<< HEAD
-			GUI.Label (new Rect (point.x - 51, Screen.height - point.y + Screen.height / 40, 100, 20), labelText);
-			GUI.Label (new Rect (point.x - 49, Screen.height - point.y + Screen.height / 40, 100, 20), labelText);
-			GUI.Label (new Rect (point.x - 50, Screen.height - point.y + 1 + Screen.height / 40, 100, 20), labelText);
-			GUI.Label (new Rect (point.x - 50, Screen.height - point.y - 1 + Screen.height / 40, 100, 20), labelText);
-		
+			GUI.Label (new Rect (point.x - 51, Screen.height - point.y + 10, 100, 20), labelText);
+			GUI.Label (new Rect (point.x - 49, Screen.height - point.y + 10, 100, 20), labelText);
+			GUI.Label (new Rect (point.x - 50, Screen.height - point.y + 1 + 10, 100, 20), labelText);
+			GUI.Label (new Rect (point.x - 50, Screen.height - point.y - 1 + 10, 100, 20), labelText);
+			
 			mySkin.label.normal.textColor = Color.white;
-			GUI.Label (new Rect (point.x - 50, Screen.height - point.y + Screen.height / 40, 100, 20), labelText);
+			GUI.Label (new Rect (point.x - 50, Screen.height - point.y + 10, 100, 20), labelText);
 		}
 
 		GUI.depth = 1;
@@ -73,15 +72,6 @@ public class InspiserEnhet : MonoBehaviour {
 			}else{
 				GUI.Box (new Rect (point.x + Screen.width / 20, Screen.height - point.y - Screen.height / 5 + 20, 400, 100), "Ingen data tilgjengelig før denne datoen.");
 			}
-=======
-			GUI.Label (new Rect (point.x - 51, Screen.height - point.y + 10, 100, 20), labelText);
-			GUI.Label (new Rect (point.x - 49, Screen.height - point.y + 10, 100, 20), labelText);
-			GUI.Label (new Rect (point.x - 50, Screen.height - point.y + 1 + 10, 100, 20), labelText);
-			GUI.Label (new Rect (point.x - 50, Screen.height - point.y - 1 + 10, 100, 20), labelText);
-		
-			mySkin.label.normal.textColor = Color.white;
-			GUI.Label (new Rect (point.x - 50, Screen.height - point.y + 10, 100, 20), labelText);
->>>>>>> 47ed5b0a32dbfc1068df525fa85ff23272171546
 		}
 	}
 	
