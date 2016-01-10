@@ -21,6 +21,7 @@ public class Manager : MonoBehaviour
 	public static DateTime currentDate;
 	public static DateTime firstRegisteredDate;
 
+	//GUI
 	public Button playPauseButton;
 	public Slider slider;
 	public InputField searchField;
@@ -31,6 +32,7 @@ public class Manager : MonoBehaviour
 
 	public Slider animationSpeedSlider;
 	public Text animationSpeedSliderText;
+	public Text animationSpeedSliderTextTooltip;
 
 	public Camera _camera;
 
@@ -67,6 +69,7 @@ public class Manager : MonoBehaviour
 		dates = new List<DateTime> ();
 		animationSpeedSlider = GameObject.Find ("AnimationSpeedSlider").GetComponent<Slider> ();
 		animationSpeedSliderText = GameObject.Find("AnimationSpeedSliderText").GetComponent<Text>();
+		animationSpeedSliderTextTooltip = GameObject.Find ("AnimationSpeedTooltipText").GetComponent<Text> ();
 		currentDate = firstDate ();
 		timeSlider =  GameObject.Find ("TimeSlider").GetComponent<Slider> ();
 		defaultMarkerScale = 10;
@@ -142,9 +145,6 @@ public class Manager : MonoBehaviour
 			//GUI.BeginScrollView (new Rect (0, 30, 500, Screen.height - 60), new Vector2 (0f, 0f), new Rect (0, 0, 30, datatyper.Count * 26 + 4));
 			GUILayout.BeginArea (new Rect (0, 30, 500, datatyper.Count * 19 + 4), GUI.skin.box);
 
-
-
-
 			var color = rowStyle.normal.textColor;
 			var hoverColor = rowStyle.hover.textColor;
 			for (int i = 0; i < datatyper.Count; i++) {
@@ -170,6 +170,10 @@ public class Manager : MonoBehaviour
 
 				//GUI.EndScrollView();
 
+		}
+
+		if (animationSpeedSliderTextTooltip.text == "Dager per sekund") {
+			animationSpeedSliderTextTooltip.transform.position = new Vector3 (Input.mousePosition.x+60, Input.mousePosition.y+20, 0);
 		}
 
 	}
