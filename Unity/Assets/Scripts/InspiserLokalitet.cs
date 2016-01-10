@@ -66,10 +66,5 @@ public class InspiserLokalitet : MonoBehaviour {
 
 	public void ToggleText(bool b){
 		showText = b;
-		if (showText) {
-			showText = false;
-		} else {
-			showText = true;
-		}
 	}
 }
