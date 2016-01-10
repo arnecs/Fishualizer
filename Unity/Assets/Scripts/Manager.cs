@@ -130,10 +130,8 @@ public class Manager : MonoBehaviour
 		var dataSelectionRect = new Rect (0, 30, 500, datatyper.Count * 19 + 4);
 
 		if (showDataSelection && !dataSelectionRect.Contains(new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y)) && Input.GetMouseButton(0)) {
-			showDataSelection = false;
-		}
-
-		if (showDataSelection) {
+			toggleDataSelection ();
+		} else if (showDataSelection) {
 			if (rowStyle == null) {
 				
 				rowStyle = new GUIStyle (GUI.skin.button);
@@ -310,9 +308,7 @@ public class Manager : MonoBehaviour
 		// Stop animasjon av data
 		animating = false;
 		CancelInvoke ("incrementDay");
-		if (timeSlider.value == timeSlider.maxValue) {
-			timeSlider.value = timeSlider.minValue;
-		}
+
 		return true;
 	}
 
