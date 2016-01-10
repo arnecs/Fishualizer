@@ -130,12 +130,12 @@ public class FileBrowser{
 						}
 						GUILayout.BeginHorizontal("box");
 						GUILayout.FlexibleSpace();
-						if((cancelStyle == null)?GUILayout.Button("Cancel"):GUILayout.Button("Cancel",cancelStyle)){
+			if((cancelStyle == null)?GUILayout.Button("Avbryt"):GUILayout.Button("Avbryt",cancelStyle)){
 							outputFile = null;
 							return true;
 						}
 						GUILayout.FlexibleSpace();
-						if((selectStyle == null)?GUILayout.Button("Select"):GUILayout.Button("Select",selectStyle)){
+						if((selectStyle == null)?GUILayout.Button("Last inn"):GUILayout.Button("Last inn",selectStyle)){
 							return true;	
 						}
 						GUILayout.FlexibleSpace();
