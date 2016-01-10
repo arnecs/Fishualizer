@@ -6,7 +6,7 @@ using System.IO;
 using UnityEngine.UI;
 
 using InfinityCode;
-using UnityEditor;
+//using UnityEditor;
 
 
 
@@ -150,9 +150,7 @@ public class Manager : MonoBehaviour
 
 		var dataSelectionRect = new Rect (0, 30, 500, datatyper.Count * 19 + 4);
 
-		if (showDataSelection && !dataSelectionRect.Contains(new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y)) && Input.GetMouseButton(0)) {
-			toggleDataSelection ();
-		} else if (showDataSelection) {
+		if (showDataSelection) {
 			if (rowStyle == null) {
 				
 				rowStyle = new GUIStyle (GUI.skin.button);
@@ -193,6 +191,11 @@ public class Manager : MonoBehaviour
 				//GUI.EndScrollView();
 
 		}
+
+		if (showDataSelection && Input.GetMouseButton(0) && !(dataSelectionRect.Contains(new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y)) || new Rect(150, 0,100,30).Contains(new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y)))) {
+			toggleDataSelection ();
+
+		} 
 
 		if (animationSpeedSliderTextTooltip != null && animationSpeedSliderTextTooltip.text == "Dager per sekund") {
 			animationSpeedSliderTextTooltip.transform.position = new Vector3 (Input.mousePosition.x+60, Input.mousePosition.y+20, 0);
