@@ -40,13 +40,15 @@ public class Manager : MonoBehaviour
 	bool showDataSelection;
 	private GUIStyle rowStyle;
 
-	public static List<string> datatyper;
+	public static List<string> datatyper = new List<string>();
 	int valgtDatatype;
 
 
 	OnlineMapsMarker3D marker;
 
-	
+	public Text valgtDataText;
+
+
 	bool animating;
 	bool browsingFile;
 
@@ -110,6 +112,8 @@ public class Manager : MonoBehaviour
 				//the output file is a member if the FileInfo class, if cancel was selected the value is null
 				output = (fb.outputFile==null)?"cancel hit":fb.outputFile.ToString();
 
+
+				Debug.Log (output);
 				if(output != "cancel hit"){
 					filePath = fb.outputFile.ToString();
 
@@ -118,12 +122,19 @@ public class Manager : MonoBehaviour
 						Debug.Log(filePath);
 						toggleFileBrowser();
 						//Her skal vi kalle på Excel-metoden til arne. Vi sender med fb.outputFile.ToString() som argument.
-
+						Populate();
 					}
 				}else{
 					toggleFileBrowser();
 				}
 			}
+		}
+
+
+		var dataSelectionRect = new Rect (0, 30, 500, datatyper.Count * 19 + 4);
+
+		if (showDataSelection && !dataSelectionRect.Contains(new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y)) && Input.GetMouseButton(0)) {
+			showDataSelection = false;
 		}
 
 		if (showDataSelection) {
@@ -140,9 +151,7 @@ public class Manager : MonoBehaviour
 
 
 			//GUI.BeginScrollView (new Rect (0, 30, 500, Screen.height - 60), new Vector2 (0f, 0f), new Rect (0, 0, 30, datatyper.Count * 26 + 4));
-			GUILayout.BeginArea (new Rect (0, 30, 500, datatyper.Count * 19 + 4), GUI.skin.box);
-
-
+			GUILayout.BeginArea (dataSelectionRect, GUI.skin.box);
 
 
 			var color = rowStyle.normal.textColor;
@@ -160,8 +169,6 @@ public class Manager : MonoBehaviour
 					valgtDatatype = i;
 					dataTypeChanged ();
 				}
-
-
 			}
 			rowStyle.normal.textColor = color;
 			rowStyle.hover.textColor = hoverColor;
@@ -182,6 +189,7 @@ public class Manager : MonoBehaviour
 	//	}
 
 	public void dataTypeChanged(){
+		valgtDataText.text = datatyper [valgtDatatype];
 		oppdaterMarkers ();
 	}
 	void Populate ()
@@ -196,6 +204,13 @@ public class Manager : MonoBehaviour
 
 		lokaliteter = excelReader.readGenerellInfo (Application.dataPath + "/Resources/06.01.2016-Generell-Info.xls");
 		lokaliteter = excelReader.readData (Application.dataPath + "/Resources/06.01.2016-Lusetellinger-1712.xls", lokaliteter);
+
+		OnlineMapsControlBase3D control = onlineMaps.GetComponent<OnlineMapsControlBase3D> ();
+		control.RemoveAllMarker3D ();
+		control.allowDefaultMarkerEvents = true;
+		control.allowAddMarker3DByN = true;
+		control.enabled = true;
+
 
 		for (int i = 0; i < lokaliteter.Count; i++) {
 			Lokalitet l = lokaliteter [i] as Lokalitet;
@@ -217,7 +232,7 @@ public class Manager : MonoBehaviour
 			marker.range.max = 12;
 			marker.range.min = 1;
 			
-			OnlineMapsControlBase3D control = onlineMaps.GetComponent<OnlineMapsControlBase3D> ();
+
 			l.setMarker (marker);
 			control.AddMarker3D (marker);
 
@@ -252,6 +267,8 @@ public class Manager : MonoBehaviour
 			Destroy(mapObject);
 		}
 
+		control.enabled = true;
+		dataTypeChanged ();
 
 	}
 

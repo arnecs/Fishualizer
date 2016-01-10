@@ -242,14 +242,16 @@ public class EXCELREADER {
 
 				for (int i = 0; i < excelReader.FieldCount; i++) {
 					try {
+
+							if (headers[i].ToUpper().Contains("dato")) {
 						double data = excelReader.GetDouble(i);
 
-
+						
 						m.AddData(headers[i], data);
 
 						//.Log("Måling lagt til: " + headers[i] + ", " + data);
 					
-
+							}
 
 					} catch (Exception e) {
 						//Debug.Log ("Måling ikke lagt til: " + e);
