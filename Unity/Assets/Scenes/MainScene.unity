@@ -1575,6 +1575,7 @@ MonoBehaviour:
   drive: {fileID: 2800000, guid: 8184e77bea8cba04a8ab1685be171b58, type: 3}
   visLokalitetButton: {fileID: 31554615}
   visEnhetButton: {fileID: 981723033}
+  regnearkMenuSkin: {fileID: 11400000, guid: c1b9e9b370d1049c6bcf854ece4e9362, type: 2}
 --- !u!1 &963320242
 GameObject:
   m_ObjectHideFlags: 0
@@ -1651,7 +1652,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 938784520}
-        m_MethodName: toggleFileBrowser
+        m_MethodName: ToggleRegneArkMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

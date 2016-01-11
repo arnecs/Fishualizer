@@ -74,8 +74,15 @@ public class InspiserEnhet : MonoBehaviour {
 			mySkin.box.normal.textColor = Color.white;
 			mySkin.box.normal.background = guiDark;
 
-			var barRect = new Rect (point.x + Screen.width / 20, Screen.height - point.y - Screen.height / 5, 398, 20);
 			var barRectNoData = new Rect (point.x + Screen.width / 20, Screen.height - point.y - Screen.height / 5, 180, 20);
+			var barRect = new Rect (point.x,Screen.height - point.y, 380, 20);
+			//var barRect = new Rect (0, 0, 380, 20);
+
+			Debug.Log (barRect);
+			if (barRect.yMin < 0) {
+				point.y = Screen.height;
+				barRect = new Rect (point.x + Screen.width / 20, point.y, 380, 20);
+			}
 
 			var mp = Input.mousePosition;
 							
@@ -96,9 +103,6 @@ public class InspiserEnhet : MonoBehaviour {
 			} else {
 					lastMousePosition = Vector2.zero;
 			}
-
-
-
 
 
 			if(m != null){
@@ -140,6 +144,8 @@ public class InspiserEnhet : MonoBehaviour {
 	
 	void toggleTooltip(){
 		point = Camera.main.WorldToScreenPoint (transform.position);
+		point.y += 50;
+		point.x += 10;
 		if(showTooltip){
 			showTooltip = false;
 		}else{
