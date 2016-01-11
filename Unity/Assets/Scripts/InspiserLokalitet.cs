@@ -135,7 +135,13 @@ public class InspiserLokalitet : MonoBehaviour {
 	}
 
 	public void setValueText(string l, double d, float t){
-		labelText = l + " " + t.ToString() + "°C\n" + d.ToString ("0.000");
+		if (t != -100) {
+			labelText = l + " " + t.ToString () + "°C\n" + d.ToString ("0.000");
+		} else {
+			labelText = l + "\n" + d.ToString ("0.000");
+		}
+
+
 	}
 	
 	public void ToggleText(bool b){
