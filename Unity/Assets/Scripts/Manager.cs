@@ -84,6 +84,9 @@ public class Manager : MonoBehaviour
 		Snitt, Maks, Total
 	};
 
+
+	List<OnlineMapsDrawingElement> enhetDrawingLines = new List<OnlineMapsDrawingElement> ();
+
 	// Use this for initialization
 	void Start ()
 	{
@@ -233,6 +236,9 @@ public class Manager : MonoBehaviour
 		OnlineMapsControlBase3D control = onlineMaps.GetComponent<OnlineMapsControlBase3D> ();
 		control.RemoveAllMarker3D ();
 
+		onlineMaps.RemoveAllDrawingElements ();
+		enhetDrawingLines.Clear ();
+
 		for (int i = 0; i < lokaliteter.Count; i++) {
 			Lokalitet l = lokaliteter [i] as Lokalitet;
 
@@ -261,7 +267,7 @@ public class Manager : MonoBehaviour
 
 			float radius = 0.02f;
 
-			var circlePoints = new List<Vector2> ();
+			//var circlePoints = new List<Vector2> ();
 
 			for(int j=0; j<l.getEnheter().Count; j++){
 				
@@ -289,21 +295,27 @@ public class Manager : MonoBehaviour
 
 				//Destroy(mapObjectChild);
 
-				circlePoints.Add (pos);
+				//circlePoints.Add (pos);
 
 				var linePoints = new List<Vector2> ();
 				linePoints.Add (l.getCoordinates ());
 				linePoints.Add (pos);
 
 				OnlineMapsDrawingElement line = new OnlineMapsDrawingLine (linePoints);
-				onlineMaps.AddDrawingElement (line);
+				//onlineMaps.AddDrawingElement (line);
+
+				enhetDrawingLines.Add (line);
 
 			}
 
-			OnlineMapsDrawingElement circle = new OnlineMapsDrawingPoly (circlePoints);
+			//OnlineMapsDrawingElement circle = new OnlineMapsDrawingPoly (circlePoints);
 			//onlineMaps.AddDrawingElement (circle);
 
-
+			if (visEnhet) {
+				foreach (var line in enhetDrawingLines) {
+					onlineMaps.AddDrawingElement (line);
+				}
+			}
 
 
 			//Destroy(mapObject);
@@ -312,7 +324,7 @@ public class Manager : MonoBehaviour
 		oppdaterMarkers ();
 		dataTypeChanged ();
 
-		/*
+		/* 
 		OnlineMapsDrawingElement draw = new OnlineMapsDrawingRect (8f, 60f,  1.5f, 3f);
 
 		var p = new List<Vector2> ();
@@ -731,9 +743,11 @@ public class Manager : MonoBehaviour
 			visLokalitetButton.colors = ColorBlock.defaultColorBlock;
 		}
 
+		OnlineMapsControlBase3D control = onlineMaps.GetComponent<OnlineMapsControlBase3D> ();
+
 		foreach (var l in lokaliteter) {
-			l.getMarker ().instance.GetComponent<MeshRenderer>().enabled = visLokalitet;
-			l.getMarker ().instance.GetComponent<InspiserLokalitet> ().ToggleText (visLokalitet);
+			l.getMarker ().instance.SetActive (visLokalitet);
+			l.getMarker ().instance.GetComponent<MeshRenderer> ().enabled = visLokalitet;
 		}
 	}
 
@@ -756,10 +770,20 @@ public class Manager : MonoBehaviour
 
 		foreach (var l in lokaliteter) {
 			foreach (var e in l.getEnheter()) {
-				e.getMarker ().instance.GetComponent<MeshRenderer>().enabled = visEnhet;
+				e.getMarker ().instance.SetActive (visEnhet);
 
-				e.getMarker ().instance.GetComponent<InspiserEnhet> ().ToggleText (visEnhet);
+				e.getMarker ().instance.GetComponent<MeshRenderer> ().enabled = visEnhet;
+
 			}
 		}
+
+		if (visEnhet) {
+			foreach (var drawing in enhetDrawingLines) {
+				onlineMaps.AddDrawingElement (drawing);
+			}
+		} else {
+			onlineMaps.RemoveAllDrawingElements ();
+		}
+
 	}
 }
