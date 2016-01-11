@@ -277,7 +277,7 @@ public class Manager : MonoBehaviour
 				
 				marker.range.max = 15;
 				marker.range.min = 1;
-				marker.label = l.getLokalitetsnavn ();
+				marker.label = l.getLokalitetsnavn () + ": " + e.getEnhetsId().Replace(" ", "");
 				marker.scale = defaultMarkerScale;
 				marker.customData = e;
 			

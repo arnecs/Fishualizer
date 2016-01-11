@@ -51,15 +51,8 @@ public class Måling : IComparable {
 
 	}
 
-	public string ToString()
-	{
-		string s = null;
-		foreach (KeyValuePair<String, Double> pair in data)
-		{
-			s += pair.Key + ": " + pair.Value + "\n"; 
-		}
-
-		return s;
+	public Dictionary<String, Double> getKeyValuePairs(){
+		return data;
 	}
 	
 }
