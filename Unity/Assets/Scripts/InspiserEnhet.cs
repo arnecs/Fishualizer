@@ -70,7 +70,16 @@ public class InspiserEnhet : MonoBehaviour {
 			mySkin.box.normal.textColor = Color.white;
 			mySkin.box.normal.background = guiDark;
 
-			var barRect = new Rect (point.x + Screen.width / 20, Screen.height - point.y - Screen.height / 5, 380, 20);
+
+
+			var barRect = new Rect (point.x,Screen.height - point.y, 380, 20);
+			//var barRect = new Rect (0, 0, 380, 20);
+
+			Debug.Log (barRect);
+			if (barRect.yMin < 0) {
+				point.y = Screen.height;
+				barRect = new Rect (point.x + Screen.width / 20, point.y, 380, 20);
+			}
 
 			GUI.Box (barRect, e.getEnhetsId ());
 			var mp = Input.mousePosition;
@@ -94,7 +103,7 @@ public class InspiserEnhet : MonoBehaviour {
 			}
 
 
-			if(GUI.Button(new Rect (point.x + Screen.width / 20 + 380, Screen.height - point.y - Screen.height / 5, 20, 20), xBtn)){
+			if(GUI.Button(new Rect (point.x + 380, Screen.height - point.y, 20, 20), xBtn)){
 				toggleTooltip();
 			}
 
@@ -103,9 +112,9 @@ public class InspiserEnhet : MonoBehaviour {
 			mySkin.box.normal.textColor = Color.black;
 			if(m != null){
 				int numLines = m.ToString().Split('\n').Length;
-				GUI.Box (new Rect (point.x + Screen.width / 20, Screen.height - point.y - Screen.height / 5 + 20, 400, 11*numLines), m.ToString());
+				GUI.Box (new Rect (point.x, Screen.height - point.y + 20, 400, 11*numLines), m.ToString());
 			}else{
-				GUI.Box (new Rect (point.x + Screen.width / 20, Screen.height - point.y - Screen.height / 5 + 20, 400, 100), "Ingen data tilgjengelig før denne datoen.");
+				GUI.Box (new Rect (point.x, Screen.height - point.y + 20, 400, 100), "Ingen data tilgjengelig før denne datoen.");
 			}
 		}
 	}
@@ -113,6 +122,8 @@ public class InspiserEnhet : MonoBehaviour {
 	
 	void toggleTooltip(){
 		point = Camera.main.WorldToScreenPoint (transform.position);
+		point.y += 50;
+		point.x += 10;
 		if(showTooltip){
 			showTooltip = false;
 		}else{

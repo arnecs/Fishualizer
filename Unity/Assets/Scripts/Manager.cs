@@ -87,6 +87,15 @@ public class Manager : MonoBehaviour
 
 	List<OnlineMapsDrawingElement> enhetDrawingLines = new List<OnlineMapsDrawingElement> ();
 
+
+	// Regneark Meny
+	bool showRegneArkMenu;
+	public GUISkin regnearkMenuSkin;
+
+	public Texture2D normalButtonTex;
+	public Texture2D pressedButtonTex;
+
+
 	// Use this for initialization
 	void Start ()
 	{
@@ -115,7 +124,7 @@ public class Manager : MonoBehaviour
 //		}
 		Populate(Application.dataPath + "/Resources/06.01.2016-Lusetellinger-1712.xls");
 
-		Populate(Application.dataPath + "/Resources/06.01.2016-Lusetellinger-1712.xls");
+		//Populate(Application.dataPath + "/Resources/06.01.2016-Lusetellinger-1712.xls");
 
 
 
@@ -123,6 +132,25 @@ public class Manager : MonoBehaviour
 	}
 
 	void OnGUI(){
+
+
+		if (showRegneArkMenu) {
+			GUI.skin = regnearkMenuSkin;
+			var boxRect = new Rect (0, 0, 140, 84);
+			if (!boxRect.Contains(new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y)) && Input.GetMouseButtonDown(0)) {
+				ToggleRegneArkMenu ();
+			}
+			if (GUI.Button(new Rect(0,28,140,30), "Generel info")) {
+				ToggleRegneArkMenu ();
+			}
+			GUI.enabled = false;
+			if (GUI.Button(new Rect(0,56,140,30), "Data info")) {
+				toggleFileBrowser ();
+				ToggleRegneArkMenu ();
+			}
+			GUI.enabled = true;
+		}
+
 		if(browsingFile){
 		GUILayout.BeginHorizontal();
 			GUILayout.BeginVertical();
@@ -155,47 +183,26 @@ public class Manager : MonoBehaviour
 
 
 		var dataSelectionRect = new Rect (0, 30, 500, datatyper.Count * 19 + 4);
-
+		GUI.skin = regnearkMenuSkin;
 		if (showDataSelection) {
-			if (rowStyle == null) {
-				
-				rowStyle = new GUIStyle (GUI.skin.button);
-				rowStyle.alignment = TextAnchor.MiddleLeft;
-				rowStyle.fontSize = 12;
-				RectOffset margin = rowStyle.margin;
+			
+			var buttonHeight = 20;
 
-
-				rowStyle.margin = new RectOffset (-margin.left, -margin.right, 1, 1);
-			}
-
-
-			//GUI.BeginScrollView (new Rect (0, 30, 500, Screen.height - 60), new Vector2 (0f, 0f), new Rect (0, 0, 30, datatyper.Count * 26 + 4));
-			GUILayout.BeginArea (dataSelectionRect, GUI.skin.box);
-
-
-			var color = rowStyle.normal.textColor;
-			var hoverColor = rowStyle.hover.textColor;
+			//var color = rowStyle.normal.textColor;
+			//var hoverColor = rowStyle.hover.textColor;
 			for (int i = 0; i < datatyper.Count; i++) {
-				if (valgtDatatype == i) { 
-					rowStyle.normal.textColor = new Color (0.2f, 0.8f, 0.4f);
-					rowStyle.hover.textColor = new Color (0.2f, 0.8f, 0.4f);
-				} else {
-					rowStyle.normal.textColor = color;
-					rowStyle.hover.textColor = hoverColor;
-				}
 
-				if (GUILayout.Button (datatyper [i], rowStyle, GUILayout.Height (18))) {
+				if (valgtDatatype == i) {
+					GUI.skin.button.normal.background = pressedButtonTex;
+				} else {
+					GUI.skin.button.normal.background = normalButtonTex;
+				}
+				if (GUI.Button (new Rect (0, i * buttonHeight + 28, 500, buttonHeight), datatyper[i])) {
 					valgtDatatype = i;
 					dataTypeChanged ();
 				}
 			}
-			rowStyle.normal.textColor = color;
-			rowStyle.hover.textColor = hoverColor;
-
-			GUILayout.EndArea();
-
-				//GUI.EndScrollView();
-
+			GUI.skin.button.normal.background = normalButtonTex;
 		}
 
 		if (showDataSelection && Input.GetMouseButton(0) && !(dataSelectionRect.Contains(new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y)) || new Rect(150, 0,100,30).Contains(new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y)))) {
@@ -302,7 +309,7 @@ public class Manager : MonoBehaviour
 				linePoints.Add (l.getCoordinates ());
 				linePoints.Add (pos);
 
-				OnlineMapsDrawingElement line = new OnlineMapsDrawingLine (linePoints);
+				OnlineMapsDrawingElement line = new OnlineMapsDrawingLine (linePoints, Color.black, 0.3f);			
 				//onlineMaps.AddDrawingElement (line);
 
 				enhetDrawingLines.Add (line);
@@ -772,7 +779,7 @@ public class Manager : MonoBehaviour
 				e.getMarker ().instance.SetActive (visEnhet);
 
 				e.getMarker ().instance.GetComponent<MeshRenderer> ().enabled = visEnhet;
-
+				e.getMarker ().instance.GetComponent<InspiserEnhet> ().ToggleText (visEnhet);
 			}
 		}
 
@@ -783,6 +790,12 @@ public class Manager : MonoBehaviour
 		} else {
 			onlineMaps.RemoveAllDrawingElements ();
 		}
+
+	}
+
+
+	public void ToggleRegneArkMenu() {
+		showRegneArkMenu = !showRegneArkMenu;
 
 	}
 }
