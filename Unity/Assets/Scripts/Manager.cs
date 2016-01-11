@@ -293,7 +293,6 @@ public class Manager : MonoBehaviour
 			marker.scale = defaultMarkerScale;
 			marker.customData = l;
 
-
 			
 			control = onlineMaps.GetComponent<OnlineMapsControlBase3D> ();
 
@@ -325,8 +324,6 @@ public class Manager : MonoBehaviour
 
 				marker = control.AddMarker3D (pos, mapObjectChild);
 
-				marker.range.max = 15;
-				marker.range.min = 1;
 				marker.label = l.getLokalitetsnavn () + ": " + e.getEnhetsId().Replace(" ", "");
 				marker.scale = defaultMarkerScale;
 				marker.customData = e;

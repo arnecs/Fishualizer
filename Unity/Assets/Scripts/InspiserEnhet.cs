@@ -53,7 +53,7 @@ public class InspiserEnhet : MonoBehaviour {
 		GUI.skin = mySkin;
 		guiDepth = 1000;
 		GUI.depth = guiDepth;
-		if (showText) {
+		if (showText && api.zoom > 9) {
 			mySkin.label.normal.textColor = Color.black;
 			GUI.Label (new Rect (pointText.x - 51, Screen.height - pointText.y + 10, 100, 40), labelText);
 			GUI.Label (new Rect (pointText.x - 49, Screen.height - pointText.y + 10, 100, 40), labelText);

@@ -62,7 +62,7 @@ public class InspiserLokalitet : MonoBehaviour {
 		GUI.skin = mySkin;
 
 		GUI.depth = 1000;
-		if (showText && api.zoom > 12) {
+		if (showText) {
 			mySkin.label.normal.textColor = Color.black;
 			mySkin.label.alignment = TextAnchor.MiddleCenter;
 			GUI.Label (new Rect (pointText.x - 51, Screen.height - pointText.y + 10, 100, 100), labelText);
