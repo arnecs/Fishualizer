@@ -76,7 +76,12 @@ public class InspiserEnhet : MonoBehaviour {
 
 			var barRectNoData = new Rect (point.x + Screen.width / 20, Screen.height - point.y - Screen.height / 5, 180, 20);
 			var barRect = new Rect (point.x,Screen.height - point.y, 380, 20);
-			//var barRect = new Rect (0, 0, 380, 20);
+
+			Debug.Log (barRect);
+			if (barRect.yMin < 0) {
+				point.y = Screen.height;
+				barRect = new Rect (point.x + Screen.width / 20, point.y, 380, 20);
+			}
 
 			Debug.Log (barRect);
 			if (barRect.yMin < 0) {
