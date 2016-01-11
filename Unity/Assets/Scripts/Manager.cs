@@ -84,6 +84,9 @@ public class Manager : MonoBehaviour
 		Snitt, Maks, Total
 	};
 
+
+	List<OnlineMapsDrawingElement> enhetDrawingLines = new List<OnlineMapsDrawingElement> ();
+
 	// Use this for initialization
 	void Start ()
 	{
@@ -113,6 +116,9 @@ public class Manager : MonoBehaviour
 		Populate(Application.dataPath + "/Resources/06.01.2016-Lusetellinger-1712.xls");
 
 		Populate(Application.dataPath + "/Resources/06.01.2016-Lusetellinger-1712.xls");
+
+
+
 
 	}
 
@@ -230,6 +236,9 @@ public class Manager : MonoBehaviour
 		OnlineMapsControlBase3D control = onlineMaps.GetComponent<OnlineMapsControlBase3D> ();
 		control.RemoveAllMarker3D ();
 
+		onlineMaps.RemoveAllDrawingElements ();
+		enhetDrawingLines.Clear ();
+
 		for (int i = 0; i < lokaliteter.Count; i++) {
 			Lokalitet l = lokaliteter [i] as Lokalitet;
 
@@ -259,7 +268,11 @@ public class Manager : MonoBehaviour
 
 			float radius = 0.1f;
 
+			//var circlePoints = new List<Vector2> ();
+
 			for(int j=0; j<l.getEnheter().Count; j++){
+				
+
 				Enhet e = enheter[j] as Enhet;
 				
 				GameObject mapObjectChild = (GameObject)Resources.Load ("markerEnhetPrefab", typeof(GameObject));
@@ -271,12 +284,10 @@ public class Manager : MonoBehaviour
 				position = l.getCoordinates ();
 
 
+				var pos = new Vector2 (position.x + Mathf.Cos (angle) * radius, position.y + Mathf.Sin (angle) * radius * 0.5f);
 
-				marker = control.AddMarker3D (new Vector2(position.x + Mathf.Cos(angle)*radius, position.y + Mathf.Sin(angle)*radius*0.5f), mapObjectChild);
+				marker = control.AddMarker3D (pos, mapObjectChild);
 
-				
-				marker.range.max = 15;
-				marker.range.min = 1;
 				marker.label = l.getLokalitetsnavn ();
 				marker.scale = defaultMarkerScale;
 				marker.customData = e;
@@ -285,14 +296,65 @@ public class Manager : MonoBehaviour
 
 				//Destroy(mapObjectChild);
 
+				//circlePoints.Add (pos);
+
+				var linePoints = new List<Vector2> ();
+				linePoints.Add (l.getCoordinates ());
+				linePoints.Add (pos);
+
+				OnlineMapsDrawingElement line = new OnlineMapsDrawingLine (linePoints);
+				//onlineMaps.AddDrawingElement (line);
+
+				enhetDrawingLines.Add (line);
+
 			}
+
+			//OnlineMapsDrawingElement circle = new OnlineMapsDrawingPoly (circlePoints);
+			//onlineMaps.AddDrawingElement (circle);
+
+			if (visEnhet) {
+				foreach (var line in enhetDrawingLines) {
+					onlineMaps.AddDrawingElement (line);
+				}
+			}
+
+
 			//Destroy(mapObject);
 		}
 		UpdateSliderDates ();
+		oppdaterMarkers ();
 		dataTypeChanged ();
 
+		/* 
+		OnlineMapsDrawingElement draw = new OnlineMapsDrawingRect (8f, 60f,  1.5f, 3f);
+
+		var p = new List<Vector2> ();
+		for (int i = 0; i < 20; i++) {
+			var angle = i * Mathf.PI * 2 / 20;
+			p.Add (new Vector2 (8f + Mathf.Cos (angle) * 1, 60f + Mathf.Sin (angle) * 1));
+		}
+		OnlineMapsDrawingElement c = new OnlineMapsDrawingPoly (p);
+		onlineMaps.AddDrawingElement (c);
+
+		p = new List<Vector2> ();
+		for (int i = 0; i < 20; i++) {
+			var angle = i * Mathf.PI * 2 / 20;
+			p.Add (new Vector2 (9.5f + Mathf.Cos (angle) * 1, 60f + Mathf.Sin (angle) * 1));
+		}
+		c = new OnlineMapsDrawingPoly (p);
+		onlineMaps.AddDrawingElement (c);
+
+		p = new List<Vector2> ();
+		for (int i = 0; i < 20; i++) {
+			var angle = i * Mathf.PI * 2 / 20;
+			p.Add (new Vector2 (8.75f + Mathf.Cos (angle) * 1, 63f + Mathf.Sin (angle) * 1));
+		}
+		c = new OnlineMapsDrawingPoly (p);
+		onlineMaps.AddDrawingElement (c);
 
 
+		onlineMaps.AddDrawingElement (draw);
+		*/
 
 	}
 
@@ -680,9 +742,11 @@ public class Manager : MonoBehaviour
 			visLokalitetButton.colors = ColorBlock.defaultColorBlock;
 		}
 
+		OnlineMapsControlBase3D control = onlineMaps.GetComponent<OnlineMapsControlBase3D> ();
+
 		foreach (var l in lokaliteter) {
-			l.getMarker ().instance.GetComponent<MeshRenderer>().enabled = visLokalitet;
-			l.getMarker ().instance.GetComponent<InspiserLokalitet> ().ToggleText (visLokalitet);
+			l.getMarker ().instance.SetActive (visLokalitet);
+			l.getMarker ().instance.GetComponent<MeshRenderer> ().enabled = visLokalitet;
 		}
 	}
 
@@ -705,10 +769,20 @@ public class Manager : MonoBehaviour
 
 		foreach (var l in lokaliteter) {
 			foreach (var e in l.getEnheter()) {
-				e.getMarker ().instance.GetComponent<MeshRenderer>().enabled = visEnhet;
+				e.getMarker ().instance.SetActive (visEnhet);
 
-				e.getMarker ().instance.GetComponent<InspiserEnhet> ().ToggleText (visEnhet);
+				e.getMarker ().instance.GetComponent<MeshRenderer> ().enabled = visEnhet;
+
 			}
 		}
+
+		if (visEnhet) {
+			foreach (var drawing in enhetDrawingLines) {
+				onlineMaps.AddDrawingElement (drawing);
+			}
+		} else {
+			onlineMaps.RemoveAllDrawingElements ();
+		}
+
 	}
 }
