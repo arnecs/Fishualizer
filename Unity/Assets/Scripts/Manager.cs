@@ -83,6 +83,18 @@ public class Manager : MonoBehaviour
 		Snitt, Maks, Total
 	};
 
+
+	List<OnlineMapsDrawingElement> enhetDrawingLines = new List<OnlineMapsDrawingElement> ();
+
+
+	// Regneark Meny
+	bool showRegneArkMenu;
+	public GUISkin regnearkMenuSkin;
+
+	public Texture2D normalButtonTex;
+	public Texture2D pressedButtonTex;
+
+
 	// Use this for initialization
 	void Start ()
 	{
@@ -114,10 +126,28 @@ public class Manager : MonoBehaviour
 
 
 
-
 	}
 
 	void OnGUI(){
+
+
+		if (showRegneArkMenu) {
+			GUI.skin = regnearkMenuSkin;
+			var boxRect = new Rect (0, 0, 140, 84);
+			if (!boxRect.Contains(new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y)) && Input.GetMouseButtonDown(0)) {
+				ToggleRegneArkMenu ();
+			}
+			if (GUI.Button(new Rect(0,28,140,30), "Generel info")) {
+				ToggleRegneArkMenu ();
+			}
+			GUI.enabled = false;
+			if (GUI.Button(new Rect(0,56,140,30), "Data info")) {
+				toggleFileBrowser ();
+				ToggleRegneArkMenu ();
+			}
+			GUI.enabled = true;
+		}
+
 		if(browsingFile){
 		GUILayout.BeginHorizontal();
 			GUILayout.BeginVertical();
@@ -150,47 +180,26 @@ public class Manager : MonoBehaviour
 
 
 		var dataSelectionRect = new Rect (0, 30, 500, datatyper.Count * 19 + 4);
-
+		GUI.skin = regnearkMenuSkin;
 		if (showDataSelection) {
-			if (rowStyle == null) {
-				
-				rowStyle = new GUIStyle (GUI.skin.button);
-				rowStyle.alignment = TextAnchor.MiddleLeft;
-				rowStyle.fontSize = 12;
-				RectOffset margin = rowStyle.margin;
+			
+			var buttonHeight = 20;
 
-
-				rowStyle.margin = new RectOffset (-margin.left, -margin.right, 1, 1);
-			}
-
-
-			//GUI.BeginScrollView (new Rect (0, 30, 500, Screen.height - 60), new Vector2 (0f, 0f), new Rect (0, 0, 30, datatyper.Count * 26 + 4));
-			GUILayout.BeginArea (dataSelectionRect, GUI.skin.box);
-
-
-			var color = rowStyle.normal.textColor;
-			var hoverColor = rowStyle.hover.textColor;
+			//var color = rowStyle.normal.textColor;
+			//var hoverColor = rowStyle.hover.textColor;
 			for (int i = 0; i < datatyper.Count; i++) {
-				if (valgtDatatype == i) { 
-					rowStyle.normal.textColor = new Color (0.2f, 0.8f, 0.4f);
-					rowStyle.hover.textColor = new Color (0.2f, 0.8f, 0.4f);
-				} else {
-					rowStyle.normal.textColor = color;
-					rowStyle.hover.textColor = hoverColor;
-				}
 
-				if (GUILayout.Button (datatyper [i], rowStyle, GUILayout.Height (18))) {
+				if (valgtDatatype == i) {
+					GUI.skin.button.normal.background = pressedButtonTex;
+				} else {
+					GUI.skin.button.normal.background = normalButtonTex;
+				}
+				if (GUI.Button (new Rect (0, i * buttonHeight + 28, 500, buttonHeight), datatyper[i])) {
 					valgtDatatype = i;
 					dataTypeChanged ();
 				}
 			}
-			rowStyle.normal.textColor = color;
-			rowStyle.hover.textColor = hoverColor;
-
-			GUILayout.EndArea();
-
-				//GUI.EndScrollView();
-
+			GUI.skin.button.normal.background = normalButtonTex;
 		}
 
 		if (showDataSelection && Input.GetMouseButton(0) && !(dataSelectionRect.Contains(new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y)) || new Rect(150, 0,100,30).Contains(new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y)))) {
@@ -232,6 +241,9 @@ public class Manager : MonoBehaviour
 		OnlineMapsControlBase3D control = onlineMaps.GetComponent<OnlineMapsControlBase3D> ();
 		control.RemoveAllMarker3D ();
 
+		onlineMaps.RemoveAllDrawingElements ();
+		enhetDrawingLines.Clear ();
+
 		for (int i = 0; i < lokaliteter.Count; i++) {
 			Lokalitet l = lokaliteter [i] as Lokalitet;
 
@@ -261,7 +273,11 @@ public class Manager : MonoBehaviour
 
 			float radius = 0.1f;
 
+			//var circlePoints = new List<Vector2> ();
+
 			for(int j=0; j<l.getEnheter().Count; j++){
+				
+
 				Enhet e = enheter[j] as Enhet;
 				
 				GameObject mapObjectChild = (GameObject)Resources.Load ("markerEnhetPrefab", typeof(GameObject));
@@ -273,13 +289,13 @@ public class Manager : MonoBehaviour
 				position = l.getCoordinates ();
 
 
+				var pos = new Vector2 (position.x + Mathf.Cos (angle) * radius, position.y + Mathf.Sin (angle) * radius * 0.5f);
 
-				marker = control.AddMarker3D (new Vector2(position.x + Mathf.Cos(angle)*radius, position.y + Mathf.Sin(angle)*radius*0.5f), mapObjectChild);
+				marker = control.AddMarker3D (pos, mapObjectChild);
 
-				
 				marker.range.max = 15;
 				marker.range.min = 1;
-				marker.label = l.getLokalitetsnavn ();
+				marker.label = l.getLokalitetsnavn () + ": " + e.getEnhetsId().Replace(" ", "");
 				marker.scale = defaultMarkerScale;
 				marker.customData = e;
 			
@@ -287,12 +303,34 @@ public class Manager : MonoBehaviour
 
 				//Destroy(mapObjectChild);
 
+				//circlePoints.Add (pos);
+
+				var linePoints = new List<Vector2> ();
+				linePoints.Add (l.getCoordinates ());
+				linePoints.Add (pos);
+
+				OnlineMapsDrawingElement line = new OnlineMapsDrawingLine (linePoints, Color.black, 0.3f);			
+				//onlineMaps.AddDrawingElement (line);
+
+				enhetDrawingLines.Add (line);
+
 			}
+
+			//OnlineMapsDrawingElement circle = new OnlineMapsDrawingPoly (circlePoints);
+			//onlineMaps.AddDrawingElement (circle);
+
+			if (visEnhet) {
+				foreach (var line in enhetDrawingLines) {
+					onlineMaps.AddDrawingElement (line);
+				}
+			}
+
+
 			//Destroy(mapObject);
 		}
 		UpdateSliderDates ();
+		oppdaterMarkers ();
 		dataTypeChanged ();
-
 
 	}
 
@@ -687,9 +725,11 @@ public class Manager : MonoBehaviour
 			visLokalitetButton.colors = ColorBlock.defaultColorBlock;
 		}
 
+		OnlineMapsControlBase3D control = onlineMaps.GetComponent<OnlineMapsControlBase3D> ();
+
 		foreach (var l in lokaliteter) {
-			l.getMarker ().instance.GetComponent<MeshRenderer>().enabled = visLokalitet;
-			l.getMarker ().instance.GetComponent<InspiserLokalitet> ().ToggleText (visLokalitet);
+			l.getMarker ().instance.SetActive (visLokalitet);
+			l.getMarker ().instance.GetComponent<MeshRenderer> ().enabled = visLokalitet;
 		}
 	}
 
@@ -712,10 +752,26 @@ public class Manager : MonoBehaviour
 
 		foreach (var l in lokaliteter) {
 			foreach (var e in l.getEnheter()) {
-				e.getMarker ().instance.GetComponent<MeshRenderer>().enabled = visEnhet;
+				e.getMarker ().instance.SetActive (visEnhet);
 
+				e.getMarker ().instance.GetComponent<MeshRenderer> ().enabled = visEnhet;
 				e.getMarker ().instance.GetComponent<InspiserEnhet> ().ToggleText (visEnhet);
 			}
 		}
+
+		if (visEnhet) {
+			foreach (var drawing in enhetDrawingLines) {
+				onlineMaps.AddDrawingElement (drawing);
+			}
+		} else {
+			onlineMaps.RemoveAllDrawingElements ();
+		}
+
+	}
+
+
+	public void ToggleRegneArkMenu() {
+		showRegneArkMenu = !showRegneArkMenu;
+
 	}
 }
