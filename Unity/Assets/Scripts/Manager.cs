@@ -93,6 +93,7 @@ public class Manager : MonoBehaviour
 
 	public Texture2D normalButtonTex;
 	public Texture2D pressedButtonTex;
+	public Texture2D hoverButtonTex;
 
 
 	// Use this for initialization
@@ -129,6 +130,30 @@ public class Manager : MonoBehaviour
 	}
 
 	void OnGUI(){
+
+		GUI.skin = regnearkMenuSkin;
+		GUI.skin.button.alignment = TextAnchor.MiddleCenter;
+
+		if (GUI.Button(new Rect(5,50,30,20), "-")) onlineMaps.zoom--;
+
+		for (int i = 5; i < 21; i++) {
+
+			if (onlineMaps.zoom == i) {
+				GUI.skin.button.normal.background = hoverButtonTex;
+			} else {
+				GUI.skin.button.normal.background = normalButtonTex;
+			}
+
+			if (GUI.Button (new Rect (5, 20 + 10 * i, 30, 10), "")) {
+				onlineMaps.zoom = i;
+			}
+		}
+		GUI.skin.button.normal.background = normalButtonTex;
+
+
+		if (GUI.Button(new Rect(5, 230, 30, 20),"+")) onlineMaps.zoom++;
+
+		GUI.skin.button.alignment = TextAnchor.MiddleLeft;
 
 
 		if (showRegneArkMenu) {
@@ -210,6 +235,10 @@ public class Manager : MonoBehaviour
 		if (animationSpeedSliderTextTooltip != null && animationSpeedSliderTextTooltip.text == "Dager per sekund") {
 			animationSpeedSliderTextTooltip.transform.position = new Vector3 (Input.mousePosition.x+60, Input.mousePosition.y+20, 0);
 		}
+
+
+
+
 
 	}
 
