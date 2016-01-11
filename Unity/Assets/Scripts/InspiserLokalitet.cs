@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System;
 using System.Collections;
 
@@ -21,7 +21,7 @@ public class InspiserLokalitet : MonoBehaviour {
 	Vector2 point;
 	Vector2 lastMousePosition;
 	bool moving;
-	
+
 	
 	OnlineMaps api;
 	// Use this for initialization
@@ -34,10 +34,20 @@ public class InspiserLokalitet : MonoBehaviour {
 		labelText = l.getLokalitetsnavn ();
 		showText = true;
 	}
+
+	private string VerticalText(string s)
+	{
+		string st = "";
+		foreach (char c in s)
+		{
+			st += c + "\n";
+		}
+		return st.ToUpper();
+	}
 	
 	// Update is called once per frame
 	void Update () {
-		
+	
 	}
 	
 	void OnMouseOver(){
@@ -50,15 +60,21 @@ public class InspiserLokalitet : MonoBehaviour {
 		var pointText = Camera.main.WorldToScreenPoint (transform.position);
 		GUI.skin = mySkin;
 		GUI.depth = 0;
-		if (showText && api.zoom > 12) {
+		if (showText && api.zoom > 2) {
+
+			//var matrixBackup = (Matrix4x4)GUI.matrix;
+			//GUIUtility.RotateAroundPivot(-90f, new Vector2(pointText.x, Screen.height - pointText.y));
+
 			mySkin.label.normal.textColor = Color.black;
-			GUI.Label (new Rect (pointText.x - 51, Screen.height - pointText.y + 10, 100, 20), labelText);
-			GUI.Label (new Rect (pointText.x - 49, Screen.height - pointText.y + 10, 100, 20), labelText);
-			GUI.Label (new Rect (pointText.x - 50, Screen.height - pointText.y + 1 + 10, 100, 20), labelText);
-			GUI.Label (new Rect (pointText.x - 50, Screen.height - pointText.y - 1 + 10, 100, 20), labelText);
+			mySkin.label.alignment = TextAnchor.MiddleCenter;
+			GUI.Label (new Rect (pointText.x - 51, Screen.height - pointText.y + 10, 100, 100), labelText);
+			GUI.Label (new Rect (pointText.x - 49, Screen.height - pointText.y + 10, 100, 100), labelText);
+			GUI.Label (new Rect (pointText.x - 50, Screen.height - pointText.y + 1 + 10, 100, 100), labelText);
+			GUI.Label (new Rect (pointText.x - 50, Screen.height - pointText.y - 1 + 10, 100, 100), labelText);
 			
 			mySkin.label.normal.textColor = Color.white;
-			GUI.Label (new Rect (pointText.x - 50, Screen.height - pointText.y + 10, 100, 20), labelText);
+			GUI.Label (new Rect (pointText.x - 50, Screen.height - pointText.y + 10, 100, 100), labelText);
+			//GUI.matrix = matrixBackup;
 		}
 		
 		

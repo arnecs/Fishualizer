@@ -122,7 +122,7 @@ public class Manager : MonoBehaviour
 //		if (myMaterial != null) {
 //			Debug.Log (myMaterial.color);// = new Color (255, 0, 0);
 //		}
-		Populate(Application.dataPath + "/Resources/06.01.2016-Lusetellinger-1712.xls");
+		//Populate(Application.dataPath + "/Resources/06.01.2016-Lusetellinger-1712.xls");
 
 		//Populate(Application.dataPath + "/Resources/06.01.2016-Lusetellinger-1712.xls");
 
