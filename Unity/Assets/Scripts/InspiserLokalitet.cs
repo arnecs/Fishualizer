@@ -10,12 +10,16 @@ public class InspiserLokalitet : MonoBehaviour {
 	GUIStyle s;
 	string labelText;
 	public GUISkin mySkin;
+
+	public InspiserLokalitet(){
+	}
 	
 	// Use this for initialization
 	void Start () {
 		l = (Lokalitet)gameObject.GetComponent<OnlineMapsMarker3DInstance>().marker.customData;
 		labelText = l.getLokalitetsnavn ();
 		showText = true;
+
 	}
 	
 	// Update is called once per frame
@@ -36,17 +40,16 @@ public class InspiserLokalitet : MonoBehaviour {
 
 
 			if (showTooltip) {
-				GUI.Box (new Rect (point.x + Screen.width / 20, Screen.height - point.y - Screen.height / 5, 100, 20), labelText);
+				GUI.Box (new Rect (point.x + Screen.width / 20, Screen.height - point.y - Screen.height / 5, 150, 40), labelText);
 			}
-
 			mySkin.label.normal.textColor = Color.black;
-			GUI.Label (new Rect (point.x - 51, Screen.height - point.y + 10, 100, 20), labelText);
-			GUI.Label (new Rect (point.x - 49, Screen.height - point.y + 10, 100, 20), labelText);
-			GUI.Label (new Rect (point.x - 50, Screen.height - point.y + 1 + 10, 100, 20), labelText);
-			GUI.Label (new Rect (point.x - 50, Screen.height - point.y - 1 + 10, 100, 20), labelText);
+			GUI.Label (new Rect (point.x - 51, Screen.height - point.y + 10, 150, 40), labelText);
+			GUI.Label (new Rect (point.x - 49, Screen.height - point.y + 10, 150, 40), labelText);
+			GUI.Label (new Rect (point.x - 50, Screen.height - point.y + 1 + 10, 150, 40), labelText);
+			GUI.Label (new Rect (point.x - 50, Screen.height - point.y - 1 + 10, 150, 40), labelText);
 
 			mySkin.label.normal.textColor = Color.white;
-			GUI.Label (new Rect (point.x - 50, Screen.height - point.y + 10, 100, 20), labelText);
+			GUI.Label (new Rect (point.x - 50, Screen.height - point.y + 10, 150, 40), labelText);
 		}
 	}
 
@@ -59,8 +62,9 @@ public class InspiserLokalitet : MonoBehaviour {
 		}
 	}
 
-	public void setValueText(double d){
-		labelText = d.ToString("0.000");
+	public void setValueText(string l, double d, float t){
+		labelText = l + " " + t.ToString() + "C\n" + d.ToString ("0.000");
+
 	}
 
 	public void ToggleText(bool b){
