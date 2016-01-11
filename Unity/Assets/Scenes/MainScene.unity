@@ -1283,7 +1283,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Velg data
+  m_Text: 'Velg data '
 --- !u!222 &865733762
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1576,6 +1576,8 @@ MonoBehaviour:
   visLokalitetButton: {fileID: 31554615}
   visEnhetButton: {fileID: 981723033}
   regnearkMenuSkin: {fileID: 11400000, guid: c1b9e9b370d1049c6bcf854ece4e9362, type: 2}
+  normalButtonTex: {fileID: 2800000, guid: 22f4adaa9c22a4ecf9ba4c52220d215d, type: 3}
+  pressedButtonTex: {fileID: 2800000, guid: 089977078cbc04a95ab3d7591bd13340, type: 3}
 --- !u!1 &963320242
 GameObject:
   m_ObjectHideFlags: 0
