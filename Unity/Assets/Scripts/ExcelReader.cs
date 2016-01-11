@@ -121,6 +121,8 @@ public class ExcelReader {
 					int index = -1;
 					if (headers.TryGetValue("LokalitetsID", out index)) {
 						string lokNavn = excelReader.GetString(index);
+					
+						if (lokNavn.ToUpper().Equals("FLERE")) continue;
 
 						if (!lokDict.TryGetValue(lokNavn, out lok)) {
 
@@ -255,8 +257,10 @@ public class ExcelReader {
 
 					// Finn riktig lokalitet
 					lokNavn = excelReader.GetString(lokNavnIndex);
+					if (lokNavn.ToUpper().Equals("FLERE")) continue;
 
 					if (!lokDict.TryGetValue(lokNavn, out lok)) {
+
 
 						lok = new Lokalitet();
 						lok.setLokalitetsNavn(lokNavn);
@@ -384,7 +388,7 @@ public class ExcelReader {
 
 					// Finn riktig lokalitet
 					lokNavn = excelReader.GetString(lokNavnIndex);
-
+					if (lokNavn.ToUpper().Equals("FLERE")) continue;
 					if (!lokDict.TryGetValue(lokNavn, out lok)) {
 
 						lok = new Lokalitet();
