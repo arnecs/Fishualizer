@@ -50,7 +50,7 @@ public class InspiserLokalitet : MonoBehaviour {
 	void OnGUI(){
 		var pointText = Camera.main.WorldToScreenPoint (transform.position);
 		GUI.skin = mySkin;
-		GUI.depth = 0;
+		GUI.depth = 1000;
 		if (showText && api.zoom > 12) {
 			mySkin.label.normal.textColor = Color.black;
 			GUI.Label (new Rect (pointText.x - 51, Screen.height - pointText.y + 10, 100, 20), labelText);
