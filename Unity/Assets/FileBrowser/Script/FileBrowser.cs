@@ -115,16 +115,16 @@ public class FileBrowser{
 						}else{
 							fileScroll = GUILayout.BeginScrollView(fileScroll);
 							for(int fi=0;fi<files.Length;fi++){
-								if(selectedFile==fi){
-									defaultColor = GUI.color;
-									GUI.color = selectedColor;
-								}
-								if(files[fi].button()){
-									outputFile = files[fi].fi;
-									selectedFile = fi;
-								}
-								if(selectedFile==fi)
-									GUI.color = defaultColor;
+									if(selectedFile==fi){
+										defaultColor = GUI.color;
+										GUI.color = selectedColor;
+									}
+									if(files[fi].button()){
+										outputFile = files[fi].fi;
+										selectedFile = fi;
+									}
+									if(selectedFile==fi)
+										GUI.color = defaultColor;
 							}
 							GUILayout.EndScrollView();
 						}
@@ -205,7 +205,7 @@ public class FileBrowser{
 			GUILayout.Label("Searching For: \""+searchBarString+"\"");
 		}else{
 			searchBarString = GUILayout.TextField(searchBarString,GUILayout.MinWidth(150));
-			if(GUILayout.Button("search")){
+			if(GUILayout.Button("søk")){
 				if(searchBarString.Length > 0){
 					isSearching = true;
 					#if thread
@@ -223,25 +223,7 @@ public class FileBrowser{
 	}
 	
 	protected void drawSearchMessage(){
-		float tt = Time.time-startSearchTime;
-		if(tt>1)
-			GUILayout.Button("Searching");
-		if(tt>2)
-			GUILayout.Button("For");
-		if(tt>3)
-			GUILayout.Button("\""+searchBarString+"\"");
-		if(tt>4)
-			GUILayout.Button(".....");
-		if(tt>5)
-			GUILayout.Button("It's");
-		if(tt>6)
-			GUILayout.Button("Taking");
-		if(tt>7)
-			GUILayout.Button("A");
-		if(tt>8)
-			GUILayout.Button("While");
-		if(tt>9)
-			GUILayout.Button(".....");
+
 	}
 	
 	public void getFileList(DirectoryInfo di){

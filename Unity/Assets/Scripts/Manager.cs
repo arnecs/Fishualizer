@@ -152,6 +152,9 @@ public class Manager : MonoBehaviour
 		GUILayout.BeginHorizontal();
 			GUILayout.BeginVertical();
 			GUILayout.Space(10);
+			skins[0].label.normal.textColor = Color.black;
+			skins[0].button.normal.textColor = Color.black;
+			skins[0].button.alignment = TextAnchor.MiddleLeft;
 			//GUILayout.Label("Selected File: "+output);
 			GUILayout.EndHorizontal();
 			//draw and display output
