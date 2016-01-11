@@ -115,6 +115,7 @@ public class FileBrowser{
 						}else{
 							fileScroll = GUILayout.BeginScrollView(fileScroll);
 							for(int fi=0;fi<files.Length;fi++){
+								if(files[fi].fi.FullName.EndsWith(".xls")){
 									if(selectedFile==fi){
 										defaultColor = GUI.color;
 										GUI.color = selectedColor;
@@ -125,12 +126,14 @@ public class FileBrowser{
 									}
 									if(selectedFile==fi)
 										GUI.color = defaultColor;
+
+								}	
 							}
 							GUILayout.EndScrollView();
 						}
 						GUILayout.BeginHorizontal("box");
 						GUILayout.FlexibleSpace();
-			if((cancelStyle == null)?GUILayout.Button("Avbryt"):GUILayout.Button("Avbryt",cancelStyle)){
+						if((cancelStyle == null)?GUILayout.Button("Avbryt"):GUILayout.Button("Avbryt",cancelStyle)){
 							outputFile = null;
 							return true;
 						}
@@ -256,13 +259,16 @@ public class FileBrowser{
 		//get files
 		FileInfo[] fia = di.GetFiles(searchPattern);
 		//FileInfo[] fia = searchDirectory(di,searchPattern);
+
 		files = new FileInformation[fia.Length];
 		for(int f=0;f<fia.Length;f++){
 			if(fileTexture)
 				files[f] = new FileInformation(fia[f],fileTexture);
 			else
 				files[f] = new FileInformation(fia[f]);
+
 		}
+
 	}
 	
 	
@@ -313,6 +319,7 @@ public class FileInformation{
 	
 	public FileInformation(FileInfo f){
 		fi=f;
+		Debug.Log (fi.Name);
 		gc = new GUIContent(fi.Name);
 	}
 	
