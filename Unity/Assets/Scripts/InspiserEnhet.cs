@@ -74,8 +74,8 @@ public class InspiserEnhet : MonoBehaviour {
 			mySkin.box.normal.textColor = Color.white;
 			mySkin.box.normal.background = guiDark;
 
-			var barRectNoData = new Rect (point.x + Screen.width / 20, Screen.height - point.y - Screen.height / 5, 180, 20);
-			var barRect = new Rect (point.x,Screen.height - point.y, 380, 20);
+			var barRectNoData = new Rect (point.x, Screen.height - point.y, 180, 20);
+			var barRect = new Rect (point.x,Screen.height - point.y, 400, 20);
 
 			Debug.Log (barRect);
 			if (barRect.yMin < 0) {
@@ -115,7 +115,7 @@ public class InspiserEnhet : MonoBehaviour {
 
 				GUI.Box (barRect, e.getEnhetsId ());
 
-				if(GUI.Button(new Rect (point.x + Screen.width / 20 + 398, Screen.height - point.y - Screen.height / 5, 20, 20), xBtn)){
+				if(GUI.Button(new Rect (point.x + 398, Screen.height - point.y, 20, 20), xBtn)){
 					toggleTooltip();
 				}
 
@@ -128,20 +128,20 @@ public class InspiserEnhet : MonoBehaviour {
 				{
 					mySkin.box.alignment = TextAnchor.UpperLeft;
 					mySkin.box.padding.left = 4;
-					GUI.Box (new Rect (point.x + Screen.width / 20, Screen.height - point.y - Screen.height / 5 + 20 + 11*count, 380, 11), pair.Key.ToString());
+					GUI.Box (new Rect (point.x, Screen.height - point.y + 20 + 11*count, 380, 11), pair.Key.ToString());
 					mySkin.box.alignment = TextAnchor.UpperCenter;
 					mySkin.box.padding.left = 0;
-					GUI.Box (new Rect (point.x + Screen.width / 20 + 378, Screen.height - point.y - Screen.height / 5 + 20 + 11*count, 40, 11), pair.Value.ToString());
+					GUI.Box (new Rect (point.x + 378, Screen.height - point.y + 20 + 11*count, 40, 11), pair.Value.ToString());
 					count++;
 				}
 			}else{
 				GUI.Box (barRectNoData, e.getEnhetsId ());
 
-				if(GUI.Button(new Rect (point.x + Screen.width / 20 + 180, Screen.height - point.y - Screen.height / 5, 20, 20), xBtn)){
+				if(GUI.Button(new Rect (point.x + 180, Screen.height - point.y , 20, 20), xBtn)){
 					toggleTooltip();
 				}
 
-				GUI.Box (new Rect (point.x + Screen.width / 20, Screen.height - point.y - Screen.height / 5 + 20, 200, 100), "Ingen data tilgjengelig før denne datoen.");
+				GUI.Box (new Rect (point.x, Screen.height - point.y + 20, 200, 100), "Ingen data tilgjengelig før denne datoen.");
 			}
 		}
 	}
