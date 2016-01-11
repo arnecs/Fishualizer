@@ -266,7 +266,7 @@ public class Manager : MonoBehaviour
 		lokaliteter.Add (new Lokalitet ("12394", "Ørnøya", new Vector2(63.759167f, 8.449133f)));
 		lokaliteter.Add (new Lokalitet ("31959", "Rataren", new Vector2(63.782383f, 8.526367f)));
 		*/
-		var excelReader = new EXCELREADER ();
+		var excelReader = new ExcelReader ();
 
 		lokaliteter = excelReader.readFile (filePath, lokaliteter);
 

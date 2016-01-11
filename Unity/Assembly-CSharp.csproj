@@ -164,8 +164,8 @@
      <Compile Include="Assets\Infinity Code\Online maps\Scripts\XML\OnlineMapsXMLList.cs" />
      <Compile Include="Assets\Infinity Code\Online maps\Scripts\XML\OnlineMapsXMLListEnum.cs" />
      <Compile Include="Assets\Infinity Code\Online maps\Scripts\XML\OnlineMapsXMLNamespaceManager.cs" />
-     <Compile Include="Assets\Scripts\EXCELREADER.cs" />
      <Compile Include="Assets\Scripts\Enhet.cs" />
+     <Compile Include="Assets\Scripts\ExcelReader.cs" />
      <Compile Include="Assets\Scripts\FileReader.cs" />
      <Compile Include="Assets\Scripts\Inspiser.cs" />
      <Compile Include="Assets\Scripts\InspiserEnhet.cs" />
