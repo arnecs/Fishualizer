@@ -56,7 +56,6 @@ public class Manager : MonoBehaviour
 
 	bool animating;
 	bool browsingFile;
-
 	//FileBrowser
 
 	//skins and textures
@@ -99,6 +98,7 @@ public class Manager : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
+		currentDate = new DateTime (1, 1, 1);
 		lokaliteter = new List<Lokalitet> ();
 		ToggleVisLokaliteter ();
 		ToggleVisEnheter ();
@@ -123,9 +123,6 @@ public class Manager : MonoBehaviour
 //			Debug.Log (myMaterial.color);// = new Color (255, 0, 0);
 //		}
 		//Populate(Application.dataPath + "/Resources/06.01.2016-Lusetellinger-1712.xls");
-
-		//Populate(Application.dataPath + "/Resources/06.01.2016-Lusetellinger-1712.xls");
-
 
 
 
@@ -164,13 +161,13 @@ public class Manager : MonoBehaviour
 				output = (fb.outputFile==null)?"cancel hit":fb.outputFile.ToString();
 
 
-				Debug.Log (output);
+				//Debug.Log (output);
 				if(output != "cancel hit"){
 					filePath = fb.outputFile.ToString();
 
 					//Hvis fila eksisterer og er i .xls-format
 					if(File.Exists(filePath) && filePath.Trim().EndsWith(".xls")){
-						Debug.Log(filePath);
+						//Debug.Log(filePath);
 						toggleFileBrowser();
 						//Her skal vi kalle på Excel-metoden til arne. Vi sender med fb.outputFile.ToString() som argument.
 						Populate(filePath);
@@ -224,7 +221,9 @@ public class Manager : MonoBehaviour
 	//	}
 
 	public void dataTypeChanged(){
-		valgtDataText.text = datatyper [valgtDatatype];
+		if (datatyper.Count > 0) {
+			valgtDataText.text = datatyper [valgtDatatype];
+		}
 		oppdaterMarkers ();
 	}
 	void Populate (string filePath)
@@ -237,8 +236,7 @@ public class Manager : MonoBehaviour
 		*/
 		var excelReader = new EXCELREADER ();
 
-		lokaliteter = excelReader.readGenerellInfo (Application.dataPath + "/Resources/06.01.2016-Generell-Info.xls");
-		lokaliteter = excelReader.readData (filePath, lokaliteter);
+		lokaliteter = excelReader.readFile (filePath, lokaliteter);
 
 		OnlineMapsControlBase3D control = onlineMaps.GetComponent<OnlineMapsControlBase3D> ();
 		control.RemoveAllMarker3D ();
@@ -257,7 +255,7 @@ public class Manager : MonoBehaviour
 
 			Vector2 position = l.getCoordinates ();
 			marker = control.AddMarker3D (position, mapObject);
-		
+
 			marker.position = position;
 			marker.label = l.getLokalitetsnavn ();
 			marker.scale = defaultMarkerScale;
@@ -333,37 +331,6 @@ public class Manager : MonoBehaviour
 		UpdateSliderDates ();
 		oppdaterMarkers ();
 		dataTypeChanged ();
-
-		/* 
-		OnlineMapsDrawingElement draw = new OnlineMapsDrawingRect (8f, 60f,  1.5f, 3f);
-
-		var p = new List<Vector2> ();
-		for (int i = 0; i < 20; i++) {
-			var angle = i * Mathf.PI * 2 / 20;
-			p.Add (new Vector2 (8f + Mathf.Cos (angle) * 1, 60f + Mathf.Sin (angle) * 1));
-		}
-		OnlineMapsDrawingElement c = new OnlineMapsDrawingPoly (p);
-		onlineMaps.AddDrawingElement (c);
-
-		p = new List<Vector2> ();
-		for (int i = 0; i < 20; i++) {
-			var angle = i * Mathf.PI * 2 / 20;
-			p.Add (new Vector2 (9.5f + Mathf.Cos (angle) * 1, 60f + Mathf.Sin (angle) * 1));
-		}
-		c = new OnlineMapsDrawingPoly (p);
-		onlineMaps.AddDrawingElement (c);
-
-		p = new List<Vector2> ();
-		for (int i = 0; i < 20; i++) {
-			var angle = i * Mathf.PI * 2 / 20;
-			p.Add (new Vector2 (8.75f + Mathf.Cos (angle) * 1, 63f + Mathf.Sin (angle) * 1));
-		}
-		c = new OnlineMapsDrawingPoly (p);
-		onlineMaps.AddDrawingElement (c);
-
-
-		onlineMaps.AddDrawingElement (draw);
-		*/
 
 	}
 
@@ -562,16 +529,18 @@ public class Manager : MonoBehaviour
 
 	public void oppdaterMarkers(){
 
-		var dataType = datatyper [valgtDatatype].ToUpper();
-
 		MålingBeregning beregning = MålingBeregning.Total;
 
-		if (dataType.Contains("SNITT")) {
-			beregning = MålingBeregning.Snitt;
-		} else if (dataType.Contains("MAKS")) {
-			beregning = MålingBeregning.Maks;
-		} else if (dataType.Contains("TOTAL")) {
-			beregning = MålingBeregning.Total;
+		if (datatyper.Count > 0) {
+			var dataType = datatyper [valgtDatatype].ToUpper();
+
+			if (dataType.Contains("SNITT")) {
+				beregning = MålingBeregning.Snitt;
+			} else if (dataType.Contains("MAKS")) {
+				beregning = MålingBeregning.Maks;
+			} else if (dataType.Contains("TOTAL")) {
+				beregning = MålingBeregning.Total;
+			}
 		}
 
 		// Beregner høydeskalering
@@ -661,7 +630,6 @@ public class Manager : MonoBehaviour
 				d /= l.getEnheter().Count;
 				break;
 			case MålingBeregning.Total:
-				
 				break;
 			case MålingBeregning.Maks:
 				break;
@@ -669,7 +637,7 @@ public class Manager : MonoBehaviour
 
 
 
-			l.getMarker ().instance.GetComponent<InspiserLokalitet> ().setValueText (d);
+			l.getMarker ().instance.GetComponent<InspiserLokalitet> ().setValueText (l.getLokalitetsnavn(), d, l.getSenesteTemperaturGittDato(currentDate));
 			skalerMarker (l.getMarker (), d * høydeSkalering);
 		}
 
@@ -700,6 +668,11 @@ public class Manager : MonoBehaviour
 	}
 
 	public void skalerMarker(OnlineMapsMarker3D marker, float d){
+		if (d == null) {
+			marker.instance.GetComponent<Renderer> ().material.color = new Color (1f, 1f, 1f);
+			marker.instance.transform.localScale = new Vector3 ((float)defaultMarkerScale, minimumMarkerHeight, (float)defaultMarkerScale);
+			return;
+		}
 		if (d < minimumMarkerHeight) {
 			marker.instance.GetComponent<Renderer> ().material.color = new Color (1f, 1f, 1f);
 			marker.instance.transform.localScale = new Vector3 ((float)defaultMarkerScale, minimumMarkerHeight, (float)defaultMarkerScale);
@@ -718,6 +691,7 @@ public class Manager : MonoBehaviour
 		if (timeSlider.value == timeSlider.maxValue) {
 			startPauseAnimation ();
 		}
+
 	}
 
 	public void toggleDataSelection() {

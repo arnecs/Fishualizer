@@ -14,20 +14,11 @@ public class Lokalitet
 	private Vector2 coordinates;
 
 	private Dictionary<string, Enhet> enheter = new Dictionary<string, Enhet> ();
+	private SortedDictionary<DateTime, float> temperaturer = new SortedDictionary<DateTime, float>();
 
 	public Lokalitet ()
 	{
-		
 	}
-
-	public Lokalitet (string lokalitetsId, string lokalitetsnavn, Vector2 coord)
-	{
-		this.lokalitetsId = lokalitetsId;
-		this.lokalitetsnavn = lokalitetsnavn;
-		this.coordinates = coord;
-
-	}
-
 
 	public string getLokalitetsId ()
 	{
@@ -88,6 +79,40 @@ public class Lokalitet
 	public OnlineMapsMarker3D getMarker(){
 		return marker;
 	}
+
+	public void leggTilTemperaturMåling(DateTime dato, float temperatur){
+		temperaturer.Add (dato, temperatur);
+	}
+
+	public float getTemperaturGittDato(DateTime dato){
+		float t;
+		if (temperaturer.TryGetValue (dato, out t)) {
+			return t;
+		}
+
+		return -1.0f;
+	}
+
+
+	public float getSenesteTemperaturGittDato(DateTime dato){
+		float tempTemp = -100.0f;
+		try{
+		List<DateTime> temperaturKeys = new List<DateTime> (temperaturer.Keys);
+			if (temperaturer.Count > 0) {
+				for (int i = temperaturKeys.Count - 1; i >= 0; i--) {
+	//				Debug.Log (temperaturKeys[i].ToString ("yyyy-MM-dd"));
+	//				Debug.Log (dato.CompareTo (temperaturKeys [i]));
+					if (dato.CompareTo (temperaturKeys [i]) >= 0) {
+						return getTemperaturGittDato (temperaturKeys [i]);
+					}
+				}
+			}
+			return tempTemp;
+		}catch (Exception e){
+		}
+		return tempTemp;
+	}
+
 	public DateTime firstDate ()
 	{
 		DateTime earliestDateSoFar;

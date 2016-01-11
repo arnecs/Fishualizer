@@ -33,6 +33,7 @@ public class InspiserLokalitet : MonoBehaviour {
 		//m = (Måling)e.getSenesteMålingGittDato(Manager.currentDate);
 		labelText = l.getLokalitetsnavn ();
 		showText = true;
+
 	}
 
 	private string VerticalText(string s)
@@ -59,12 +60,9 @@ public class InspiserLokalitet : MonoBehaviour {
 	void OnGUI(){
 		var pointText = Camera.main.WorldToScreenPoint (transform.position);
 		GUI.skin = mySkin;
-		GUI.depth = 0;
-		if (showText && api.zoom > 2) {
 
-			//var matrixBackup = (Matrix4x4)GUI.matrix;
-			//GUIUtility.RotateAroundPivot(-90f, new Vector2(pointText.x, Screen.height - pointText.y));
-
+		GUI.depth = 1000;
+		if (showText && api.zoom > 12) {
 			mySkin.label.normal.textColor = Color.black;
 			mySkin.label.alignment = TextAnchor.MiddleCenter;
 			GUI.Label (new Rect (pointText.x - 51, Screen.height - pointText.y + 10, 100, 100), labelText);
@@ -135,9 +133,9 @@ public class InspiserLokalitet : MonoBehaviour {
 			showTooltip = true;
 		}
 	}
-	
-	public void setValueText(double d){
-		labelText = d.ToString("0.000");
+
+	public void setValueText(string l, double d, float t){
+		labelText = l + " " + t.ToString() + "C\n" + d.ToString ("0.000");
 	}
 	
 	public void ToggleText(bool b){
