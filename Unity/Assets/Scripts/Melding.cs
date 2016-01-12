@@ -16,7 +16,7 @@ public class Melding : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		Show("Lorem ipsum", "GUI.skin.label.fontSize = 18;// OutlineGUI.skin.label.normal.textColor = Color.black;GUI.Label (new Rect ((Screen.width - width) / 2 + 1, (Screen.height - height) / 2, width, 30), title);GUI.Label (new Rect ((Screen.width - width) / 2 - 1, (Screen.height - height) / 2, width, 30), title);\n\t\t\tGUI.Label (new Rect ((Screen.width - width) / 2, (Screen.height - height) / 2 + 1, width, 30), title);");
+		//Show("Lorem ipsum", "GUI.skin.label.fontSize = 18;// OutlineGUI.skin.label.normal.textColor = Color.black;GUI.Label (new Rect ((Screen.width - width) / 2 + 1, (Screen.height - height) / 2, width, 30), title);GUI.Label (new Rect ((Screen.width - width) / 2 - 1, (Screen.height - height) / 2, width, 30), title);\n\t\t\tGUI.Label (new Rect ((Screen.width - width) / 2, (Screen.height - height) / 2 + 1, width, 30), title);");
 	}
 
 

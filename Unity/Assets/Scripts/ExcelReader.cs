@@ -62,18 +62,18 @@ public class ExcelReader {
 		{
 		case (int)filTyper.LEInfo:
 			l = readLEInfo (filePath);
-			Debug.Log (filePath + " lest inn");
+			GameObject.Find ("Manager").GetComponent<Melding>().Show ("Lokalitets- og enhets-informasjon innlest", filePath + " lest inn");
 			break;
 		case (int)filTyper.Data:
-			Debug.Log (filePath + " lest inn");
+			GameObject.Find ("Manager").GetComponent<Melding>().Show ("Lusetellinger innlest", filePath + " lest inn");
 			l = readData (filePath, lokaliteter);
 			break;
 		case (int)filTyper.Temp:
-			Debug.Log (filePath + " lest inn");
+			GameObject.Find ("Manager").GetComponent<Melding>().Show ("Temperaturmålinger innlest", filePath + " lest inn");
 			l = readTemperaturer (filePath, lokaliteter);
 			break;
 		case -1:
-			//GameObject.Find ("Manager").GetComponent<Melding>().Show (filePath + " kunne ikke leses inn");
+			GameObject.Find ("Manager").GetComponent<Melding>().Show ("Feil i innlesing", filePath + " kunne ikke leses inn");
 			break;
 		default:
 			Debug.Log("readFile(string filePath) - Something went wrong");

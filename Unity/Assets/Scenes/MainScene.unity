@@ -1412,6 +1412,8 @@ MonoBehaviour:
   animationSpeedSliderTextTooltip: {fileID: 0}
   _camera: {fileID: 0}
   valgtDataText: {fileID: 870290144}
+  visLokalitetButton: {fileID: 31554615}
+  visEnhetButton: {fileID: 981723033}
   skins:
   - {fileID: 11400000, guid: 3f13bb8951709ef4daea5f555585ba2c, type: 2}
   inspiserSkin: {fileID: 11400000, guid: 8a57761c59b2d4c42b313c4bc09ee901, type: 2}
@@ -1419,12 +1421,11 @@ MonoBehaviour:
   folder: {fileID: 2800000, guid: 1406bb3241f49524ab32e39637a85257, type: 3}
   back: {fileID: 2800000, guid: 69b8acf17a8bad542b36431b4fce6a3e, type: 3}
   drive: {fileID: 2800000, guid: 8184e77bea8cba04a8ab1685be171b58, type: 3}
-  visLokalitetButton: {fileID: 31554615}
-  visEnhetButton: {fileID: 981723033}
   regnearkMenuSkin: {fileID: 11400000, guid: c1b9e9b370d1049c6bcf854ece4e9362, type: 2}
   normalButtonTex: {fileID: 2800000, guid: 22f4adaa9c22a4ecf9ba4c52220d215d, type: 3}
   pressedButtonTex: {fileID: 2800000, guid: 089977078cbc04a95ab3d7591bd13340, type: 3}
   hoverButtonTex: {fileID: 2800000, guid: 95dc9451d6d354806adaaf05f01a35ab, type: 3}
+  xButtonTex: {fileID: 0}
 --- !u!114 &938784521
 MonoBehaviour:
   m_ObjectHideFlags: 0
