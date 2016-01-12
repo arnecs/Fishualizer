@@ -69,12 +69,6 @@ public class InspiserEnhet : MonoBehaviour {
 				barRect = new Rect (point.x + Screen.width / 20, point.y, 380, 20);
 			}
 
-			Debug.Log (barRect);
-			if (barRect.yMin < 0) {
-				point.y = Screen.height;
-				barRect = new Rect (point.x + Screen.width / 20, point.y, 380, 20);
-			}
-
 			var mp = Input.mousePosition;
 							
 			if (barRect.Contains (new Vector2 (mp.x, Screen.height - mp.y)) && Input.GetMouseButton (0)) {

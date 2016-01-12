@@ -150,13 +150,13 @@ public class Manager : MonoBehaviour
 
 				inspiserSkin.label.normal.textColor = Color.black;
 				inspiserSkin.label.alignment = TextAnchor.MiddleCenter;
-				GUI.Label (new Rect (screenPos.x - 51, Screen.height - screenPos.y + 5, 100, 100), lokInformasjon);
-				GUI.Label (new Rect (screenPos.x - 49, Screen.height - screenPos.y + 5, 100, 100), lokInformasjon);
-				GUI.Label (new Rect (screenPos.x - 50, Screen.height - screenPos.y + 1 + 5, 100, 100), lokInformasjon);
-				GUI.Label (new Rect (screenPos.x - 50, Screen.height - screenPos.y - 1 + 5, 100, 100), lokInformasjon);
+				GUI.Label (new Rect (screenPos.x - 51, Screen.height - screenPos.y + 5, 100, 40), lokInformasjon);
+				GUI.Label (new Rect (screenPos.x - 49, Screen.height - screenPos.y + 5, 100, 40), lokInformasjon);
+				GUI.Label (new Rect (screenPos.x - 50, Screen.height - screenPos.y + 1 + 5, 100, 40), lokInformasjon);
+				GUI.Label (new Rect (screenPos.x - 50, Screen.height - screenPos.y - 1 + 5, 100, 40), lokInformasjon);
 				
 				inspiserSkin.label.normal.textColor = Color.white;
-				GUI.Label (new Rect (screenPos.x - 50, Screen.height - screenPos.y + 5, 100, 100), lokInformasjon);
+				GUI.Label (new Rect (screenPos.x - 50, Screen.height - screenPos.y + 5, 100, 40), lokInformasjon);
 
 			}
 
@@ -171,13 +171,13 @@ public class Manager : MonoBehaviour
 
 				inspiserSkin.label.normal.textColor = Color.black;
 				inspiserSkin.label.alignment = TextAnchor.MiddleCenter;
-				GUI.Label (new Rect (screenPos.x - 51, Screen.height - screenPos.y + 10, 100, 100), enhInformasjon);
-				GUI.Label (new Rect (screenPos.x - 49, Screen.height - screenPos.y + 10, 100, 100), enhInformasjon);
-				GUI.Label (new Rect (screenPos.x - 50, Screen.height - screenPos.y + 1 + 10, 100, 100), enhInformasjon);
-				GUI.Label (new Rect (screenPos.x - 50, Screen.height - screenPos.y - 1 + 10, 100, 100), enhInformasjon);
+				GUI.Label (new Rect (screenPos.x - 51, Screen.height - screenPos.y + 10, 100, 40), enhInformasjon);
+				GUI.Label (new Rect (screenPos.x - 49, Screen.height - screenPos.y + 10, 100, 40), enhInformasjon);
+				GUI.Label (new Rect (screenPos.x - 50, Screen.height - screenPos.y + 1 + 10, 100, 40), enhInformasjon);
+				GUI.Label (new Rect (screenPos.x - 50, Screen.height - screenPos.y - 1 + 10, 100, 40), enhInformasjon);
 				
 				inspiserSkin.label.normal.textColor = Color.white;
-				GUI.Label (new Rect (screenPos.x - 50, Screen.height - screenPos.y + 10, 100, 100), enhInformasjon);
+				GUI.Label (new Rect (screenPos.x - 50, Screen.height - screenPos.y + 10, 100, 40), enhInformasjon);
 			}
 		}
 		
