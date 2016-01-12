@@ -247,7 +247,7 @@ public class Manager : MonoBehaviour
 					filePath = fb.outputFile.ToString();
 
 					//Hvis fila eksisterer og er i .xls-format
-					if(File.Exists(filePath) && filePath.Trim().EndsWith(".xls")){
+					if(File.Exists(filePath) && filePath.Trim().EndsWith(".xlsx")){
 						//Debug.Log(filePath);
 						toggleFileBrowser();
 						//Her skal vi kalle på Excel-metoden til arne. Vi sender med fb.outputFile.ToString() som argument.

@@ -186,6 +186,21 @@
  <Reference Include="UnityEngine.Networking">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
  </Reference>
+ <Reference Include="I18N">
+ <HintPath>C:/Fishualizer/Unity/Assets/DLL/I18N.dll</HintPath>
+ </Reference>
+ <Reference Include="I18N.MidEast">
+ <HintPath>C:/Fishualizer/Unity/Assets/DLL/I18N.MidEast.dll</HintPath>
+ </Reference>
+ <Reference Include="I18N.Other">
+ <HintPath>C:/Fishualizer/Unity/Assets/DLL/I18N.Other.dll</HintPath>
+ </Reference>
+ <Reference Include="I18N.Rare">
+ <HintPath>C:/Fishualizer/Unity/Assets/DLL/I18N.Rare.dll</HintPath>
+ </Reference>
+ <Reference Include="I18N.West">
+ <HintPath>C:/Fishualizer/Unity/Assets/DLL/I18N.West.dll</HintPath>
+ </Reference>
  <Reference Include="System.Data">
  <HintPath>C:/Fishualizer/Unity/Assets/DLL/System.Data.dll</HintPath>
  </Reference>
@@ -197,21 +212,6 @@
  </Reference>
  <Reference Include="ICSharpCode.SharpZipLib">
  <HintPath>C:/Fishualizer/Unity/Assets/ExcelReader/net20/ICSharpCode.SharpZipLib.dll</HintPath>
- </Reference>
- <Reference Include="I18N.Other">
- <HintPath>C:/Fishualizer/Unity/Assets/DLL/I18N.Other.dll</HintPath>
- </Reference>
- <Reference Include="I18N.West">
- <HintPath>C:/Fishualizer/Unity/Assets/DLL/I18N.West.dll</HintPath>
- </Reference>
- <Reference Include="I18N.MidEast">
- <HintPath>C:/Fishualizer/Unity/Assets/DLL/I18N.MidEast.dll</HintPath>
- </Reference>
- <Reference Include="I18N">
- <HintPath>C:/Fishualizer/Unity/Assets/DLL/I18N.dll</HintPath>
- </Reference>
- <Reference Include="I18N.Rare">
- <HintPath>C:/Fishualizer/Unity/Assets/DLL/I18N.Rare.dll</HintPath>
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

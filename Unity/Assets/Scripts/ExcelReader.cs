@@ -23,7 +23,7 @@ public class ExcelReader {
 		try {
 			stream = File.Open(filePath, FileMode.Open, FileAccess.Read);
 
-			excelReader = ExcelReaderFactory.CreateBinaryReader(stream);
+			excelReader = ExcelReaderFactory.CreateOpenXmlReader(stream);
 			excelReader.Read();
 			if(excelReader.Read()){
 				for (int i = 0; i < excelReader.FieldCount; i++) {
@@ -91,7 +91,7 @@ public class ExcelReader {
 		try {
 			FileStream stream = File.Open(filePath, FileMode.Open, FileAccess.Read);
 			//1. Reading from a binary Excel file ('97-2003 format; *.xls)
-			IExcelDataReader excelReader = ExcelReaderFactory.CreateBinaryReader(stream);
+			IExcelDataReader excelReader = ExcelReaderFactory.CreateOpenXmlReader(stream);
 
 
 			excelReader.Read();
@@ -119,7 +119,7 @@ public class ExcelReader {
 
 					// Finn riktig lokalitet
 					int index = -1;
-					if (headers.TryGetValue("LokalitetsID", out index)) {
+					if (headers.TryGetValue("Lokalitet", out index)) {
 						string lokNavn = excelReader.GetString(index);
 
 						if (lokNavn.ToUpper().Equals("FLERE")) continue;
@@ -160,8 +160,8 @@ public class ExcelReader {
 					int lengIndex = -1;
 					if (headers.TryGetValue("Lengdegrad", out lengIndex) && headers.TryGetValue("Breddegrad", out bredIndex)) {
 						try {
-							float bredde = excelReader.GetFloat(bredIndex);
-							float lengde = excelReader.GetFloat(lengIndex);
+							float bredde = float.Parse(excelReader.GetString(bredIndex).Replace (",", "."));
+							float lengde = float.Parse(excelReader.GetString(lengIndex).Replace (",", "."));
 
 							lok.setCoordinates(lengde, bredde);
 						} catch (Exception e) {
@@ -172,6 +172,7 @@ public class ExcelReader {
 
 				} catch (Exception e) {
 					//GameObject.Find ("Manager").GetComponent<Melding>().Show (e.ToString ());
+					Debug.Log(e);
 				}
 			}
 
@@ -180,6 +181,7 @@ public class ExcelReader {
 			stream.Close();
 		} catch (Exception e) {
 			//GameObject.Find ("Manager").GetComponent<Melding>().Show (e.ToString ());
+			Debug.Log(e);
 		}
 
 		return new List<Lokalitet>(lokDict.Values);
@@ -204,7 +206,7 @@ public class ExcelReader {
 			FileStream stream = File.Open(filePath, FileMode.Open, FileAccess.Read);
 
 			//1. Reading from a binary Excel file ('97-2003 format; *.xls)
-			IExcelDataReader excelReader = ExcelReaderFactory.CreateBinaryReader(stream);
+			IExcelDataReader excelReader = ExcelReaderFactory.CreateOpenXmlReader(stream);
 
 
 			int lokNavnIndex = -1, datoIndex = -1, enhetIndex = -1, antLusTellIndex = -1;
@@ -224,7 +226,7 @@ public class ExcelReader {
 							lokNavnIndex = i;
 						} else if (h.Equals("Enhet")){
 							enhetIndex = i;
-						} else if (h.Equals("Utg?ende Siste dato for lusetelling") || h.Equals ("Utgående Siste dato for lusetelling")) {
+						} else if (h.Equals("Siste dato for lusetelling i perioden")) {
 							datoIndex = i;
 						} else if (h.Equals("Antall lusetellinger i perioden")) {
 							antLusTellIndex = i;
@@ -289,14 +291,14 @@ public class ExcelReader {
 
 
 					DateTime dato;
-					dato = excelReader.GetDateTime(datoIndex);
+					dato = DateTime.Parse(excelReader.GetString(datoIndex));
 					Måling m = new Måling(dato);
 
 					for (int i = 0; i < excelReader.FieldCount; i++) {
 						try {
 
 							if (!headers[i].ToUpper().Contains("DATO")) {
-								double data = excelReader.GetDouble(i);
+								double data = double.Parse(excelReader.GetString(i).Replace(",", "."));
 
 
 								m.AddData(headers[i], data);
@@ -343,7 +345,7 @@ public class ExcelReader {
 			FileStream stream = File.Open(filePath, FileMode.Open, FileAccess.Read);
 
 			//1. Reading from a binary Excel file ('97-2003 format; *.xls)
-			IExcelDataReader excelReader = ExcelReaderFactory.CreateBinaryReader(stream);
+			IExcelDataReader excelReader = ExcelReaderFactory.CreateOpenXmlReader(stream);
 
 			int lokNavnIndex = -1, datoIndex = -1, tempIndex = -1;
 
@@ -398,7 +400,7 @@ public class ExcelReader {
 
 					}
 
-					float temperatur = float.Parse(tempString);
+					float temperatur = float.Parse(tempString.Replace (",", "."));
 					DateTime dato;
 					dato = excelReader.GetDateTime(datoIndex);
 					lok.leggTilTemperaturMåling(dato, temperatur);

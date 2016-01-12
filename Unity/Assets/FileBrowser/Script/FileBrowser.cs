@@ -115,7 +115,7 @@ public class FileBrowser{
 						}else{
 							fileScroll = GUILayout.BeginScrollView(fileScroll);
 							for(int fi=0;fi<files.Length;fi++){
-								if(files[fi].fi.FullName.EndsWith(".xls")){
+								if(files[fi].fi.FullName.EndsWith(".xlsx")){
 									if(selectedFile==fi){
 										defaultColor = GUI.color;
 										GUI.color = selectedColor;
