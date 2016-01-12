@@ -50,23 +50,9 @@ public class InspiserEnhet : MonoBehaviour {
 	void OnGUI(){
 		var pointText = Camera.main.WorldToScreenPoint (transform.position);
 
+		guiDepth = -200;
+		GUI.depth = guiDepth;
 		GUI.skin = mySkin;
-		guiDepth = 1000;
-		GUI.depth = guiDepth;
-		if (showText && api.zoom > 9) {
-			mySkin.label.normal.textColor = Color.black;
-			GUI.Label (new Rect (pointText.x - 51, Screen.height - pointText.y + 10, 100, 40), labelText);
-			GUI.Label (new Rect (pointText.x - 49, Screen.height - pointText.y + 10, 100, 40), labelText);
-			GUI.Label (new Rect (pointText.x - 50, Screen.height - pointText.y + 1 + 10, 100, 40), labelText);
-			GUI.Label (new Rect (pointText.x - 50, Screen.height - pointText.y - 1 + 10, 100, 40), labelText);
-			
-			mySkin.label.normal.textColor = Color.white;
-			GUI.Label (new Rect (pointText.x - 50, Screen.height - pointText.y + 10, 100, 40), labelText);
-		}
-
-
-		guiDepth = 0;
-		GUI.depth = guiDepth;
 		if (showTooltip) {
 			m = (Måling)e.getSenesteMålingGittDato(Manager.currentDate);
 
@@ -147,7 +133,7 @@ public class InspiserEnhet : MonoBehaviour {
 	}
 	
 	
-	void toggleTooltip(){
+	public void toggleTooltip(){
 		point = Camera.main.WorldToScreenPoint (transform.position);
 		point.y += 50;
 		point.x += 10;
@@ -157,11 +143,38 @@ public class InspiserEnhet : MonoBehaviour {
 			showTooltip = true;
 		}
 	}
-	
+
+	public bool Tooltip(){
+		return showTooltip;
+	}
+
+	public bool isMoving(){
+		return moving;
+	}
+
+	public void Moving(bool b){
+		moving = b;
+	}
+
+	public Enhet getEnhet(){
+		return e;
+	}
+
+	public Vector2 getLastMousePosition(){
+		return lastMousePosition;
+	}
+
+	public void setLastMousePosition(Vector2 v){
+		lastMousePosition = v;
+	}
 
 
 	public void setValueText(double d){
 		labelText = e.getEnhetsId() + "\n" + d.ToString("0.000");
+	}
+
+	public string getValueText(){
+		return labelText;
 	}
 
 	public void ToggleText(bool b){
