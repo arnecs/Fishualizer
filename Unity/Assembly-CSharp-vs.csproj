@@ -202,6 +202,21 @@
  <Reference Include="ICSharpCode.SharpZipLib">
  <HintPath>/Users/jorgen/Copy/3D/Fishualizer/Unity/Assets/ExcelReader/net20/ICSharpCode.SharpZipLib.dll</HintPath>
  </Reference>
+ <Reference Include="I18N.Other">
+ <HintPath>/Users/jorgen/Copy/3D/Fishualizer/Unity/Assets/DLL/I18N.Other.dll</HintPath>
+ </Reference>
+ <Reference Include="I18N.West">
+ <HintPath>/Users/jorgen/Copy/3D/Fishualizer/Unity/Assets/DLL/I18N.West.dll</HintPath>
+ </Reference>
+ <Reference Include="I18N.MidEast">
+ <HintPath>/Users/jorgen/Copy/3D/Fishualizer/Unity/Assets/DLL/I18N.MidEast.dll</HintPath>
+ </Reference>
+ <Reference Include="I18N">
+ <HintPath>/Users/jorgen/Copy/3D/Fishualizer/Unity/Assets/DLL/I18N.dll</HintPath>
+ </Reference>
+ <Reference Include="I18N.Rare">
+ <HintPath>/Users/jorgen/Copy/3D/Fishualizer/Unity/Assets/DLL/I18N.Rare.dll</HintPath>
+ </Reference>
  <Reference Include="UnityEditor.iOS.Extensions.Xcode">
  <HintPath>/Applications/Unity/Unity.app/Contents/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
  </Reference>

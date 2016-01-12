@@ -100,7 +100,7 @@ public class InspiserLokalitet : MonoBehaviour {
 
 			if(alleEnheter.Keys.Count > 0){
 				
-				GUI.Box (barRect, l.getLokalitetsnavn());
+				GUI.Box (barRect, l.getLokalitetsnavn() + " - for alle enheter");
 				
 				if(GUI.Button(new Rect (point.x + 398, Screen.height - point.y, 20, 20), xBtn)){
 					toggleTooltip();
