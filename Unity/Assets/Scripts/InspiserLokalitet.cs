@@ -61,21 +61,6 @@ public class InspiserLokalitet : MonoBehaviour {
 		var pointText = Camera.main.WorldToScreenPoint (transform.position);
 		GUI.skin = mySkin;
 
-		GUI.depth = 1000;
-		if (showText && api.zoom > 12) {
-			mySkin.label.normal.textColor = Color.black;
-			mySkin.label.alignment = TextAnchor.MiddleCenter;
-			GUI.Label (new Rect (pointText.x - 51, Screen.height - pointText.y + 10, 100, 100), labelText);
-			GUI.Label (new Rect (pointText.x - 49, Screen.height - pointText.y + 10, 100, 100), labelText);
-			GUI.Label (new Rect (pointText.x - 50, Screen.height - pointText.y + 1 + 10, 100, 100), labelText);
-			GUI.Label (new Rect (pointText.x - 50, Screen.height - pointText.y - 1 + 10, 100, 100), labelText);
-			
-			mySkin.label.normal.textColor = Color.white;
-			GUI.Label (new Rect (pointText.x - 50, Screen.height - pointText.y + 10, 100, 100), labelText);
-			//GUI.matrix = matrixBackup;
-		}
-		
-		
 		GUI.depth = 1;
 		if (showTooltip) {
 			//m = (Måling)e.getSenesteMålingGittDato(Manager.currentDate);
@@ -137,8 +122,16 @@ public class InspiserLokalitet : MonoBehaviour {
 	public void setValueText(string l, double d, float t){
 		labelText = l + " " + t.ToString() + "°C\n" + d.ToString ("0.000");
 	}
+
+	public string getValueText(){
+		return labelText;
+	}
 	
 	public void ToggleText(bool b){
 		showText = b;
+	}
+
+	public Lokalitet getLokalitet(){
+		return l;
 	}
 }

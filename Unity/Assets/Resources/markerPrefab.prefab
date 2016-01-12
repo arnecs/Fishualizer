@@ -14,7 +14,7 @@ GameObject:
   - 114: {fileID: 11458432}
   m_Layer: 0
   m_Name: markerPrefab
-  m_TagString: Untagged
+  m_TagString: Lokalitet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -26,7 +26,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 132074}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2248.5737, y: 54.220768, z: 1747.7821}
+  m_LocalPosition: {x: -2248.57373, y: 54.220768, z: 1747.7821}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -49,10 +49,8 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 1
-  m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxDistance: .5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
@@ -76,6 +74,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mySkin: {fileID: 11400000, guid: 8a57761c59b2d4c42b313c4bc09ee901, type: 2}
+  xBtn: {fileID: 0}
+  guiDark: {fileID: 2800000, guid: 089977078cbc04a95ab3d7591bd13340, type: 3}
+  guiLight: {fileID: 2800000, guid: 22f4adaa9c22a4ecf9ba4c52220d215d, type: 3}
 --- !u!136 &13614170
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -85,7 +86,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.5
+  m_Radius: .5
   m_Height: 1
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
@@ -124,6 +125,18 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_Height
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: guiLight
+      value: 
+      objectReference: {fileID: 2800000, guid: 22f4adaa9c22a4ecf9ba4c52220d215d, type: 3}
+    - target: {fileID: 0}
+      propertyPath: guiDark
+      value: 
+      objectReference: {fileID: 2800000, guid: 089977078cbc04a95ab3d7591bd13340, type: 3}
+    - target: {fileID: 0}
+      propertyPath: m_TagString
+      value: Lokalitet
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
