@@ -7,6 +7,7 @@ using System.Collections;
 using System; 
 using System.IO; 
 using System.Data;
+using System.Text;
 using Excel;
 using System.Collections.Generic;
 
@@ -62,21 +63,24 @@ public class ExcelReader {
 		{
 		case (int)filTyper.LEInfo:
 			l = readLEInfo (filePath);
+			GameObject.Find ("Manager").GetComponent<Feilmelding> ().Show (filePath + " lest inn");
 			Debug.Log (filePath + " lest inn");
 			break;
 		case (int)filTyper.Data:
 			Debug.Log (filePath + " lest inn");
+			GameObject.Find ("Manager").GetComponent<Feilmelding> ().Show (filePath + " lest inn");
 			l = readData (filePath, lokaliteter);
 			break;
 		case (int)filTyper.Temp:
 			Debug.Log (filePath + " lest inn");
+			GameObject.Find ("Manager").GetComponent<Feilmelding> ().Show (filePath + " lest inn");
 			l = readTemperaturer (filePath, lokaliteter);
 			break;
 		case -1:
-			GameObject.Find ("Manager").GetComponent<Feilmelding>().Show (filePath + " kunne ikke leses inn");
+			GameObject.Find ("Manager").GetComponent<Feilmelding> ().Show (filePath + " kunne ikke leses inn");
 			break;
 		default:
-			Debug.Log("readFile(string filePath) - Something went wrong");
+			GameObject.Find ("Manager").GetComponent<Feilmelding> ().Show ("Noe gikk galt");
 			break;
 		}
 
@@ -90,7 +94,7 @@ public class ExcelReader {
 
 		try {
 			FileStream stream = File.Open(filePath, FileMode.Open, FileAccess.Read);
-			//1. Reading from a binary Excel file ('97-2003 format; *.xls)
+
 			IExcelDataReader excelReader = ExcelReaderFactory.CreateBinaryReader(stream);
 
 
@@ -101,6 +105,7 @@ public class ExcelReader {
 					string h = excelReader.GetString(i);
 
 					//Debug.Log(h);
+
 
 					if (h != null) {
 						headers.Add(h, i);
@@ -121,8 +126,6 @@ public class ExcelReader {
 					int index = -1;
 					if (headers.TryGetValue("LokalitetsID", out index)) {
 						string lokNavn = excelReader.GetString(index);
-					
-						if (lokNavn.ToUpper().Equals("FLERE")) continue;
 
 						if (!lokDict.TryGetValue(lokNavn, out lok)) {
 
@@ -165,13 +168,13 @@ public class ExcelReader {
 
 							lok.setCoordinates(lengde, bredde);
 						} catch (Exception e) {
-							
+							//GameObject.Find ("Manager").GetComponent<Feilmelding> ().Show (e.ToString ());
 						}
 					}
 
 		
 				} catch (Exception e) {
-					GameObject.Find ("Manager").GetComponent<Feilmelding>().Show (e.ToString ());
+					//GameObject.Find ("Manager").GetComponent<Feilmelding> ().Show (e.ToString ());
 				}
 			}
 
@@ -179,7 +182,7 @@ public class ExcelReader {
 			excelReader.Close();
 			stream.Close();
 		} catch (Exception e) {
-			GameObject.Find ("Manager").GetComponent<Feilmelding>().Show (e.ToString ());
+			//GameObject.Find ("Manager").GetComponent<Feilmelding> ().Show (e.ToString ());
 		}
 
 		return new List<Lokalitet>(lokDict.Values);
@@ -203,7 +206,7 @@ public class ExcelReader {
 		try {
 			FileStream stream = File.Open(filePath, FileMode.Open, FileAccess.Read);
 
-			//1. Reading from a binary Excel file ('97-2003 format; *.xls)
+
 			IExcelDataReader excelReader = ExcelReaderFactory.CreateBinaryReader(stream);
 
 
@@ -216,15 +219,13 @@ public class ExcelReader {
 
 					string h = excelReader.GetString(i);
 
-					//Debug.Log(h);
-
 					if (h != null) {
 						headers.Add(h);
 						if (h.Equals("Lokalitet")) {
 							lokNavnIndex = i;
 						} else if (h.Equals("Enhet")){
 							enhetIndex = i;
-						} else if (h.Equals("Utg?ende Siste dato for lusetelling") || h.Equals ("Utgående Siste dato for lusetelling")) {
+						} else if (h.Contains("Siste dato for lusetelling")) {
 							datoIndex = i;
 						} else if (h.Equals("Antall lusetellinger i perioden")) {
 							antLusTellIndex = i;
@@ -236,7 +237,7 @@ public class ExcelReader {
 			}
 
 			if (lokNavnIndex == -1 || enhetIndex == -1 || datoIndex == -1 || antLusTellIndex == -1) {
-				Debug.Log ("Lokalitet, Enhet, Dato eller Antall Lusetellinger er ikke med");
+				GameObject.Find ("Manager").GetComponent<Feilmelding> ().Show ("Lokalitet, Enhet, Dato eller Antall Lusetellinger er ikke med");
 				return new List<Lokalitet>();
 			}
 
@@ -257,10 +258,8 @@ public class ExcelReader {
 
 					// Finn riktig lokalitet
 					lokNavn = excelReader.GetString(lokNavnIndex);
-					if (lokNavn.ToUpper().Equals("FLERE")) continue;
 
 					if (!lokDict.TryGetValue(lokNavn, out lok)) {
-
 
 						lok = new Lokalitet();
 						lok.setLokalitetsNavn(lokNavn);
@@ -312,7 +311,7 @@ public class ExcelReader {
 					}
 					enhet.leggTilMåling(m);
 				} catch (Exception e) {
-					GameObject.Find ("Manager").GetComponent<Feilmelding>().Show (e.ToString ());
+					//GameObject.Find ("Manager").GetComponent<Feilmelding> ().Show (e.ToString ());
 				}
 			}
 
@@ -320,7 +319,7 @@ public class ExcelReader {
 			excelReader.Close();
 			stream.Close();
 		} catch (Exception e) {
-			GameObject.Find ("Manager").GetComponent<Feilmelding>().Show (e.ToString ());
+			//GameObject.Find ("Manager").GetComponent<Feilmelding> ().Show (e.ToString ());
 		}
 
 		return new List<Lokalitet>(lokDict.Values);
@@ -342,8 +341,8 @@ public class ExcelReader {
 		try {
 			FileStream stream = File.Open(filePath, FileMode.Open, FileAccess.Read);
 
-			//1. Reading from a binary Excel file ('97-2003 format; *.xls)
 			IExcelDataReader excelReader = ExcelReaderFactory.CreateBinaryReader(stream);
+
 
 			int lokNavnIndex = -1, datoIndex = -1, tempIndex = -1;
 
@@ -359,7 +358,7 @@ public class ExcelReader {
 						headers.Add(h);
 						if (h.Equals("Lokalitet")) {
 							lokNavnIndex = i;
-						} else if (h.Equals("Utg?ende Dato") || h.Equals ("Utgående Dato")) {
+						} else if (h.Contains("ende Dato")) {
 							datoIndex = i;
 						} else if (h.Contains("Temperatur")) {
 							tempIndex= i;
@@ -369,7 +368,7 @@ public class ExcelReader {
 			}
 
 			if (lokNavnIndex == -1 || datoIndex == -1 || tempIndex == -1) {
-				Debug.Log ("Lokalitet, Dato eller Temperatur er ikke med");
+				GameObject.Find ("Manager").GetComponent<Feilmelding> ().Show ("Lokalitet, Dato eller Temperatur er ikke med");
 				return new List<Lokalitet>();
 			}
 
@@ -378,7 +377,6 @@ public class ExcelReader {
 				try {
 
 					string tempString = excelReader.GetString(tempIndex);
-
 					if (tempString.Equals("")) {
 						continue;
 					}
@@ -388,7 +386,7 @@ public class ExcelReader {
 
 					// Finn riktig lokalitet
 					lokNavn = excelReader.GetString(lokNavnIndex);
-					if (lokNavn.ToUpper().Equals("FLERE")) continue;
+
 					if (!lokDict.TryGetValue(lokNavn, out lok)) {
 
 						lok = new Lokalitet();
@@ -405,7 +403,7 @@ public class ExcelReader {
 					//Debug.Log(lok.getLokalitetsnavn() + " lagt til: " + dato + " " + temperatur);
 
 				} catch (Exception e) {
-					GameObject.Find ("Manager").GetComponent<Feilmelding>().Show (e.ToString ());
+					//GameObject.Find ("Manager").GetComponent<Feilmelding> ().Show (e.ToString ());
 				}
 
 			}
@@ -414,7 +412,7 @@ public class ExcelReader {
 			excelReader.Close();
 			stream.Close();
 		} catch (Exception e) {
-			GameObject.Find ("Manager").GetComponent<Feilmelding>().Show (e.ToString ());
+			//GameObject.Find ("Manager").GetComponent<Feilmelding> ().Show (e.ToString ());
 		}
 
 		return new List<Lokalitet>(lokDict.Values);

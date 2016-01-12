@@ -112,6 +112,21 @@
  <Reference Include="UnityEditor.WindowsStandalone.Extensions">
  <HintPath>C:/Program Files/Unity/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
  </Reference>
+ <Reference Include="I18N.Other">
+ <HintPath>C:/Fishualizer/Unity/Assets/DLL/I18N.Other.dll</HintPath>
+ </Reference>
+ <Reference Include="I18N.West">
+ <HintPath>C:/Fishualizer/Unity/Assets/DLL/I18N.West.dll</HintPath>
+ </Reference>
+ <Reference Include="I18N.MidEast">
+ <HintPath>C:/Fishualizer/Unity/Assets/DLL/I18N.MidEast.dll</HintPath>
+ </Reference>
+ <Reference Include="I18N">
+ <HintPath>C:/Fishualizer/Unity/Assets/DLL/I18N.dll</HintPath>
+ </Reference>
+ <Reference Include="I18N.Rare">
+ <HintPath>C:/Fishualizer/Unity/Assets/DLL/I18N.Rare.dll</HintPath>
+ </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp.csproj">
