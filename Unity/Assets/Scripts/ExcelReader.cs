@@ -73,7 +73,7 @@ public class ExcelReader {
 			l = readTemperaturer (filePath, lokaliteter);
 			break;
 		case -1:
-			GameObject.Find ("Manager").GetComponent<Feilmelding>().Show (filePath + " kunne ikke leses inn");
+			GameObject.Find ("Manager").GetComponent<Melding>().Show (filePath + " kunne ikke leses inn");
 			break;
 		default:
 			Debug.Log("readFile(string filePath) - Something went wrong");
@@ -171,7 +171,7 @@ public class ExcelReader {
 
 		
 				} catch (Exception e) {
-					GameObject.Find ("Manager").GetComponent<Feilmelding>().Show (e.ToString ());
+					GameObject.Find ("Manager").GetComponent<Melding>().Show (e.ToString ());
 				}
 			}
 
@@ -179,7 +179,7 @@ public class ExcelReader {
 			excelReader.Close();
 			stream.Close();
 		} catch (Exception e) {
-			GameObject.Find ("Manager").GetComponent<Feilmelding>().Show (e.ToString ());
+			GameObject.Find ("Manager").GetComponent<Melding>().Show (e.ToString ());
 		}
 
 		return new List<Lokalitet>(lokDict.Values);
@@ -312,7 +312,7 @@ public class ExcelReader {
 					}
 					enhet.leggTilMåling(m);
 				} catch (Exception e) {
-					GameObject.Find ("Manager").GetComponent<Feilmelding>().Show (e.ToString ());
+					GameObject.Find ("Manager").GetComponent<Melding>().Show (e.ToString ());
 				}
 			}
 
@@ -320,7 +320,7 @@ public class ExcelReader {
 			excelReader.Close();
 			stream.Close();
 		} catch (Exception e) {
-			GameObject.Find ("Manager").GetComponent<Feilmelding>().Show (e.ToString ());
+			GameObject.Find ("Manager").GetComponent<Melding>().Show (e.ToString ());
 		}
 
 		return new List<Lokalitet>(lokDict.Values);
@@ -405,7 +405,7 @@ public class ExcelReader {
 					//Debug.Log(lok.getLokalitetsnavn() + " lagt til: " + dato + " " + temperatur);
 
 				} catch (Exception e) {
-					GameObject.Find ("Manager").GetComponent<Feilmelding>().Show (e.ToString ());
+					GameObject.Find ("Manager").GetComponent<Melding>().Show (e.ToString ());
 				}
 
 			}
@@ -414,7 +414,7 @@ public class ExcelReader {
 			excelReader.Close();
 			stream.Close();
 		} catch (Exception e) {
-			GameObject.Find ("Manager").GetComponent<Feilmelding>().Show (e.ToString ());
+			GameObject.Find ("Manager").GetComponent<Melding>().Show (e.ToString ());
 		}
 
 		return new List<Lokalitet>(lokDict.Values);
