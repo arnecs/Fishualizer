@@ -1391,6 +1391,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 938784519}
   - 114: {fileID: 938784520}
+  - 114: {fileID: 938784521}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -1445,6 +1446,19 @@ MonoBehaviour:
   normalButtonTex: {fileID: 2800000, guid: 22f4adaa9c22a4ecf9ba4c52220d215d, type: 3}
   pressedButtonTex: {fileID: 2800000, guid: 089977078cbc04a95ab3d7591bd13340, type: 3}
   hoverButtonTex: {fileID: 2800000, guid: 95dc9451d6d354806adaaf05f01a35ab, type: 3}
+--- !u!114 &938784521
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 938784518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5a3306bb36f04cc8a64f80ecdaf3fc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  width: 500
+  height: 200
 --- !u!1 &981723031
 GameObject:
   m_ObjectHideFlags: 0
