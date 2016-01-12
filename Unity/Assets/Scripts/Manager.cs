@@ -62,9 +62,7 @@ public class Manager : MonoBehaviour
 	//FileBrowser
 
 	//skins and textures
-	public GUISkin[] skins;
-	public GUISkin inspiserSkin;
-	public Texture2D file,folder,back,drive;
+
 	string[] layoutTypes = {"Type 0","Type 1"};
 	FileBrowser fb = new FileBrowser();
 	string output = "no file";
@@ -82,7 +80,6 @@ public class Manager : MonoBehaviour
 	public Button visEnhetButton;
 
 
-
 	enum MålingBeregning {
 		Snitt, Maks, Total
 	};
@@ -90,7 +87,11 @@ public class Manager : MonoBehaviour
 
 	List<OnlineMapsDrawingElement> enhetDrawingLines = new List<OnlineMapsDrawingElement> ();
 
-
+	// Inspisering og FileBrowser
+	public GUISkin[] skins;
+	public GUISkin inspiserSkin;
+	public Texture2D file,folder,back,drive;
+	
 	// Regneark Meny
 	bool showRegneArkMenu;
 	public GUISkin regnearkMenuSkin;
@@ -98,6 +99,7 @@ public class Manager : MonoBehaviour
 	public Texture2D normalButtonTex;
 	public Texture2D pressedButtonTex;
 	public Texture2D hoverButtonTex;
+	public Texture2D xButtonTex;
 
 
 	// Use this for initialization
@@ -111,12 +113,6 @@ public class Manager : MonoBehaviour
 		ToggleVisEnheter ();
 		animationSpeed = 1.0f;
 
-		//Brukes ikke før vi evt. vil skalere ALLE markers samtidig. Ligger også funksjonalitet
-		// i LokalitetsBehaviour.cs
-//		OnlineMaps api = OnlineMaps.instance;
-//		api.OnChangeZoom += OnChangeZoom;
-//		OnChangeZoom ();
-
 		//FileReader
 		fb.guiSkin = skins[0]; //set the starting skin
 		fb.fileTexture = file; 
@@ -124,11 +120,7 @@ public class Manager : MonoBehaviour
 		fb.driveTexture = drive;
 		fb.showSearch = true;
 		fb.searchRecursively = true;
-		//lokaliteter[0].getMarker ().instance.
-//		Material myMaterial = Resources.Load("Resources/mymat", typeof(Material)) as Material;
-//		if (myMaterial != null) {
-//			Debug.Log (myMaterial.color);// = new Color (255, 0, 0);
-//		}
+
 		Populate(Application.dataPath + "/Resources/06.01.2016-Generell-Info.xls");
 		Populate(Application.dataPath + "/Resources/06.01.2016-Lusetellinger-1712.xls");
 
@@ -144,8 +136,9 @@ public class Manager : MonoBehaviour
 		//Debug.Log (enhetObjekter.Length);
 		
 		GUI.depth = 100;
+		GUI.skin = inspiserSkin;
 		if(lokalitetObjekter.Length > 0){
-			GUI.skin = inspiserSkin;
+
 
 			foreach(GameObject lok in lokalitetObjekter)
 			{
@@ -169,12 +162,11 @@ public class Manager : MonoBehaviour
 
 			foreach(GameObject enh in enhetObjekter)
 			{
-				Enhet enhet = enh.GetComponent<InspiserEnhet>().getEnhet();
+				InspiserEnhet inspiser = enh.GetComponent<InspiserEnhet>();
+				Enhet enhet = inspiser.getEnhet();
 				var pos = (Vector3)enh.gameObject.transform.position;
 				var screenPos = Camera.main.WorldToScreenPoint (pos);
 
-				//Debug.Log("ENHET");
-				//string enhInformasjon = enhet.getSenesteTemperaturGittDato(currentDate).ToString();
 				string enhInformasjon = enh.GetComponent<InspiserEnhet>().getValueText();
 
 				inspiserSkin.label.normal.textColor = Color.black;
@@ -186,10 +178,7 @@ public class Manager : MonoBehaviour
 				
 				inspiserSkin.label.normal.textColor = Color.white;
 				GUI.Label (new Rect (screenPos.x - 50, Screen.height - screenPos.y + 10, 100, 100), enhInformasjon);
-			
 			}
-
-
 		}
 		
 		GUI.depth = 0;

@@ -50,8 +50,9 @@ public class InspiserEnhet : MonoBehaviour {
 	void OnGUI(){
 		var pointText = Camera.main.WorldToScreenPoint (transform.position);
 
-		guiDepth = 0;
+		guiDepth = -200;
 		GUI.depth = guiDepth;
+		GUI.skin = mySkin;
 		if (showTooltip) {
 			m = (Måling)e.getSenesteMålingGittDato(Manager.currentDate);
 
@@ -132,7 +133,7 @@ public class InspiserEnhet : MonoBehaviour {
 	}
 	
 	
-	void toggleTooltip(){
+	public void toggleTooltip(){
 		point = Camera.main.WorldToScreenPoint (transform.position);
 		point.y += 50;
 		point.x += 10;
@@ -143,8 +144,28 @@ public class InspiserEnhet : MonoBehaviour {
 		}
 	}
 
+	public bool Tooltip(){
+		return showTooltip;
+	}
+
+	public bool isMoving(){
+		return moving;
+	}
+
+	public void Moving(bool b){
+		moving = b;
+	}
+
 	public Enhet getEnhet(){
 		return e;
+	}
+
+	public Vector2 getLastMousePosition(){
+		return lastMousePosition;
+	}
+
+	public void setLastMousePosition(Vector2 v){
+		lastMousePosition = v;
 	}
 
 
