@@ -121,8 +121,8 @@ public class Manager : MonoBehaviour
 		fb.showSearch = true;
 		fb.searchRecursively = true;
 
-		Populate(Application.dataPath + "/Resources/06.01.2016-Generell-Info.xls");
-		Populate(Application.dataPath + "/Resources/06.01.2016-Lusetellinger-1712.xls");
+		//Populate(Application.dataPath + "/Resources/06.01.2016-Generell-Info.xls");
+		//Populate(Application.dataPath + "/Resources/06.01.2016-Lusetellinger-1712.xls");
 
 
 

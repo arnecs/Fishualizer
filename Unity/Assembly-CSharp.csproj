@@ -174,8 +174,8 @@
      <Compile Include="Assets\Scripts\Lokalitet.cs" />
      <Compile Include="Assets\Scripts\LokalitetBehaviour.cs" />
      <Compile Include="Assets\Scripts\Manager.cs" />
-     <Compile Include="Assets\Scripts\Måling.cs" />
      <Compile Include="Assets\Scripts\Melding.cs" />
+     <Compile Include="Assets\Scripts\Måling.cs" />
      <None Include="Assets\FileBrowser\readme.txt" />
      <None Include="Assets\Resources\Lusetellinger.txt" />
      <None Include="Assets\Infinity Code\Online maps\Shaders\TilesetShader.shader" />
@@ -185,7 +185,7 @@
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.Networking">
- <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
+ <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
