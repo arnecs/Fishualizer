@@ -40,6 +40,9 @@ public class Manager : MonoBehaviour
 	float minimumMarkerHeight = 5.0f;
 	float maxMarkerHeight = 200.0f;
 
+	GameObject[] lokalitetObjekter;
+	GameObject[] enhetObjekter;
+
 
 	// Data selection
 	bool showDataSelection;
@@ -60,6 +63,7 @@ public class Manager : MonoBehaviour
 
 	//skins and textures
 	public GUISkin[] skins;
+	public GUISkin inspiserSkin;
 	public Texture2D file,folder,back,drive;
 	string[] layoutTypes = {"Type 0","Type 1"};
 	FileBrowser fb = new FileBrowser();
@@ -99,6 +103,8 @@ public class Manager : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
+		lokalitetObjekter = new GameObject[0];
+		enhetObjekter = new GameObject[0];
 		currentDate = new DateTime (1, 1, 1);
 		lokaliteter = new List<Lokalitet> ();
 		ToggleVisLokaliteter ();
@@ -123,13 +129,71 @@ public class Manager : MonoBehaviour
 //		if (myMaterial != null) {
 //			Debug.Log (myMaterial.color);// = new Color (255, 0, 0);
 //		}
-		//Populate(Application.dataPath + "/Resources/06.01.2016-Lusetellinger-1712.xls");
+		Populate(Application.dataPath + "/Resources/06.01.2016-Generell-Info.xls");
+		Populate(Application.dataPath + "/Resources/06.01.2016-Lusetellinger-1712.xls");
 
 
 
 	}
 
 	void OnGUI(){
+
+
+		lokalitetObjekter = GameObject.FindGameObjectsWithTag("Lokalitet");
+		enhetObjekter = GameObject.FindGameObjectsWithTag("Enhet");
+		//Debug.Log (enhetObjekter.Length);
+		
+		GUI.depth = 100;
+		if(lokalitetObjekter.Length > 0){
+			GUI.skin = inspiserSkin;
+
+			foreach(GameObject lok in lokalitetObjekter)
+			{
+				Lokalitet lokalitet = lok.GetComponent<InspiserLokalitet>().getLokalitet();
+				var pos = (Vector3)lok.gameObject.transform.position;
+				var screenPos = Camera.main.WorldToScreenPoint (pos);
+
+				string lokInformasjon = lok.GetComponent<InspiserLokalitet>().getValueText();
+
+				inspiserSkin.label.normal.textColor = Color.black;
+				inspiserSkin.label.alignment = TextAnchor.MiddleCenter;
+				GUI.Label (new Rect (screenPos.x - 51, Screen.height - screenPos.y + 5, 100, 100), lokInformasjon);
+				GUI.Label (new Rect (screenPos.x - 49, Screen.height - screenPos.y + 5, 100, 100), lokInformasjon);
+				GUI.Label (new Rect (screenPos.x - 50, Screen.height - screenPos.y + 1 + 5, 100, 100), lokInformasjon);
+				GUI.Label (new Rect (screenPos.x - 50, Screen.height - screenPos.y - 1 + 5, 100, 100), lokInformasjon);
+				
+				inspiserSkin.label.normal.textColor = Color.white;
+				GUI.Label (new Rect (screenPos.x - 50, Screen.height - screenPos.y + 5, 100, 100), lokInformasjon);
+
+			}
+
+			foreach(GameObject enh in enhetObjekter)
+			{
+				Enhet enhet = enh.GetComponent<InspiserEnhet>().getEnhet();
+				var pos = (Vector3)enh.gameObject.transform.position;
+				var screenPos = Camera.main.WorldToScreenPoint (pos);
+
+				//Debug.Log("ENHET");
+				//string enhInformasjon = enhet.getSenesteTemperaturGittDato(currentDate).ToString();
+				string enhInformasjon = enh.GetComponent<InspiserEnhet>().getValueText();
+
+				inspiserSkin.label.normal.textColor = Color.black;
+				inspiserSkin.label.alignment = TextAnchor.MiddleCenter;
+				GUI.Label (new Rect (screenPos.x - 51, Screen.height - screenPos.y + 10, 100, 100), enhInformasjon);
+				GUI.Label (new Rect (screenPos.x - 49, Screen.height - screenPos.y + 10, 100, 100), enhInformasjon);
+				GUI.Label (new Rect (screenPos.x - 50, Screen.height - screenPos.y + 1 + 10, 100, 100), enhInformasjon);
+				GUI.Label (new Rect (screenPos.x - 50, Screen.height - screenPos.y - 1 + 10, 100, 100), enhInformasjon);
+				
+				inspiserSkin.label.normal.textColor = Color.white;
+				GUI.Label (new Rect (screenPos.x - 50, Screen.height - screenPos.y + 10, 100, 100), enhInformasjon);
+			
+			}
+
+
+		}
+		
+		GUI.depth = 0;
+
 
 		GUI.skin = regnearkMenuSkin;
 		GUI.skin.button.alignment = TextAnchor.MiddleCenter;
@@ -205,6 +269,9 @@ public class Manager : MonoBehaviour
 				}
 			}
 		}
+
+
+
 
 
 		var dataSelectionRect = new Rect (0, 30, 500, datatyper.Count * 19 + 4);

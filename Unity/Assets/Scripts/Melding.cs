@@ -22,8 +22,9 @@ public class Melding : MonoBehaviour {
 
 	public void OnGUI() {
 
-
 		if (show) {
+			GUI.depth = -200;
+
 			var bounds = new Rect ((Screen.width - width) / 2, (Screen.height - height) / 2, width, height);
 			GUI.skin = skin;
 			GUI.Box (bounds, "");
