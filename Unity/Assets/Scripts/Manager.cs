@@ -155,13 +155,13 @@ public class Manager : MonoBehaviour
 
 				inspiserSkin.label.normal.textColor = Color.black;
 				inspiserSkin.label.alignment = TextAnchor.MiddleCenter;
-				GUI.Label (new Rect (screenPos.x - 51, Screen.height - screenPos.y - 15, 100, 40), lokInformasjon);
-				GUI.Label (new Rect (screenPos.x - 49, Screen.height - screenPos.y - 15, 100, 40), lokInformasjon);
-				GUI.Label (new Rect (screenPos.x - 50, Screen.height - screenPos.y + 1 - 15, 100, 40), lokInformasjon);
-				GUI.Label (new Rect (screenPos.x - 50, Screen.height - screenPos.y - 1 - 15, 100, 40), lokInformasjon);
+				GUI.Label (new Rect (screenPos.x - 151, Screen.height - screenPos.y - 15, 300, 40), lokInformasjon);
+				GUI.Label (new Rect (screenPos.x - 149, Screen.height - screenPos.y - 15, 300, 40), lokInformasjon);
+				GUI.Label (new Rect (screenPos.x - 150, Screen.height - screenPos.y + 1 - 15, 300, 40), lokInformasjon);
+				GUI.Label (new Rect (screenPos.x - 150, Screen.height - screenPos.y - 1 - 15, 300, 40), lokInformasjon);
 				
 				inspiserSkin.label.normal.textColor = Color.white;
-				GUI.Label (new Rect (screenPos.x - 50, Screen.height - screenPos.y - 15, 100, 40), lokInformasjon);
+				GUI.Label (new Rect (screenPos.x - 150, Screen.height - screenPos.y - 15, 300, 40), lokInformasjon);
 
 			}
 
