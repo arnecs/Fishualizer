@@ -177,36 +177,6 @@ PlayerSettings:
       m_Icon: {fileID: 2800000, guid: 3ab9d47c5f8d1422eb00de8793daaea6, type: 3}
       m_Width: 128
       m_Height: 128
-  - m_BuildTarget: Standalone
-    m_Icons:
-    - serializedVersion: 2
-      m_Icon: {fileID: 0}
-      m_Width: 0
-      m_Height: 0
-    - serializedVersion: 2
-      m_Icon: {fileID: 0}
-      m_Width: 0
-      m_Height: 0
-    - serializedVersion: 2
-      m_Icon: {fileID: 2800000, guid: 0f217fbc8fe1e6d4687d97a8ce8166ee, type: 3}
-      m_Width: 0
-      m_Height: 0
-    - serializedVersion: 2
-      m_Icon: {fileID: 0}
-      m_Width: 0
-      m_Height: 0
-    - serializedVersion: 2
-      m_Icon: {fileID: 0}
-      m_Width: 0
-      m_Height: 0
-    - serializedVersion: 2
-      m_Icon: {fileID: 0}
-      m_Width: 0
-      m_Height: 0
-    - serializedVersion: 2
-      m_Icon: {fileID: 0}
-      m_Width: 0
-      m_Height: 0
   m_BuildTargetBatching: []
   m_BuildTargetGraphicsAPIs: []
   webPlayerTemplate: APPLICATION:Default
