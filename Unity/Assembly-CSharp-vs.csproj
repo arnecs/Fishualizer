@@ -175,7 +175,6 @@
      <Compile Include="Assets\Scripts\Manager.cs" />
      <Compile Include="Assets\Scripts\Måling.cs" />
      <Compile Include="Assets\Scripts\Melding.cs" />
-     <None Include="Assets\Resources\Lusetellinger.txt" />
      <None Include="Assets\Infinity Code\Online maps\Shaders\TilesetShader.shader" />
      <None Include="Assets\Infinity Code\Online maps\Shaders\TilesetCutoutShader.shader" />
      <None Include="Assets\Infinity Code\Online maps\Shaders\TilesetDrawingElement.shader" />
