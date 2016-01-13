@@ -263,11 +263,7 @@ public class ExcelReader {
 
 					if (!lokDict.TryGetValue(lokNavn, out lok)) {
 
-
-						lok = new Lokalitet();
-						lok.setLokalitetsNavn(lokNavn);
-
-						lokDict.Add(lokNavn, lok);
+						continue;
 
 					}
 
@@ -339,7 +335,7 @@ public class ExcelReader {
 				lokDict.Add (l.getLokalitetsnavn (), l);
 
 			}
-		}
+		} 
 
 		try {
 			FileStream stream = File.Open(filePath, FileMode.Open, FileAccess.Read);
@@ -393,10 +389,7 @@ public class ExcelReader {
 					if (lokNavn.ToUpper().Equals("FLERE")) continue;
 					if (!lokDict.TryGetValue(lokNavn, out lok)) {
 
-						lok = new Lokalitet();
-						lok.setLokalitetsNavn(lokNavn);
-
-						lokDict.Add(lokNavn, lok);
+						continue;
 
 					}
 
