@@ -113,6 +113,11 @@ public class Manager : MonoBehaviour
 		ToggleVisEnheter ();
 		animationSpeed = 1.0f;
 
+		animationSpeedSlider = GameObject.Find ("AnimationSpeedSlider").GetComponent<Slider> ();
+		animationSpeedSliderText = GameObject.Find("AnimationSpeedSliderText").GetComponent<Text>();
+		animationSpeedSliderTextTooltip = GameObject.Find ("AnimationSpeedTooltipText").GetComponent<Text> ();
+		timeSlider =  GameObject.Find ("TimeSlider").GetComponent<Slider> ();
+
 		//FileReader
 		fb.guiSkin = skins[0]; //set the starting skin
 		fb.fileTexture = file; 
@@ -422,11 +427,8 @@ public class Manager : MonoBehaviour
 	}
 
 	void UpdateSliderDates() {
-		animationSpeedSlider = GameObject.Find ("AnimationSpeedSlider").GetComponent<Slider> ();
-		animationSpeedSliderText = GameObject.Find("AnimationSpeedSliderText").GetComponent<Text>();
-		animationSpeedSliderTextTooltip = GameObject.Find ("AnimationSpeedTooltipText").GetComponent<Text> ();
 		currentDate = firstDate ();
-		timeSlider =  GameObject.Find ("TimeSlider").GetComponent<Slider> ();
+
 
 		setTimeSliderMaxValue ();
 		setTimeSliderCurrentDateText ();
